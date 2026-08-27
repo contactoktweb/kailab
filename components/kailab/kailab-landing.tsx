@@ -10,6 +10,7 @@ import { OpsMatrix } from './ops-matrix'
 import { Footer } from './footer'
 import { CommandPalette } from './command-palette'
 import { CartDrawer } from './cart-drawer'
+import { WhatsAppFab } from './whatsapp'
 import type { CartItem, Product } from './data'
 
 export function KailabLanding() {
@@ -84,6 +85,8 @@ export function KailabLanding() {
         onQty={changeQty}
         onRemove={removeItem}
       />
+
+      <WhatsAppFab />
     </div>
   )
 }

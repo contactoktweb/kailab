@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { MessageCircle } from 'lucide-react'
+import { WhatsAppIcon, whatsappHref } from './whatsapp'
 
 const columns = [
   {
@@ -34,10 +34,12 @@ export function Footer() {
               transparencia en cada referencia.
             </p>
             <a
-              href="#"
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-md border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
-              <MessageCircle className="h-4 w-4 text-brand-soft" aria-hidden="true" />
+              <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
               Soporte por WhatsApp
             </a>
           </div>
