@@ -23,11 +23,11 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.5fr_2fr]">
           <div>
             <Image
-              src="/kailab-logo.png"
+              src="/KAILAB_Logo_Black.svg"
               alt="KAILAB"
               width={132}
               height={38}
-              className="h-8 w-auto"
+              className="h-8 w-auto brightness-0 invert"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Compuestos para investigación con certificación por lote y logística local. Rigor y
@@ -74,7 +74,30 @@ export function Footer() {
             INVIMA. La venta está dirigida exclusivamente a investigadores y entidades cualificadas.
           </p>
           <div className="mt-6 flex flex-col justify-between gap-3 text-xs text-muted-foreground sm:flex-row">
-            <span className="font-mono">© 2026 KAILAB · Bogotá, Colombia</span>
+            <div className="flex flex-col gap-2">
+              <span className="font-mono">© {new Date().getFullYear()} KAILAB · Bogotá, Colombia</span>
+              <a
+                href="https://www.kytcode.lat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+              >
+                Desarrollado por K&T
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="currentColor" /* White heart because footer is dark */
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+              </a>
+            </div>
             <div className="flex gap-4">
               <a href="#" className="transition-colors hover:text-foreground">
                 Términos

@@ -1,0 +1,18 @@
+<svg id="Kailab" xmlns="http://www.w3.org/2000/svg" width="2000" height="374" viewBox="0 0 2000 374">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 37.5px;
+        font-family: "Science Gothic";
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .cls-2 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <text id="kailab-2" data-name="kailab" class="cls-1" transform="translate(424.842 311.673) scale(8.897 9.353)">kailab</text>
+  <path id="k" class="cls-2" d="M353.979,2L273.384,171.163H131.535L212.131,2H353.979Zm0,370.858L273.384,203.7H131.535l80.6,169.163H353.979ZM0.97,2h175.7L86.4,187.429l90.267,185.429H0.97V2Z"/>
+</svg>

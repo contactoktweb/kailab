@@ -4,13 +4,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { TopBar } from './top-bar'
 import { Navbar } from './navbar'
 import { Hero } from './hero'
-import { EvidenceChart } from './evidence-chart'
 import { ProductGrid } from './product-grid'
-import { OpsMatrix } from './ops-matrix'
+import { WhatsIncluded, QualityCoa, GuidesBlock, FaqShort } from './home-blocks'
 import { Footer } from './footer'
 import { CommandPalette } from './command-palette'
 import { CartDrawer } from './cart-drawer'
-import { WhatsAppFab } from './whatsapp'
 import type { CartItem, Product } from './data'
 
 export function KailabLanding() {
@@ -67,9 +65,11 @@ export function KailabLanding() {
       />
       <main>
         <Hero onAdd={addToCart} onSearch={() => setPaletteOpen(true)} />
-        <EvidenceChart />
         <ProductGrid onAdd={addToCart} />
-        <OpsMatrix />
+        <WhatsIncluded />
+        <QualityCoa />
+        <GuidesBlock />
+        <FaqShort />
       </main>
       <Footer />
 
@@ -85,8 +85,6 @@ export function KailabLanding() {
         onQty={changeQty}
         onRemove={removeItem}
       />
-
-      <WhatsAppFab />
     </div>
   )
 }

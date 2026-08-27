@@ -1,9 +1,9 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
-const geistSans = Geist({
+const fontSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-geist-sans',
 })
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
-  themeColor: '#0b1220',
+  themeColor: '#17294F',
 }
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`dark ${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="es" className={`dark ${fontSans.variable} ${geistMono.variable}`}>
       <body className="font-sans antialiased bg-background text-foreground">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

@@ -53,45 +53,61 @@
 
 :root {
   color-scheme: dark;
-  /* Deep, slightly blue-tinted near-black surfaces */
-  --background: oklch(0.16 0.015 264);
-  --foreground: oklch(0.97 0.005 264);
-  --card: oklch(0.19 0.018 264);
-  --card-foreground: oklch(0.97 0.005 264);
-  --popover: oklch(0.18 0.018 264);
-  --popover-foreground: oklch(0.97 0.005 264);
-  /* Brand blue extracted from the KAILAB logo */
-  --primary: oklch(0.58 0.208 262);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.24 0.02 264);
-  --secondary-foreground: oklch(0.97 0.005 264);
-  --muted: oklch(0.24 0.02 264);
-  --muted-foreground: oklch(0.68 0.02 264);
-  --accent: oklch(0.26 0.03 262);
-  --accent-foreground: oklch(0.97 0.005 264);
-  --destructive: oklch(0.62 0.21 25);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.58 0.208 262);
-  /* Brand tokens */
-  --brand: oklch(0.58 0.208 262);
-  --brand-foreground: oklch(0.99 0 0);
-  --brand-soft: oklch(0.7 0.13 262);
-  --brand-navy: oklch(0.32 0.09 264);
-  --chart-1: oklch(0.58 0.208 262);
-  --chart-2: oklch(0.7 0.13 262);
-  --chart-3: oklch(0.5 0.02 264);
-  --chart-4: oklch(0.4 0.02 264);
-  --chart-5: oklch(0.3 0.02 264);
+  
+  /* KAILAB Brand Colors */
+  --brand-primary: #1959D7;
+  --brand-navy: #17294F;
+  --brand-light: #EEEEEE;
+  --brand-white: #FFFFFF;
+  --brand-black: #000000;
+
+  /* Core Theme - Dark Navy Base */
+  --background: var(--brand-navy);
+  --foreground: var(--brand-white);
+  --card: rgba(255, 255, 255, 0.04);
+  --card-foreground: var(--brand-white);
+  --popover: var(--brand-navy);
+  --popover-foreground: var(--brand-white);
+  
+  /* Actions and Highlights */
+  --primary: var(--brand-primary);
+  --primary-foreground: var(--brand-white);
+  --secondary: rgba(255, 255, 255, 0.08);
+  --secondary-foreground: var(--brand-white);
+  --muted: rgba(238, 238, 238, 0.15); /* Light Gray semi-transparent */
+  --muted-foreground: rgba(238, 238, 238, 0.8);
+  --accent: rgba(25, 89, 215, 0.15); /* Primary Blue semi-transparent */
+  --accent-foreground: var(--brand-white);
+  --destructive: #d71919;
+  
+  /* UI Elements */
+  --border: rgba(238, 238, 238, 0.15);
+  --input: rgba(238, 238, 238, 0.15);
+  --ring: var(--brand-primary);
+  
+  /* Custom Brand Tokens */
+  --brand: var(--brand-primary);
+  --brand-foreground: var(--brand-white);
+  --brand-soft: rgba(25, 89, 215, 0.15);
+  
+  /* Charts */
+  --chart-1: var(--brand-primary);
+  --chart-2: rgba(25, 89, 215, 0.8);
+  --chart-3: rgba(25, 89, 215, 0.6);
+  --chart-4: rgba(25, 89, 215, 0.4);
+  --chart-5: var(--brand-light);
+  
   --radius: 0.5rem;
-  --sidebar: oklch(0.18 0.018 264);
-  --sidebar-foreground: oklch(0.97 0.005 264);
-  --sidebar-primary: oklch(0.58 0.208 262);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.26 0.03 262);
-  --sidebar-accent-foreground: oklch(0.97 0.005 264);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.58 0.208 262);
+  
+  /* Sidebar */
+  --sidebar: var(--brand-navy);
+  --sidebar-foreground: var(--brand-white);
+  --sidebar-primary: var(--brand-primary);
+  --sidebar-primary-foreground: var(--brand-white);
+  --sidebar-accent: rgba(25, 89, 215, 0.15);
+  --sidebar-accent-foreground: var(--brand-white);
+  --sidebar-border: rgba(238, 238, 238, 0.15);
+  --sidebar-ring: var(--brand-primary);
 }
 
 /* KAILAB is a single, always-dark theme. The palette lives entirely in :root
