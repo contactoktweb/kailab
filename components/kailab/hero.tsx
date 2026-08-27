@@ -15,11 +15,6 @@ export function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,color-mix(in_oklch,var(--brand)_18%,transparent),transparent)]"
       />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,var(--foreground)_1px,transparent_1px),linear-gradient(to_bottom,var(--foreground)_1px,transparent_1px)] [background-size:56px_56px]"
-      />
-
       <div className="relative mx-auto max-w-7xl px-4 py-20 sm:py-28">
         <div className="flex flex-col items-center text-center">
           <MicroBadge variant="brand" className="mb-6">
