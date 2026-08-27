@@ -20,7 +20,13 @@ const menu = [
   },
 ]
 
-export function Navbar({ cartCount }: { cartCount: number }) {
+type NavbarProps = {
+  cartCount: number
+  onSearch: () => void
+  onCart: () => void
+}
+
+export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
   const [open, setOpen] = useState<string | null>(null)
 
   return (
@@ -90,14 +96,19 @@ export function Navbar({ cartCount }: { cartCount: number }) {
 
         <div className="flex items-center gap-2">
           <button
-            className="flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            onClick={onSearch}
+            className="flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
             aria-label="Buscar"
           >
             <Search className="h-4 w-4" aria-hidden="true" />
             <span className="hidden font-mono text-xs sm:inline">Buscar…</span>
+            <kbd className="hidden rounded border border-border bg-background px-1 font-mono text-[10px] md:inline">
+              ⌘K
+            </kbd>
           </button>
 
           <button
+            onClick={onCart}
             className="relative flex items-center gap-2 rounded-md bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             aria-label={`Carrito, ${cartCount} artículos`}
           >

@@ -6,6 +6,9 @@ export type Product = {
   presentation: string
   concentration: string
   lot: string
+  purity: string
+  formula: string
+  stock: number
   badges: string[]
 }
 
@@ -18,6 +21,9 @@ export const products: Product[] = [
     presentation: 'Vial liofilizado',
     concentration: '5 mg',
     lot: 'LOT-BPC-2409',
+    purity: '≥ 99.1%',
+    formula: 'C62H98N16O22',
+    stock: 34,
     badges: ['RUO', 'COA'],
   },
   {
@@ -28,6 +34,9 @@ export const products: Product[] = [
     presentation: 'Vial liofilizado',
     concentration: '5 mg',
     lot: 'LOT-TB5-2411',
+    purity: '≥ 98.7%',
+    formula: 'C212H350N56O78S',
+    stock: 21,
     badges: ['RUO', 'COA'],
   },
   {
@@ -38,6 +47,9 @@ export const products: Product[] = [
     presentation: 'Solución nasal',
     concentration: '30 mg / 3 ml',
     lot: 'LOT-SMX-2410',
+    purity: '≥ 98.9%',
+    formula: 'C37H51N9O10',
+    stock: 48,
     badges: ['RUO', 'COA'],
   },
   {
@@ -48,6 +60,9 @@ export const products: Product[] = [
     presentation: 'Vial liofilizado',
     concentration: '50 mg',
     lot: 'LOT-GHK-2408',
+    purity: '≥ 99.4%',
+    formula: 'C14H24N6O4Cu',
+    stock: 62,
     badges: ['RUO', 'COA'],
   },
   {
@@ -58,6 +73,9 @@ export const products: Product[] = [
     presentation: 'Vial liofilizado',
     concentration: '10 mg',
     lot: 'LOT-MTS-2412',
+    purity: '≥ 98.5%',
+    formula: 'C101H152N28O22',
+    stock: 12,
     badges: ['RUO', 'COA'],
   },
   {
@@ -68,9 +86,14 @@ export const products: Product[] = [
     presentation: 'Solución nasal',
     concentration: '30 mg / 3 ml',
     lot: 'LOT-SLK-2410',
+    purity: '≥ 99.0%',
+    formula: 'C33H57N11O9',
+    stock: 40,
     badges: ['RUO', 'COA'],
   },
 ]
+
+export type CartItem = { product: Product; qty: number }
 
 export type Evidence = {
   label: string

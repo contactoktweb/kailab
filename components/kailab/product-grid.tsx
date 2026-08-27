@@ -42,7 +42,13 @@ export function ProductGrid({ onAdd }: { onAdd: (product: Product) => void }) {
               <p className="mt-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
                 {product.category}
               </p>
-              <h3 className="mt-1 text-xl font-semibold tracking-tight">{product.title}</h3>
+              <div className="mt-1 flex items-baseline justify-between gap-2">
+                <h3 className="text-xl font-semibold tracking-tight">{product.title}</h3>
+                <span className="font-mono text-xs text-brand-soft">{product.purity}</span>
+              </div>
+              <p className="mt-1 truncate font-mono text-xs text-muted-foreground">
+                {product.formula}
+              </p>
 
               <dl className="mt-4 space-y-1.5 border-t border-border pt-4 text-sm">
                 <div className="flex justify-between gap-2">
@@ -52,6 +58,20 @@ export function ProductGrid({ onAdd }: { onAdd: (product: Product) => void }) {
                 <div className="flex justify-between gap-2">
                   <dt className="text-muted-foreground">Concentración</dt>
                   <dd className="font-mono text-xs text-foreground">{product.concentration}</dd>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <dt className="text-muted-foreground">Disponibilidad</dt>
+                  <dd className="flex items-center gap-1.5 font-mono text-xs">
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${
+                        product.stock <= 15 ? 'bg-destructive' : 'bg-primary'
+                      }`}
+                      aria-hidden="true"
+                    />
+                    <span className={product.stock <= 15 ? 'text-destructive' : 'text-foreground'}>
+                      {product.stock <= 15 ? `Últimas ${product.stock}` : `${product.stock} en stock`}
+                    </span>
+                  </dd>
                 </div>
               </dl>
 
