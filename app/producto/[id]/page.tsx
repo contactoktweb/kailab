@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
-import { FileCheck2, ShieldCheck, Truck, ArrowLeft, Plus, Minus, ShoppingCart } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import Link from 'next/link'
 import { products, formatCOP } from '@/components/kailab/data'
 import { MicroBadge } from '@/components/kailab/badge'
@@ -27,7 +27,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       <main className="mx-auto max-w-7xl px-4 py-8">
         <div className="mb-6">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-            <ArrowLeft className="h-4 w-4" />
+            <Icon icon="lucide:arrow-left" className="h-4 w-4" />
             Volver a la tienda
           </Link>
         </div>
@@ -58,7 +58,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="rounded-xl border border-border bg-card p-6">
               <div className="flex items-start gap-4">
                 <div className="rounded-full bg-primary/10 p-3">
-                   <ShieldCheck className="h-6 w-6 text-primary" />
+                   <Icon icon="lucide:shield-check" className="h-6 w-6 text-primary" />
                 </div>
                 <div>
                    <h3 className="font-semibold text-foreground">Calidad Verificada</h3>
@@ -117,11 +117,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                {/* Quantity */}
                <div className="flex h-12 items-center rounded-md border border-border bg-background">
                   <button className="flex h-full w-12 items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50">
-                    <Minus className="h-4 w-4" />
+                    <Icon icon="lucide:minus" className="h-4 w-4" />
                   </button>
                   <span className="w-8 text-center font-mono font-medium">1</span>
                   <button className="flex h-full w-12 items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
-                    <Plus className="h-4 w-4" />
+                    <Icon icon="lucide:plus" className="h-4 w-4" />
                   </button>
                </div>
                
@@ -130,18 +130,18 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   disabled={isOutOfStock}
                   className="group relative hidden h-12 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-8 text-sm font-bold text-primary-foreground shadow-[0_0_25px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95 disabled:pointer-events-none disabled:opacity-50 md:flex"
                 >
-                 <ShoppingCart className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-12" />
+                 <Icon icon="lucide:shopping-cart" className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-12" />
                  Agregar al Carrito
                </button>
             </div>
 
             <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
                <li className="flex items-center gap-3">
-                 <Truck className="h-4 w-4 text-primary" />
+                 <Icon icon="lucide:truck" className="h-4 w-4 text-primary" />
                  Despacho en 24h para Bogotá.
                </li>
                <li className="flex items-center gap-3">
-                 <FileCheck2 className="h-4 w-4 text-primary" />
+                 <Icon icon="lucide:file-check-2" className="h-4 w-4 text-primary" />
                  Incluye reporte impreso del lote {product.lot}.
                </li>
             </ul>
@@ -170,7 +170,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               disabled={isOutOfStock}
               className="group relative flex h-11 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-4 text-sm font-bold text-primary-foreground shadow-[0_0_20px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95 disabled:pointer-events-none disabled:opacity-50"
             >
-              <ShoppingCart className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12" />
+              <Icon icon="lucide:shopping-cart" className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12" />
               Agregar
             </button>
          </div>
