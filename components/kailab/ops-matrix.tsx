@@ -1,4 +1,4 @@
-import { MapPin } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { MicroBadge } from './badge'
 import { shipping, payments } from './data'
 
@@ -32,7 +32,7 @@ export function OpsMatrix() {
                   className="grid grid-cols-[1.4fr_1fr_1.2fr] items-center gap-2 px-4 py-3.5 text-sm transition-colors hover:bg-secondary/40"
                 >
                   <span className="flex items-center gap-2 font-medium">
-                    <MapPin className="h-3.5 w-3.5 text-brand-soft" aria-hidden="true" />
+                    <Icon icon="lucide:map-pin" className="h-4 w-4 text-brand-soft" aria-hidden="true" />
                     {row.city}
                   </span>
                   <span className="font-mono text-xs text-brand-soft">{row.time}</span>

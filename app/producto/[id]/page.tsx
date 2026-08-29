@@ -128,9 +128,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                {/* Main CTA (Desktop only, hidden on mobile to avoid duplication with sticky bar) */}
                <button 
                   disabled={isOutOfStock}
-                  className="hidden md:flex h-12 flex-1 items-center justify-center gap-2 rounded-md bg-primary px-8 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-primary/20"
+                  className="group relative hidden h-12 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-8 text-sm font-bold text-primary-foreground shadow-[0_0_25px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95 disabled:pointer-events-none disabled:opacity-50 md:flex"
                 >
-                 <ShoppingCart className="h-5 w-5" />
+                 <ShoppingCart className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-12" />
                  Agregar al Carrito
                </button>
             </div>
@@ -168,9 +168,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </div>
             <button 
               disabled={isOutOfStock}
-              className="flex h-11 flex-1 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+              className="group relative flex h-11 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-4 text-sm font-bold text-primary-foreground shadow-[0_0_20px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95 disabled:pointer-events-none disabled:opacity-50"
             >
-              <ShoppingCart className="h-4 w-4" />
+              <ShoppingCart className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12" />
               Agregar
             </button>
          </div>

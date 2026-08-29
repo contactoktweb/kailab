@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Search, CornerDownLeft, Plus } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { products, formatCOP, type Product } from './data'
 import { MicroBadge } from './badge'
 
@@ -76,7 +76,7 @@ export function CommandPalette({ open, onClose, onAdd }: CommandPaletteProps) {
       />
       <div className="relative w-full max-w-xl overflow-hidden rounded-xl border border-border bg-popover shadow-2xl">
         <div className="flex items-center gap-3 border-b border-border px-4">
-          <Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+          <Icon icon="lucide:search" className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
           <input
             ref={inputRef}
             value={query}
@@ -123,9 +123,9 @@ export function CommandPalette({ open, onClose, onAdd }: CommandPaletteProps) {
                   {formatCOP(p.priceCOP)}
                 </span>
                 {active === i ? (
-                  <CornerDownLeft className="h-3.5 w-3.5 shrink-0 text-brand-soft" aria-hidden="true" />
+                  <Icon icon="lucide:corner-down-left" className="h-3.5 w-3.5 shrink-0 text-brand-soft" aria-hidden="true" />
                 ) : (
-                  <Plus className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  <Icon icon="lucide:plus" className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
                 )}
               </button>
             </li>

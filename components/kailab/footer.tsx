@@ -30,8 +30,7 @@ export function Footer() {
               className="h-8 w-auto brightness-0 invert"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Compuestos para investigación con certificación por lote y logística local. Rigor y
-              transparencia en cada referencia.
+              Péptidos de investigación y reactivos de laboratorio liofilizados en Colombia. Uso exclusivo en investigación, no para consumo humano.
             </p>
             <a
               href={whatsappHref}

@@ -10,6 +10,7 @@ export type Product = {
   formula: string
   stock: number
   badges: string[]
+  image?: string
 }
 
 export const products: Product[] = [
@@ -25,6 +26,7 @@ export const products: Product[] = [
     formula: 'C62H98N16O22',
     stock: 34,
     badges: ['RUO', 'COA'],
+    image: '/kailab-images/bpc-157-1024x1024.png',
   },
   {
     id: 'kl-002',
@@ -38,6 +40,7 @@ export const products: Product[] = [
     formula: 'C212H350N56O78S',
     stock: 21,
     badges: ['RUO', 'COA'],
+    image: '/kailab-images/glow-1024x1024.png',
   },
   {
     id: 'kl-003',
@@ -51,6 +54,7 @@ export const products: Product[] = [
     formula: 'C37H51N9O10',
     stock: 48,
     badges: ['RUO', 'COA'],
+    image: '/kailab-images/tesamorelin-1024x1024.png',
   },
   {
     id: 'kl-004',
@@ -64,6 +68,7 @@ export const products: Product[] = [
     formula: 'C14H24N6O4Cu',
     stock: 62,
     badges: ['RUO', 'COA'],
+    image: '/kailab-images/ghk-cu-1024x1024.png',
   },
   {
     id: 'kl-005',
@@ -77,6 +82,7 @@ export const products: Product[] = [
     formula: 'C101H152N28O22',
     stock: 12,
     badges: ['RUO', 'COA'],
+    image: '/kailab-images/Retatrutide-10-MG-1024x1024.png',
   },
   {
     id: 'kl-006',

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { X, Minus, Plus, Trash2, ShoppingCart } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { formatCOP, type CartItem } from './data'
 import { MicroBadge } from './badge'
 
@@ -46,7 +46,7 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
       >
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <div className="flex items-center gap-2">
-            <ShoppingCart className="h-4 w-4 text-brand-soft" aria-hidden="true" />
+            <Icon icon="lucide:shopping-cart" className="h-4 w-4 text-brand-soft" aria-hidden="true" />
             <h2 className="text-sm font-medium">Carrito</h2>
             <MicroBadge variant="brand">{count} items</MicroBadge>
           </div>
@@ -55,14 +55,14 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
             className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             aria-label="Cerrar carrito"
           >
-            <X className="h-4 w-4" aria-hidden="true" />
+            <Icon icon="lucide:x" className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
 
         {items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full border border-border bg-secondary">
-              <ShoppingCart className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
+            <Icon icon="lucide:shopping-cart" className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
             </div>
             <p className="text-sm font-medium">Tu carrito está vacío</p>
             <p className="max-w-xs text-xs leading-relaxed text-muted-foreground">
@@ -93,7 +93,7 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
                       className="rounded p-1 text-muted-foreground transition-colors hover:text-destructive"
                       aria-label={`Quitar ${product.title}`}
                     >
-                      <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                      <Icon icon="lucide:trash-2" className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
                   </div>
                   <div className="mt-2 flex items-center justify-between gap-2">
@@ -103,7 +103,7 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
                         className="px-2 py-1 text-muted-foreground transition-colors hover:text-foreground"
                         aria-label="Disminuir cantidad"
                       >
-                        <Minus className="h-3 w-3" aria-hidden="true" />
+                        <Icon icon="lucide:minus" className="h-3 w-3" aria-hidden="true" />
                       </button>
                       <span className="w-8 text-center font-mono text-xs tabular-nums">{qty}</span>
                       <button
@@ -111,7 +111,7 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
                         className="px-2 py-1 text-muted-foreground transition-colors hover:text-foreground"
                         aria-label="Aumentar cantidad"
                       >
-                        <Plus className="h-3 w-3" aria-hidden="true" />
+                        <Icon icon="lucide:plus" className="h-3 w-3" aria-hidden="true" />
                       </button>
                     </div>
                     <span className="font-mono text-sm tabular-nums">
@@ -149,12 +149,9 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
                 {formatCOP(subtotal)}
               </span>
             </div>
-            <button className="mt-4 w-full rounded-md bg-primary py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90">
+            <button className="group relative mt-4 inline-flex w-full items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary py-3 text-sm font-bold text-primary-foreground shadow-[0_0_25px_rgba(25,89,215,0.7)] transition-all duration-300 hover:scale-[1.02] hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-[0.98]">
               Continuar con la compra
             </button>
-            <p className="mt-2 text-center font-mono text-[11px] text-muted-foreground">
-              Uso exclusivo en investigación · RUO
-            </p>
           </div>
         )}
       </aside>

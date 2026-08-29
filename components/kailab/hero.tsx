@@ -1,16 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { ArrowRight, FileCheck2, Truck, CreditCard, GitBranch, Activity } from 'lucide-react'
-import { MicroBadge } from './badge'
-import { products, formatCOP, type Product } from './data'
-
-const trust = [
-  { icon: FileCheck2, title: 'COA por Lote', desc: 'Certificado de análisis verificable' },
-  { icon: GitBranch, title: 'Trazabilidad', desc: 'Cadena de custodia documentada' },
-  { icon: Truck, title: 'Envío Gratis', desc: 'En pedidos sobre $250.000' },
-  { icon: CreditCard, title: 'Pagos Locales', desc: 'Wompi · Nequi · Bancolombia' },
-]
+import Image from 'next/image'
+import { Icon } from '@iconify/react'
+import { motion } from 'framer-motion'
+import type { Product } from './data'
 
 type HeroProps = {
   onAdd: (product: Product) => void
@@ -18,154 +11,90 @@ type HeroProps = {
 }
 
 export function Hero({ onAdd, onSearch }: HeroProps) {
-  // Rotating "live batch" spotlight in the spec panel
-  const [index, setIndex] = useState(0)
-
-  useEffect(() => {
-    const id = setInterval(() => setIndex((i) => (i + 1) % products.length), 3200)
-    return () => clearInterval(id)
-  }, [])
-
-  const active = products[index]
-
   return (
-    <section className="relative overflow-hidden border-b border-border">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_75%_0%,color-mix(in_oklch,var(--brand)_18%,transparent),transparent)]"
-      />
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:py-24 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-        {/* Left: copy */}
-        <div>
-          <MicroBadge variant="brand" className="mb-6">
-            RUO · Research Use Only
-          </MicroBadge>
+    <section className="relative flex min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] w-full items-center overflow-hidden border-b border-border">
+      
+      {/* Full Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/kailab-images/hero-image.png"
+          alt="Kailab Laboratorio Background"
+          fill
+          priority
+          className="object-cover object-center opacity-80"
+        />
+        
+        {/* Layered Gradients for dramatic, tech-noir effect */}
+        {/* 1. Base dark tint to ensure text readability always */}
+        <div className="absolute inset-0 bg-background/50" />
+        
+        {/* 2. Deep gradient from left (where text is) to right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
+        
+        {/* 3. Bottom gradient to blend smoothly into the next section */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+        
+        {/* 4. A subtle primary color wash over the whole thing for brand unity */}
+        <div className="absolute inset-0 bg-primary/5 mix-blend-overlay" />
+      </div>
+      
 
-          <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-            Compuestos de investigación con{' '}
-            <span className="text-brand-soft">evidencia y trazabilidad</span> por lote.
-          </h1>
 
-          <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Cada referencia de KAILAB llega con su Certificado de Análisis, cadena de custodia
-            documentada y las fuentes primarias citadas. Rigor, transparencia y logística local
-            para laboratorios en Colombia.
-          </p>
+      {/* Main Content */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 lg:py-32">
+        <div className="max-w-2xl">
+          
+          {/* Headline */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+            className="text-balance text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl"
+          >
+            Péptidos de <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary drop-shadow-[0_0_15px_rgba(25,89,215,0.4)]">
+              Investigación
+            </span>
+          </motion.h1>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          {/* Subheadline */}
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, type: "spring", bounce: 0.4 }}
+            className="mt-8 max-w-xl text-balance text-lg font-light leading-relaxed text-gray-300 sm:text-xl"
+          >
+            Compuestos científicos de alta calidad para uso profesional. Resultados verificables con transparencia radical para protocolos rigurosos.
+          </motion.p>
+
+          {/* CTA */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, type: "spring", bounce: 0.4 }}
+            className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center"
+          >
             <a
               href="#catalogo"
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-8 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground shadow-[0_0_20px_rgba(25,89,215,0.7)] backdrop-blur-md transition-all duration-500 hover:bg-primary/90 hover:shadow-[0_0_25px_rgba(25,89,215,0.9)] active:scale-95"
             >
-              Ver catálogo
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              {/* L-Shape Border Left */}
+              <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+              {/* L-Shape Border Top */}
+              <div className="absolute left-0 top-0 h-[2px] w-12 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+              
+              Explora nuestros productos
+              <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </a>
-            <button
-              onClick={onSearch}
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-transparent px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
-            >
-              Búsqueda rápida
-              <kbd className="rounded border border-border bg-secondary px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
-                ⌘K
-              </kbd>
-            </button>
-          </div>
-        </div>
-
-        {/* Right: live spec panel */}
-        <div className="relative">
-          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xl">
-            <div className="flex items-center justify-between border-b border-border bg-secondary/40 px-4 py-2.5">
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary" />
-                <span className="font-mono text-xs text-muted-foreground">batch-inspector.klb</span>
-              </div>
-              <span className="flex items-center gap-1.5 font-mono text-[11px] text-brand-soft">
-                <Activity className="h-3 w-3" aria-hidden="true" />
-                live
-              </span>
-            </div>
-
-            <div className="p-5">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                    {active.category}
-                  </p>
-                  <h2 className="mt-1 text-2xl font-semibold tracking-tight">{active.title}</h2>
-                </div>
-                <div className="flex flex-col items-end gap-1">
-                  {active.badges.map((b) => (
-                    <MicroBadge key={b} variant="brand">
-                      {b}
-                    </MicroBadge>
-                  ))}
-                </div>
-              </div>
-
-              <dl className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border">
-                {[
-                  ['Lote', active.lot],
-                  ['Pureza', active.purity],
-                  ['Fórmula', active.formula],
-                  ['Concentración', active.concentration],
-                ].map(([k, v]) => (
-                  <div key={k} className="bg-card p-3">
-                    <dt className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-                      {k}
-                    </dt>
-                    <dd className="mt-1 truncate font-mono text-sm text-foreground">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-
-              <div className="mt-5 flex items-center justify-between">
-                <div className="flex items-baseline gap-1">
-                  <span className="font-mono text-xl font-semibold tabular-nums">
-                    {formatCOP(active.priceCOP)}
-                  </span>
-                  <span className="font-mono text-xs text-muted-foreground">COP</span>
-                </div>
-                <button
-                  onClick={() => onAdd(active)}
-                  className="rounded-md bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  Agregar al carrito
-                </button>
-              </div>
-
-              {/* rotation indicator */}
-              <div className="mt-4 flex gap-1.5">
-                {products.map((p, i) => (
-                  <button
-                    key={p.id}
-                    onClick={() => setIndex(i)}
-                    aria-label={`Ver ${p.title}`}
-                    className={`h-1 flex-1 rounded-full transition-colors ${
-                      i === index ? 'bg-primary' : 'bg-secondary'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          </motion.div>
+          
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-16">
-        <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {trust.map((item) => (
-            <li
-              key={item.title}
-              className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/40"
-            >
-              <item.icon className="h-5 w-5 text-brand-soft" aria-hidden="true" />
-              <h3 className="mt-3 text-sm font-medium">{item.title}</h3>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Bottom decorative glowing line */}
+      <div className="absolute bottom-0 left-0 z-20 h-[2px] w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-[1px]" />
+      <div className="absolute bottom-0 left-0 z-20 h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+      
     </section>
   )
 }
