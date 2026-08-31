@@ -51,7 +51,7 @@ export function WhatsIncluded() {
                   </div>
                   
                   <div className="relative z-10">
-                    <div className="mb-6 flex h-8 w-8 items-center justify-center border border-primary/30 text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_15px_rgba(25,89,215,0.4)]">
+                    <div className="mb-6 flex h-8 w-8 items-center justify-center border border-primary/30 text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
                       <Icon icon={item.icon} className="h-4 w-4" />
                     </div>
                     <h3 className="font-mono text-sm font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">{item.name}</h3>
@@ -77,9 +77,7 @@ export function QualityCoa() {
       transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
       className="relative overflow-hidden border-b border-border bg-secondary/5 py-24"
     >
-      {/* Background decorations */}
-      <div className="absolute right-0 top-1/2 -mr-[300px] -mt-[300px] h-[600px] w-[600px] rounded-full bg-primary/5 blur-[120px]" />
-      
+
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
           
@@ -110,7 +108,7 @@ export function QualityCoa() {
              
              <div className="group relative overflow-hidden border border-border/40 bg-background/50 p-8 backdrop-blur-md">
                 {/* Scanline animation */}
-                <div className="absolute left-0 top-0 h-[1px] w-full bg-primary/50 opacity-0 shadow-[0_0_15px_rgba(25,89,215,1)] transition-all duration-1000 group-hover:top-full group-hover:opacity-100"></div>
+                <div className="absolute left-0 top-0 h-[1px] w-full bg-primary/50 opacity-0 transition-all duration-1000 group-hover:top-full group-hover:opacity-100"></div>
                 
                 <div className="mb-6 flex items-center justify-between border-b border-border/40 pb-4">
                   <div className="flex items-center gap-3">
@@ -127,7 +125,7 @@ export function QualityCoa() {
                   </div>
                   <div className="group/row flex items-center justify-between">
                      <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">Pureza Analizada</span>
-                     <span className="text-base font-bold text-primary drop-shadow-[0_0_8px_rgba(25,89,215,0.5)]">≥ 99.1%</span>
+                     <span className="text-base font-bold text-primary">≥ 99.1%</span>
                   </div>
                   <div className="group/row flex items-center justify-between">
                      <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">Trazabilidad</span>
@@ -190,7 +188,7 @@ export function GuidesBlock() {
               {guides.map((guide, i) => (
                 <a href="#guias" key={i} className="group relative flex items-center justify-between border-b border-border/40 py-6 transition-all duration-500 hover:bg-secondary/10 hover:pl-6">
                   {/* Left glow indicator */}
-                  <div className="absolute left-0 top-0 h-full w-[2px] bg-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100 shadow-[0_0_10px_rgba(25,89,215,1)]"></div>
+                  <div className="absolute left-0 top-0 h-full w-[2px] bg-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                   
                   <div className="flex items-center gap-6">
                     <div className="text-muted-foreground transition-colors duration-300 group-hover:text-primary">
@@ -230,9 +228,7 @@ export function FaqShort() {
 
   return (
     <section className="relative overflow-hidden border-b border-border bg-background py-24">
-      {/* Tech Background decoration */}
-      <div className="absolute right-0 top-0 -mr-32 -mt-32 h-64 w-64 rounded-full bg-primary/10 blur-[100px]" />
-      <div className="absolute bottom-0 left-0 -mb-32 -ml-32 h-64 w-64 rounded-full bg-brand-soft/10 blur-[100px]" />
+
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
@@ -261,7 +257,7 @@ export function FaqShort() {
               {faqs.map((faq, i) => (
                 <details 
                   key={i} 
-                  className="group relative overflow-hidden rounded-sm border border-border/50 bg-secondary/10 transition-all duration-300 hover:border-primary/40 hover:bg-secondary/20 hover:shadow-[0_0_15px_rgba(25,89,215,0.1)] [&_summary::-webkit-details-marker]:hidden"
+                  className="group relative overflow-hidden rounded-sm border border-border/50 bg-secondary/10 transition-all duration-300 hover:border-primary/40 hover:bg-secondary/20 [&_summary::-webkit-details-marker]:hidden"
                 >
                   <summary className="flex cursor-pointer items-center justify-between p-5 focus:outline-none sm:p-6">
                     <div className="flex items-center gap-4 sm:gap-6">
@@ -299,34 +295,46 @@ export function TrustIndicators() {
   ]
 
   return (
-    <motion.section 
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-      className="relative overflow-hidden border-t border-border bg-background py-16"
-    >
+    <section className="relative overflow-hidden border-t border-border bg-background py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+             visible: { transition: { staggerChildren: 0.15 } }
+          }}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {trust.map((item, i) => (
-            <div
+            <motion.div
               key={i}
-              className="group relative flex items-center gap-4 rounded-sm border border-border/50 bg-secondary/5 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary/10 hover:shadow-[0_8px_30px_rgba(25,89,215,0.1)]"
+              variants={{
+                 hidden: { opacity: 0, y: 30, scale: 1.15 },
+                 visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", bounce: 0.4, duration: 0.8 } }
+              }}
+              className="group relative overflow-hidden flex items-center rounded-sm border border-border/50 bg-secondary/5 p-5 transition-colors duration-300 hover:bg-secondary/10"
             >
-              {/* Highlight bar left */}
-              <div className="absolute left-0 top-0 h-full w-[2px] bg-primary/0 transition-colors duration-300 group-hover:bg-primary"></div>
+              {/* Left line indicator */}
+              <div className="absolute left-0 top-0 h-full w-[2px] bg-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
               
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm border border-border/40 bg-background text-primary/60 transition-colors duration-300 group-hover:border-primary/40 group-hover:text-primary">
-                <Icon icon={item.icon} className="h-6 w-6" aria-hidden="true" />
+              <div className="flex items-center gap-4 transition-transform duration-300 group-hover:translate-x-2">
+                <div className="text-muted-foreground transition-colors duration-300 group-hover:text-primary">
+                  <Icon icon={item.icon} className="h-7 w-7" />
+                </div>
+                <div>
+                  <h3 className="font-mono text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-mono text-sm font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">{item.title}</h3>
-                <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{item.desc}</p>
-              </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </motion.section>
+    </section>
   )
 }

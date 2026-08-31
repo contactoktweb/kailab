@@ -58,7 +58,7 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
         <div className="flex items-center gap-3">
           <button
             onClick={onSearch}
-            className="group flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-3.5 py-1.5 text-sm font-bold text-primary-foreground shadow-[0_0_20px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95"
+            className="group flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-3.5 py-1.5 text-sm font-bold text-primary-foreground transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-95"
             aria-label="Buscar"
           >
             <Icon icon="lucide:search" className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
@@ -67,7 +67,7 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
 
           <button
             onClick={onCart}
-            className="group relative flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-4 py-1.5 text-sm font-bold text-primary-foreground shadow-[0_0_20px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95"
+            className="group relative flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-4 py-1.5 text-sm font-bold text-primary-foreground transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-95"
             aria-label={`Carrito, ${cartCount} artículos`}
           >
             <Icon icon="lucide:shopping-cart" className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12" aria-hidden="true" />

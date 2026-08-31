@@ -149,7 +149,7 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
                 {formatCOP(subtotal)}
               </span>
             </div>
-            <button className="group relative mt-4 inline-flex w-full items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary py-3 text-sm font-bold text-primary-foreground shadow-[0_0_25px_rgba(25,89,215,0.7)] transition-all duration-300 hover:scale-[1.02] hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-[0.98]">
+            <button className="group relative mt-4 inline-flex w-full items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary py-3 text-sm font-bold text-primary-foreground transition-all duration-300 hover:scale-[1.02] hover:bg-transparent hover:text-primary active:scale-[0.98]">
               Continuar con la compra
             </button>
           </div>

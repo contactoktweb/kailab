@@ -42,7 +42,7 @@ export default function GuiasPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-[100dvh] bg-background">
       <TopBar onSearch={() => setPaletteOpen(true)} />
       <Navbar
         cartCount={cartCount}

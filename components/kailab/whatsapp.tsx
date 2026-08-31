@@ -31,7 +31,6 @@ export function WhatsAppFab() {
       className="group fixed bottom-5 right-5 z-50 flex items-center gap-0 overflow-hidden rounded-full bg-[#25D366] py-3.5 pl-3.5 pr-3.5 text-white shadow-lg shadow-black/40 ring-1 ring-black/10 transition-all duration-300 hover:gap-2 hover:pr-5"
     >
       <span className="relative flex h-6 w-6 shrink-0 items-center justify-center">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/40 opacity-60" />
         <WhatsAppIcon className="relative h-6 w-6" />
       </span>
       <span className="max-w-0 whitespace-nowrap text-sm font-medium opacity-0 transition-all duration-300 group-hover:max-w-[10rem] group-hover:opacity-100">

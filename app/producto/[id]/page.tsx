@@ -1,4 +1,7 @@
+'use client'
+
 import { notFound } from 'next/navigation'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
@@ -20,7 +23,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   const isLowStock = product.stock > 0 && product.stock <= 15
 
   return (
-    <div className="min-h-screen bg-background pb-24 md:pb-0">
+    <div className="min-h-[100dvh] bg-background pb-24 md:pb-0">
       <TopBar onSearch={() => {}} />
       <Navbar cartCount={0} onSearch={() => {}} onCart={() => {}} />
       
@@ -34,28 +37,66 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
         <div className="grid gap-10 md:grid-cols-[1fr_1fr] lg:gap-16">
           {/* LEFT: Visuals & Quality */}
-          <div className="space-y-6">
-            <div className="relative aspect-square w-full rounded-2xl border border-border bg-secondary/20 p-8 overflow-hidden">
+          {/* LEFT: Visuals & Quality */}
+          <div className="space-y-6" style={{ perspective: 2000 }}>
+            <motion.div 
+              initial={{ opacity: 0, rotateX: 40, y: 50, scale: 0.9 }}
+              animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
+              transition={{ type: "spring", damping: 20, stiffness: 60 }}
+              className="relative aspect-square w-full rounded-2xl border border-border bg-secondary/20 p-8 overflow-hidden group shadow-2xl"
+            >
+              {/* Sweeping Glass Glare */}
+              <motion.div
+                initial={{ x: "-150%", opacity: 0 }}
+                animate={{ x: "200%", opacity: 0.4 }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.3 }}
+                className="absolute inset-0 z-20 w-1/2 -skew-x-[25deg] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"
+              />
               {/* Badges */}
-              <div className="absolute left-4 top-4 flex flex-col gap-2 z-10">
+              <motion.div 
+                initial="hidden" animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.4 } }
+                }}
+                className="absolute left-4 top-4 flex flex-col gap-2 z-10"
+              >
                 {product.badges.map((b) => (
-                  <MicroBadge key={b} variant="brand" className="shadow-md">
-                    {b}
-                  </MicroBadge>
+                  <motion.div key={b} variants={{ hidden: { opacity: 0, scale: 0, rotate: -20 }, visible: { opacity: 1, scale: 1, rotate: 0, transition: { type: "spring", bounce: 0.6 } } }}>
+                    <MicroBadge variant="brand" className="shadow-md">
+                      {b}
+                    </MicroBadge>
+                  </motion.div>
                 ))}
-              </div>
-              <div className="relative h-full w-full">
-                <Image
-                  src="/placeholder.jpg"
-                  alt={product.title}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, rotateY: 90, scale: 0.5 }}
+                animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+                transition={{ type: "spring", bounce: 0.5, duration: 1.2, delay: 0.2 }}
+                className="relative h-full w-full z-10"
+              >
+                <motion.div
+                  animate={{ y: [0, -12, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative h-full w-full"
+                >
+                  <Image
+                    src="/placeholder.jpg"
+                    alt={product.title}
+                    fill
+                    className="object-contain drop-shadow-2xl"
+                  />
+                </motion.div>
+              </motion.div>
+            </motion.div>
 
             {/* Quality Signal Card */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <motion.div 
+              initial={{ clipPath: "inset(0 100% 0 0)" }}
+              animate={{ clipPath: "inset(0 0% 0 0)" }}
+              transition={{ duration: 1, delay: 0.4, ease: [0.76, 0, 0.24, 1] }}
+              className="rounded-xl border border-border bg-card p-6"
+            >
               <div className="flex items-start gap-4">
                 <div className="rounded-full bg-primary/10 p-3">
                    <Icon icon="lucide:shield-check" className="h-6 w-6 text-primary" />
@@ -67,20 +108,45 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </div>
               </div>
             </div>
+            </motion.div>
           </div>
 
           {/* RIGHT: Commerce / Details */}
+          {/* RIGHT: Commerce / Details */}
           <div className="flex flex-col">
-            <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            <motion.p 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
+              className="font-mono text-xs uppercase tracking-widest text-muted-foreground"
+            >
               {product.category}
-            </p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{product.title}</h1>
+            </motion.p>
+            <motion.h1 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}
+              className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl"
+            >
+              {product.title}
+            </motion.h1>
             
-            <p className="mt-4 text-base text-muted-foreground leading-relaxed">
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4, ease: [0.76, 0, 0.24, 1] }}
+              className="mt-4 text-base text-muted-foreground leading-relaxed"
+            >
               Fórmula: <span className="font-mono">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
-            </p>
+            </motion.p>
 
-            <div className="mt-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.5, ease: [0.76, 0, 0.24, 1] }}
+              className="mt-8"
+            >
               <h3 className="text-sm font-medium text-foreground">Seleccionar Variante</h3>
               <div className="mt-3 flex flex-wrap gap-3">
                  <button className="rounded-md border-2 border-primary bg-primary/5 px-4 py-2 font-mono text-sm font-bold text-primary">
@@ -91,9 +157,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     Doble ({parseInt(product.concentration) * 2} mg)
                  </button>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="mt-8 border-t border-border pt-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.6, ease: [0.76, 0, 0.24, 1] }}
+              className="mt-8 border-t border-border pt-8"
+            >
               <div className="flex items-end gap-3">
                 <span className="text-3xl font-bold tracking-tight text-foreground">{formatCOP(product.priceCOP)}</span>
                 <span className="mb-1 text-sm text-muted-foreground">COP / unidad</span>
@@ -111,9 +182,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   {isOutOfStock ? 'Agotado' : isLowStock ? `Últimas ${product.stock} unidades en stock` : 'Disponible en stock local'}
                 </span>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.7, ease: [0.76, 0, 0.24, 1] }}
+              className="mt-8 flex flex-col sm:flex-row gap-4"
+            >
                {/* Quantity */}
                <div className="flex h-12 items-center rounded-md border border-border bg-background">
                   <button className="flex h-full w-12 items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50">
@@ -128,14 +204,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                {/* Main CTA (Desktop only, hidden on mobile to avoid duplication with sticky bar) */}
                <button 
                   disabled={isOutOfStock}
-                  className="group relative hidden h-12 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-8 text-sm font-bold text-primary-foreground shadow-[0_0_25px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95 disabled:pointer-events-none disabled:opacity-50 md:flex"
+                  className="group relative hidden h-12 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-8 text-sm font-bold text-primary-foreground transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-95 disabled:pointer-events-none disabled:opacity-50 md:flex"
                 >
                  <Icon icon="lucide:shopping-cart" className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-12" />
                  Agregar al Carrito
                </button>
-            </div>
+            </motion.div>
 
-            <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
+            <motion.ul 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              className="mt-8 space-y-3 text-sm text-muted-foreground"
+            >
                <li className="flex items-center gap-3">
                  <Icon icon="lucide:truck" className="h-4 w-4 text-primary" />
                  Despacho en 24h para Bogotá.
@@ -144,7 +225,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                  <Icon icon="lucide:file-check-2" className="h-4 w-4 text-primary" />
                  Incluye reporte impreso del lote {product.lot}.
                </li>
-            </ul>
+            </motion.ul>
 
           </div>
         </div>
@@ -160,7 +241,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       <Footer />
 
       {/* STICKY MOBILE CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 p-4 backdrop-blur-md md:hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+      <motion.div 
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
+        className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+      >
          <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground truncate max-w-[120px]">{product.title}</span>
@@ -168,13 +254,13 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </div>
             <button 
               disabled={isOutOfStock}
-              className="group relative flex h-11 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-4 text-sm font-bold text-primary-foreground shadow-[0_0_20px_rgba(25,89,215,0.7)] transition-all duration-300 hover:bg-transparent hover:text-primary hover:shadow-[0_0_10px_rgba(25,89,215,0.3)] active:scale-95 disabled:pointer-events-none disabled:opacity-50"
+              className="group relative flex h-11 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-4 text-sm font-bold text-primary-foreground transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-95 disabled:pointer-events-none disabled:opacity-50"
             >
               <Icon icon="lucide:shopping-cart" className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12" />
               Agregar
             </button>
          </div>
-      </div>
+      </motion.div>
 
     </div>
   )

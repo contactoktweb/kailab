@@ -52,7 +52,7 @@ export function Hero({ onAdd, onSearch }: HeroProps) {
             className="text-balance text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl"
           >
             Péptidos de <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary drop-shadow-[0_0_15px_rgba(25,89,215,0.4)]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary">
               Investigación
             </span>
           </motion.h1>
@@ -76,7 +76,7 @@ export function Hero({ onAdd, onSearch }: HeroProps) {
           >
             <a
               href="#catalogo"
-              className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-8 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground shadow-[0_0_20px_rgba(25,89,215,0.7)] backdrop-blur-md transition-all duration-500 hover:bg-primary/90 hover:shadow-[0_0_25px_rgba(25,89,215,0.9)] active:scale-95"
+              className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-8 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
             >
               {/* L-Shape Border Left */}
               <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
@@ -91,8 +91,7 @@ export function Hero({ onAdd, onSearch }: HeroProps) {
         </div>
       </div>
 
-      {/* Bottom decorative glowing line */}
-      <div className="absolute bottom-0 left-0 z-20 h-[2px] w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-[1px]" />
+      <div className="absolute bottom-0 left-0 z-20 h-[1px] w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       <div className="absolute bottom-0 left-0 z-20 h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
       
     </section>

@@ -23,6 +23,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: 'dark',
   themeColor: '#17294F',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -32,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`dark ${fontSans.variable} ${geistMono.variable}`}>
-      <body className="font-sans antialiased bg-background text-foreground">
+      <body className="font-sans antialiased bg-background text-foreground w-full overflow-x-hidden">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
