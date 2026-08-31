@@ -107,7 +107,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                    <a href="#coa" className="mt-2 inline-block text-sm font-medium text-primary hover:underline">Ver Certificado de Análisis (COA) &rarr;</a>
                 </div>
               </div>
-            </div>
             </motion.div>
           </div>
 
