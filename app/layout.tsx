@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   description:
     'Tienda de compuestos para investigación (RUO) con Certificado de Análisis por lote, trazabilidad completa, evidencia clínica referenciada y logística local en Colombia.',
   generator: 'v0.app',
+  icons: {
+    icon: '/KAILAB_Favicon_512.svg',
+    apple: '/apple-icon.png',
+  },
 }
 
 export const viewport: Viewport = {
