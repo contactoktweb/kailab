@@ -58,21 +58,31 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
         <div className="flex items-center gap-3">
           <button
             onClick={onSearch}
-            className="group flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-3.5 py-1.5 text-sm font-bold text-primary-foreground transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-95"
+            className="group relative flex items-center gap-2 overflow-hidden bg-primary px-4 py-2 font-mono text-xs font-bold tracking-widest text-primary-foreground transition-all duration-500 hover:bg-primary/90 active:scale-95"
             aria-label="Buscar"
           >
+            {/* L-Shape Border Left */}
+            <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+            {/* L-Shape Border Top */}
+            <div className="absolute left-0 top-0 h-[2px] w-6 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+
             <Icon icon="lucide:search" className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
-            <span className="hidden font-mono text-xs sm:inline">Buscar…</span>
+            <span className="hidden sm:inline">Buscar…</span>
           </button>
 
           <button
             onClick={onCart}
-            className="group relative flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-4 py-1.5 text-sm font-bold text-primary-foreground transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-95"
+            className="group relative flex items-center gap-2 overflow-hidden bg-primary px-4 py-2 font-mono text-xs font-bold tracking-widest text-primary-foreground transition-all duration-500 hover:bg-primary/90 active:scale-95"
             aria-label={`Carrito, ${cartCount} artículos`}
           >
+            {/* L-Shape Border Left */}
+            <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+            {/* L-Shape Border Top */}
+            <div className="absolute left-0 top-0 h-[2px] w-6 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+
             <Icon icon="lucide:shopping-cart" className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12" aria-hidden="true" />
             <span className="hidden sm:inline">Carrito</span>
-            <span className="ml-0.5 inline-flex min-w-5 items-center justify-center rounded-sm bg-primary px-1.5 font-mono text-xs text-primary-foreground transition-all duration-300 group-hover:scale-110 group-hover:bg-primary-foreground group-hover:text-primary">
+            <span className="ml-1 inline-flex min-w-5 items-center justify-center bg-white/20 px-1.5 py-0.5 text-[10px] text-white transition-all duration-300 group-hover:bg-white group-hover:text-primary">
               {cartCount}
             </span>
           </button>

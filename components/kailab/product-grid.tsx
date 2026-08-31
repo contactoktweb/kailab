@@ -25,7 +25,7 @@ export function ProductGrid({
   const displayProducts = limit ? products.slice(0, limit) : products;
 
   return (
-    <section id="catalogo" className="border-b border-border">
+    <section id="catalogo" className="border-b border-border bg-gradient-to-br from-white to-[#f0f5ff]">
       <div className="mx-auto max-w-7xl px-4 py-20">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
@@ -34,7 +34,7 @@ export function ProductGrid({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-              className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl"
+              className="text-balance text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl"
             >
               {title}
             </motion.h2>
@@ -43,7 +43,7 @@ export function ProductGrid({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: 0.1, type: "spring", bounce: 0.3 }}
-              className="mt-4 text-pretty leading-relaxed text-muted-foreground"
+              className="mt-4 text-pretty leading-relaxed text-slate-600"
             >
               {subtitle}
             </motion.p>

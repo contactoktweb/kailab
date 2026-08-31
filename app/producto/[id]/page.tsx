@@ -43,7 +43,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               initial={{ opacity: 0, rotateX: 40, y: 50, scale: 0.9 }}
               animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
               transition={{ type: "spring", damping: 20, stiffness: 60 }}
-              className="relative aspect-square w-full rounded-2xl border border-border bg-secondary/20 p-8 overflow-hidden group shadow-2xl"
+              className="relative aspect-square w-full rounded-2xl border border-transparent bg-gradient-to-br from-[#f0f5ff] to-[#e0ebff] p-8 overflow-hidden group shadow-2xl"
             >
               {/* Sweeping Glass Glare */}
               <motion.div

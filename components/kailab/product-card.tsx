@@ -27,8 +27,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
         hidden: {},
         visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } }
       }}
-      whileHover={{ y: -8 }}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 hover:border-primary/40 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] focus-within:ring-2 focus-within:ring-primary/40"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-gradient-to-br from-[#1959D7]/80 to-[#17294F] transition-all duration-300 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_rgba(25,89,215,0.5)] focus-within:ring-2 focus-within:ring-primary/40"
     >
       <div className="relative aspect-square w-full overflow-hidden bg-secondary/30 transition-colors duration-700 group-hover:bg-secondary/50">
         {/* Placeholder for Product Image - Protagonista */}
@@ -109,12 +108,12 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
             <div className="mb-1.5 flex items-center gap-1.5">
               <span
                 className={`h-1.5 w-1.5 rounded-full ${
-                  isOutOfStock ? 'bg-muted-foreground' : isLowStock ? 'bg-destructive' : 'bg-primary'
+                  isOutOfStock ? 'bg-muted-foreground' : isLowStock ? 'bg-destructive' : 'bg-white'
                 }`}
                 aria-hidden="true"
               />
               <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${
-                isOutOfStock ? 'text-muted-foreground' : isLowStock ? 'text-destructive' : 'text-primary'
+                isOutOfStock ? 'text-muted-foreground' : isLowStock ? 'text-destructive' : 'text-white'
               }`}>
                 {isOutOfStock ? 'Agotado' : isLowStock ? `Últ. ${product.stock}` : 'Disponible'}
               </span>
