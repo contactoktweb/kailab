@@ -25,7 +25,7 @@ export function ProductGrid({
   const displayProducts = limit ? products.slice(0, limit) : products;
 
   return (
-    <section id="catalogo" className="border-b border-border bg-gradient-to-br from-white to-[#f0f5ff]">
+    <section id="catalogo" className="border-b border-border bg-white">
       <div className="mx-auto max-w-7xl px-4 py-20">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div className="max-w-2xl">

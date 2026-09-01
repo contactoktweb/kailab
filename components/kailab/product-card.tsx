@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import { Icon } from '@iconify/react'
-import { MicroBadge } from './badge'
 import { formatCOP, type Product } from './data'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,8 +12,6 @@ type ProductCardProps = {
 }
 
 export function ProductCard({ product, onAdd }: ProductCardProps) {
-  // Max 2 primary badges as per rules
-  const displayBadges = product.badges.slice(0, 2)
   const isLowStock = product.stock > 0 && product.stock <= 15
   const isOutOfStock = product.stock === 0
 
@@ -27,7 +24,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
         hidden: {},
         visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } }
       }}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-gradient-to-br from-[#1959D7]/80 to-[#17294F] transition-all duration-300 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_rgba(25,89,215,0.5)] focus-within:ring-2 focus-within:ring-primary/40"
+      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-gradient-to-br from-[#1959D7]/80 to-[#17294F] transition-all duration-300 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_rgba(25,89,215,0.5)] focus-within:ring-2 focus-within:ring-primary/40"
     >
       <div className="relative aspect-square w-full overflow-hidden bg-secondary/30 transition-colors duration-700 group-hover:bg-secondary/50">
         {/* Placeholder for Product Image - Protagonista */}
@@ -78,22 +75,6 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
             </Link>
           </motion.h3>
 
-          <motion.div 
-            variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }}
-            className="mt-3 flex flex-wrap gap-2"
-          >
-             {displayBadges.map((badge) => (
-               <MicroBadge key={badge} variant="brand">
-                 {badge}
-               </MicroBadge>
-             ))}
-             <span className="inline-flex items-center border-y border-r border-l-2 border-border border-l-primary/60 bg-secondary/30 px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground">
-               {product.concentration}
-             </span>
-             <span className="inline-flex items-center border-y border-r border-l-2 border-border border-l-muted-foreground/40 bg-secondary/10 px-2 py-1 font-mono text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-               + Agua bac.
-             </span>
-          </motion.div>
         </div>
 
         <div className="mt-auto flex flex-col justify-end pt-1">
