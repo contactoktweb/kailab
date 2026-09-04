@@ -23,11 +23,11 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.5fr_2fr]">
           <div>
             <Image
-              src="/KAILAB_Logo_Black.svg"
+              src="/kailab-logo.png"
               alt="KAILAB"
               width={132}
               height={38}
-              className="h-8 w-auto brightness-0 invert"
+              className="h-8 w-auto"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Péptidos de investigación y reactivos de laboratorio liofilizados en Colombia. Uso exclusivo en investigación, no para consumo humano.

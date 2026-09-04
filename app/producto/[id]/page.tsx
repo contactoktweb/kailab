@@ -28,7 +28,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       <TopBar onSearch={() => {}} />
       <Navbar cartCount={0} onSearch={() => {}} onCart={() => {}} />
       
-      <main className="mx-auto max-w-7xl px-4 py-8">
+      <main className="mx-auto max-w-5xl px-4 lg:px-8 py-8">
         <div className="mb-6">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
             <Icon icon="lucide:arrow-left" className="h-4 w-4" />
@@ -36,10 +36,10 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           </Link>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-[1fr_1fr] lg:gap-16">
+        <div className="grid gap-8 md:grid-cols-[1fr_1fr] lg:gap-12">
           {/* LEFT: Visuals & Quality */}
           {/* LEFT: Visuals & Quality */}
-          <div className="space-y-6" style={{ perspective: 2000 }}>
+          <div className="flex flex-col justify-between space-y-6 h-full" style={{ perspective: 2000 }}>
             <motion.div 
               initial={{ opacity: 0, rotateX: 40, y: 50, scale: 0.9 }}
               animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
@@ -112,101 +112,102 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           </div>
 
           {/* RIGHT: Commerce / Details */}
-          {/* RIGHT: Commerce / Details */}
-          <div className="relative flex flex-col justify-center rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-md shadow-2xl overflow-hidden">
-
-            <motion.p 
-              initial={{ opacity: 0, y: 40 }}
+          <div className="relative flex flex-col justify-between rounded-xl bg-white p-6 lg:p-8 shadow-2xl h-full">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
-              className="relative z-10 font-mono text-xs uppercase tracking-widest text-sky-400"
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             >
-              {product.category}
-            </motion.p>
+              <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-200">
+                {product.category}
+              </div>
+            </motion.div>
+            
             <motion.h1 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}
-              className="relative z-10 mt-2 text-4xl font-extrabold tracking-tight text-white sm:text-5xl"
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+              className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl"
             >
               {product.title}
             </motion.h1>
             
             <motion.p 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.4, ease: [0.76, 0, 0.24, 1] }}
-              className="relative z-10 mt-5 text-base text-slate-300 leading-relaxed"
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              className="text-base leading-relaxed text-slate-600"
             >
-              Fórmula: <span className="font-mono text-white bg-white/10 px-1.5 py-0.5 rounded">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
+              Fórmula: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
             </motion.p>
 
             <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: [0.76, 0, 0.24, 1] }}
-              className="relative z-10 mt-8"
+              transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+              className="mt-2 grid grid-cols-2 gap-4 border-y border-slate-200 py-4"
             >
-              <h3 className="text-sm font-semibold text-white">Detalles del Producto</h3>
-              <div className="mt-4 flex flex-wrap gap-3">
-                 <div className="rounded-xl border border-primary/40 bg-primary/10 px-4 py-2 font-mono text-sm font-bold text-white">
-                    {product.concentration}
-                 </div>
-                 <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 font-mono text-sm text-slate-300 backdrop-blur-sm">
-                    {product.presentation}
-                 </div>
-                 <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 font-mono text-sm text-slate-300 backdrop-blur-sm">
-                    + Agua bacteriostática
-                 </div>
+              <div>
+                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Concentración</p>
+                 <p className="mt-2 font-mono text-base font-semibold text-slate-900">{product.concentration}</p>
+              </div>
+              <div>
+                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Presentación</p>
+                 <p className="mt-2 font-mono text-base font-semibold text-slate-900">{product.presentation}</p>
+              </div>
+              <div className="col-span-2">
+                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Incluye</p>
+                 <p className="mt-2 text-base font-semibold text-slate-900">Agua bacteriostática</p>
               </div>
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6, ease: [0.76, 0, 0.24, 1] }}
-              className="relative z-10 mt-8 border-t border-white/10 pt-8"
+              transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+              className="mt-2 flex flex-col gap-2"
             >
-              <div className="flex items-end gap-3">
-                <span className="text-4xl font-extrabold tracking-tight text-white">{formatCOP(product.priceCOP)}</span>
-                <span className="mb-1 text-sm font-medium text-slate-400">COP / unidad</span>
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <span
-                  className={`h-2.5 w-2.5 rounded-full ${
-                    isOutOfStock ? 'bg-slate-500' : isLowStock ? 'bg-destructive' : 'bg-blue-400'
-                  }`}
-                  aria-hidden="true"
-                />
-                <span className={`text-sm font-bold tracking-wide uppercase ${
-                  isOutOfStock ? 'text-slate-500' : isLowStock ? 'text-destructive' : 'text-blue-400'
-                }`}>
-                  {isOutOfStock ? 'Agotado' : isLowStock ? `Últimas ${product.stock} unidades` : 'Disponible en stock'}
-                </span>
+              <p className="text-sm font-semibold text-slate-500">Precio</p>
+              <div className="flex items-baseline justify-between gap-4">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-extrabold tracking-tight text-slate-900">{formatCOP(product.priceCOP)}</span>
+                  <span className="text-xs text-slate-500 font-bold uppercase">COP / unidad</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`h-2.5 w-2.5 rounded-full ${
+                      isOutOfStock ? 'bg-slate-300' : isLowStock ? 'bg-destructive' : 'bg-green-500'
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <span className={`text-xs font-bold uppercase tracking-widest ${
+                    isOutOfStock ? 'text-slate-500' : isLowStock ? 'text-destructive' : 'text-green-600'
+                  }`}>
+                    {isOutOfStock ? 'Agotado' : isLowStock ? `Últimas ${product.stock}` : 'Disponible'}
+                  </span>
+                </div>
               </div>
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.7, ease: [0.76, 0, 0.24, 1] }}
-              className="relative z-10 mt-8 flex flex-col sm:flex-row gap-4"
+              transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
+              className="mt-3 flex flex-col sm:flex-row gap-4"
             >
-               {/* Quantity */}
-               <div className="flex h-14 items-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm">
-                  <button className="flex h-full w-14 items-center justify-center text-slate-400 hover:text-white transition-colors disabled:opacity-50">
+               <div className="flex h-14 items-center rounded-lg border border-slate-300 bg-white">
+                  <button className="flex h-full w-14 items-center justify-center text-slate-500 hover:text-slate-900 transition-colors disabled:opacity-50">
                     <Icon icon="lucide:minus" className="h-5 w-5" />
                   </button>
-                  <span className="w-10 text-center font-mono text-lg font-bold text-white">1</span>
-                  <button className="flex h-full w-14 items-center justify-center text-slate-400 hover:text-white transition-colors">
+                  <span className="w-10 text-center font-mono text-base font-bold text-slate-900">1</span>
+                  <button className="flex h-full w-14 items-center justify-center text-slate-500 hover:text-slate-900 transition-colors">
                     <Icon icon="lucide:plus" className="h-5 w-5" />
                   </button>
                </div>
                
-               {/* Main CTA */}
                <button 
                   disabled={isOutOfStock}
-                  className="group relative hidden h-14 flex-1 items-center justify-center gap-2 rounded-xl border-2 border-transparent bg-white px-8 text-sm font-extrabold text-slate-900 transition-all duration-300 hover:bg-transparent hover:border-white hover:text-white active:scale-95 disabled:pointer-events-none disabled:opacity-50 md:flex"
+                  className="group flex h-14 flex-1 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50"
                 >
                  <Icon icon="lucide:shopping-cart" className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-12" />
                  Agregar al Carrito
@@ -214,25 +215,20 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             </motion.div>
 
             <motion.ul 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.8, ease: [0.76, 0, 0.24, 1] }}
-              className="relative z-10 mt-8 space-y-4 text-sm text-slate-300"
+              transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+              className="mt-3 space-y-3 text-sm text-slate-600"
             >
-               <li className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
-                 <div className="rounded-full bg-blue-500/20 p-2">
-                   <Icon icon="lucide:truck" className="h-4 w-4 text-blue-400" />
-                 </div>
+               <li className="flex items-center gap-3">
+                 <Icon icon="lucide:truck" className="h-5 w-5 text-slate-600" />
                  Despacho en 24h para Bogotá.
                </li>
-               <li className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
-                 <div className="rounded-full bg-blue-500/20 p-2">
-                   <Icon icon="lucide:file-check-2" className="h-4 w-4 text-blue-400" />
-                 </div>
-                 Incluye reporte impreso del lote {product.lot}.
+               <li className="flex items-center gap-3">
+                 <Icon icon="lucide:file-check-2" className="h-5 w-5 text-slate-600" />
+                 Incluye reporte impreso del lote <span className="font-mono text-slate-900">{product.lot}</span>.
                </li>
             </motion.ul>
-
           </div>
         </div>
 
