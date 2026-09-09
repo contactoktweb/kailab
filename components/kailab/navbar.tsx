@@ -32,7 +32,7 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
             aria-label="KAILAB inicio"
           >
             <Image
-              src="/kailab-logo.png"
+              src="/KAILAB_Logo_White.png"
               alt="KAILAB"
               width={132}
               height={38}

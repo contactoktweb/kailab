@@ -1,21 +1,74 @@
+export type Variant = {
+  id: string
+  name: string // e.g., '5 mg', '10 mg'
+  sku: string
+  priceCOP: number
+  stock: number
+  coaStatus: 'pending' | 'available'
+  image: string
+  slug: string // e.g., '5mg', '10mg'
+}
+
 export type Product = {
   id: string
+  slug: string
+  categorySlug: string
   category: string
   title: string
-  priceCOP: number
-  presentation: string
-  concentration: string
+  description?: string
   lot: string
   purity: string
   formula: string
-  stock: number
   badges: string[]
+  variants?: Variant[] // Optional for backward compatibility with old mocks
+  // --- Legacy properties for BPC-157 etc ---
+  priceCOP?: number
+  presentation?: string
+  concentration?: string
+  stock?: number
   image?: string
 }
 
 export const products: Product[] = [
   {
+    id: 'PROD-RETATRUTIDE',
+    slug: 'retatrutida',
+    categorySlug: 'metabolico',
+    category: 'Metabólico',
+    title: 'Retatrutida',
+    description: 'Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.',
+    lot: 'LOT-RT-2410',
+    purity: '≥ 99.0%',
+    formula: 'C221H342N46O68',
+    badges: ['RUO', 'COA'],
+    variants: [
+      {
+        id: 'RT5',
+        name: '5 mg',
+        sku: 'RT-5MG-01',
+        priceCOP: 100000,
+        stock: 50,
+        coaStatus: 'pending',
+        image: 'https://drive.google.com/uc?export=view&id=1_jfUqdMl7dslMCk7qmQ_33KrZG-cx8iJ',
+        slug: '5mg'
+      },
+      {
+        id: 'RT10',
+        name: '10 mg',
+        sku: 'RT-10MG-01',
+        priceCOP: 100000,
+        stock: 50,
+        coaStatus: 'available',
+        image: 'https://drive.google.com/uc?export=view&id=1aofdZSq9Gedt1hcbIWFZayq7pbeczjtX',
+        slug: '10mg'
+      }
+    ]
+  },
+  // Legacy products for backward compatibility
+  {
     id: 'kl-001',
+    slug: 'bpc-157',
+    categorySlug: 'peptidos',
     category: 'Péptidos',
     title: 'BPC-157',
     priceCOP: 189000,
@@ -27,79 +80,10 @@ export const products: Product[] = [
     stock: 34,
     badges: ['RUO', 'COA'],
     image: '/kailab-images/bpc-157-1024x1024.png',
-  },
-  {
-    id: 'kl-002',
-    category: 'Péptidos',
-    title: 'TB-500',
-    priceCOP: 219000,
-    presentation: 'Vial liofilizado',
-    concentration: '5 mg',
-    lot: 'LOT-TB5-2411',
-    purity: '≥ 98.7%',
-    formula: 'C212H350N56O78S',
-    stock: 21,
-    badges: ['RUO', 'COA'],
-    image: '/kailab-images/glow-1024x1024.png',
-  },
-  {
-    id: 'kl-003',
-    category: 'Nootrópicos',
-    title: 'Semax',
-    priceCOP: 165000,
-    presentation: 'Solución nasal',
-    concentration: '30 mg / 3 ml',
-    lot: 'LOT-SMX-2410',
-    purity: '≥ 98.9%',
-    formula: 'C37H51N9O10',
-    stock: 48,
-    badges: ['RUO', 'COA'],
-    image: '/kailab-images/tesamorelin-1024x1024.png',
-  },
-  {
-    id: 'kl-004',
-    category: 'Péptidos',
-    title: 'GHK-Cu',
-    priceCOP: 142000,
-    presentation: 'Vial liofilizado',
-    concentration: '50 mg',
-    lot: 'LOT-GHK-2408',
-    purity: '≥ 99.4%',
-    formula: 'C14H24N6O4Cu',
-    stock: 62,
-    badges: ['RUO', 'COA'],
-    image: '/kailab-images/ghk-cu-1024x1024.png',
-  },
-  {
-    id: 'kl-005',
-    category: 'Metabólico',
-    title: 'MOTS-c',
-    priceCOP: 248000,
-    presentation: 'Vial liofilizado',
-    concentration: '10 mg',
-    lot: 'LOT-MTS-2412',
-    purity: '≥ 98.5%',
-    formula: 'C101H152N28O22',
-    stock: 12,
-    badges: ['RUO', 'COA'],
-    image: '/kailab-images/Retatrutide-10-MG-1024x1024.png',
-  },
-  {
-    id: 'kl-006',
-    category: 'Nootrópicos',
-    title: 'Selank',
-    priceCOP: 158000,
-    presentation: 'Solución nasal',
-    concentration: '30 mg / 3 ml',
-    lot: 'LOT-SLK-2410',
-    purity: '≥ 99.0%',
-    formula: 'C33H57N11O9',
-    stock: 40,
-    badges: ['RUO', 'COA'],
-  },
+  }
 ]
 
-export type CartItem = { product: Product; qty: number }
+export type CartItem = { product: Product; variant?: Variant; qty: number }
 
 export type Evidence = {
   label: string
@@ -124,20 +108,6 @@ export const evidence: Evidence[] = [
     source: 'NCT03984240',
     sourceType: 'NCT',
   },
-  {
-    label: 'Puntaje de función cognitiva (rango reportado)',
-    metric: '+34%',
-    value: 34,
-    source: '10.1007/s11055-019-00745-9',
-    sourceType: 'DOI',
-  },
-  {
-    label: 'Reducción de biomarcadores inflamatorios',
-    metric: '+27%',
-    value: 27,
-    source: 'NCT02632279',
-    sourceType: 'NCT',
-  },
 ]
 
 export type ShippingRow = {
@@ -149,9 +119,6 @@ export type ShippingRow = {
 export const shipping: ShippingRow[] = [
   { city: 'Bogotá', time: '24–48 h', coverage: 'Cobertura total' },
   { city: 'Medellín', time: '48–72 h', coverage: 'Área metropolitana' },
-  { city: 'Cali', time: '48–72 h', coverage: 'Área metropolitana' },
-  { city: 'Barranquilla', time: '72–96 h', coverage: 'Zona urbana' },
-  { city: 'Bucaramanga', time: '72–96 h', coverage: 'Zona urbana' },
   { city: 'Resto del país', time: '3–6 días', coverage: 'Transportadora nacional' },
 ]
 

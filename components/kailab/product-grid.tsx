@@ -4,10 +4,10 @@
 import { MicroBadge } from './badge'
 import { ProductCard } from './product-card'
 import { motion } from 'framer-motion'
-import { products, formatCOP, type Product } from './data'
+import { products, type Product, type Variant } from './data'
 
 type ProductGridProps = {
-  onAdd: (product: Product) => void
+  onAdd: (product: Product, variant?: Variant) => void
   title?: string
   subtitle?: string
   badgeText?: string
