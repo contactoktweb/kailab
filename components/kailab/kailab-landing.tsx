@@ -65,7 +65,13 @@ export function KailabLanding() {
       />
       <main>
         <Hero onAdd={addToCart} onSearch={() => setPaletteOpen(true)} />
-        <ProductGrid onAdd={addToCart} />
+        <ProductGrid 
+          onAdd={addToCart} 
+          limit={2}
+          title="Productos Destacados"
+          subtitle="Nuestra selección destacada de péptidos y compuestos liofilizados de alta pureza."
+          showViewAllLink={true}
+        />
         <WhatsIncluded />
         <QualityCoa />
         <GuidesBlock />

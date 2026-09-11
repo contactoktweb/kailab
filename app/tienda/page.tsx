@@ -50,8 +50,12 @@ export default function TiendaPage() {
         onCart={() => setCartOpen(true)}
       />
       
-      <main className="pt-8">
-        <ProductGrid onAdd={addToCart} />
+      <main className="pt-4">
+        <ProductGrid 
+          onAdd={addToCart} 
+          title="Catálogo Completo de Productos"
+          subtitle="Explora nuestra selección completa de péptidos y compuestos liofilizados de alta pureza."
+        />
       </main>
 
       <Footer />

@@ -49,22 +49,21 @@ export const products: Product[] = [
         priceCOP: 100000,
         stock: 50,
         coaStatus: 'pending',
-        image: 'https://drive.google.com/uc?export=view&id=1_jfUqdMl7dslMCk7qmQ_33KrZG-cx8iJ',
+        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png',
         slug: '5mg'
       },
       {
         id: 'RT10',
         name: '10 mg',
         sku: 'RT-10MG-01',
-        priceCOP: 100000,
+        priceCOP: 160000,
         stock: 50,
         coaStatus: 'available',
-        image: 'https://drive.google.com/uc?export=view&id=1aofdZSq9Gedt1hcbIWFZayq7pbeczjtX',
+        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png',
         slug: '10mg'
       }
     ]
   },
-  // Legacy products for backward compatibility
   {
     id: 'kl-001',
     slug: 'bpc-157',
@@ -80,6 +79,72 @@ export const products: Product[] = [
     stock: 34,
     badges: ['RUO', 'COA'],
     image: '/kailab-images/bpc-157-1024x1024.png',
+  },
+  {
+    id: 'kl-004',
+    slug: 'ghk-cu',
+    categorySlug: 'peptidos',
+    category: 'Péptidos',
+    title: 'GHK-Cu',
+    priceCOP: 210000,
+    presentation: 'Vial liofilizado',
+    concentration: '50 mg',
+    lot: 'LOT-GHK-2410',
+    purity: '≥ 99.3%',
+    formula: 'C14H24CuN6O4',
+    stock: 25,
+    badges: ['RUO', 'COA'],
+    image: '/kailab-images/ghk-cu-1024x1024.png',
+  },
+  {
+    id: 'kl-005',
+    slug: 'tesamorelin',
+    categorySlug: 'peptidos',
+    category: 'Péptidos',
+    title: 'Tesamorelina',
+    priceCOP: 275000,
+    presentation: 'Vial liofilizado',
+    concentration: '10 mg',
+    lot: 'LOT-TES-2411',
+    purity: '≥ 98.8%',
+    formula: 'C221H366N72O67S',
+    stock: 18,
+    badges: ['RUO', 'COA'],
+    image: '/kailab-images/tesamorelin-1024x1024.png',
+  },
+  {
+    id: 'PROD-GLOW-BLEND',
+    slug: 'glow-blend',
+    categorySlug: 'peptidos',
+    category: 'Blends',
+    title: 'GLOW Blend',
+    description: 'Complejo peptídico liofilizado para investigación analítica y espectrometría (RUO).',
+    lot: 'LOT-GLW-2412',
+    purity: '≥ 99.0%',
+    formula: 'Complejo Peptídico',
+    badges: ['RUO', 'COA'],
+    variants: [
+      {
+        id: 'GLOW-VAR',
+        name: 'GLOW',
+        sku: 'GLW-50MG-01',
+        priceCOP: 240000,
+        stock: 30,
+        coaStatus: 'available',
+        image: '/kailab-images/glow-1024x1024.png',
+        slug: 'glow'
+      },
+      {
+        id: 'KLOW-VAR',
+        name: 'KLOW',
+        sku: 'KLW-50MG-01',
+        priceCOP: 240000,
+        stock: 30,
+        coaStatus: 'available',
+        image: '/kailab-images/klow-1024x1024.png.webp',
+        slug: 'klow'
+      }
+    ]
   }
 ]
 
