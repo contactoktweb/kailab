@@ -41,6 +41,7 @@ export const products: Product[] = [
     purity: '≥ 99.0%',
     formula: 'C221H342N46O68',
     badges: ['RUO', 'COA'],
+    image: '/kailab-images/Retatrutide-10-MG-1024x1024.png.webp',
     variants: [
       {
         id: 'RT5',
@@ -49,7 +50,7 @@ export const products: Product[] = [
         priceCOP: 100000,
         stock: 50,
         coaStatus: 'pending',
-        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png',
+        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png.webp',
         slug: '5mg'
       },
       {
@@ -59,7 +60,7 @@ export const products: Product[] = [
         priceCOP: 160000,
         stock: 50,
         coaStatus: 'available',
-        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png',
+        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png.webp',
         slug: '10mg'
       }
     ]
@@ -110,7 +111,7 @@ export const products: Product[] = [
     formula: 'C221H366N72O67S',
     stock: 18,
     badges: ['RUO', 'COA'],
-    image: '/kailab-images/tesamorelin-1024x1024.png',
+    image: '/kailab-images/tesamorelin-1024x1024.png.webp',
   },
   {
     id: 'PROD-GLOW-BLEND',
@@ -123,6 +124,7 @@ export const products: Product[] = [
     purity: '≥ 99.0%',
     formula: 'Complejo Peptídico',
     badges: ['RUO', 'COA'],
+    image: '/kailab-images/glow-1024x1024.png.webp',
     variants: [
       {
         id: 'GLOW-VAR',
@@ -131,7 +133,7 @@ export const products: Product[] = [
         priceCOP: 240000,
         stock: 30,
         coaStatus: 'available',
-        image: '/kailab-images/glow-1024x1024.png',
+        image: '/kailab-images/glow-1024x1024.png.webp',
         slug: 'glow'
       },
       {

@@ -33,6 +33,8 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
+import { KailabProviders } from '@/components/kailab/kailab-providers'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,7 +43,9 @@ export default function RootLayout({
   return (
     <html lang="es" className={`dark ${fontSans.variable} ${geistMono.variable}`}>
       <body className="font-sans antialiased bg-background text-foreground w-full overflow-x-hidden">
-        {children}
+        <KailabProviders>
+          {children}
+        </KailabProviders>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

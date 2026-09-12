@@ -48,7 +48,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
       <div className="relative aspect-square w-full overflow-hidden bg-white">
         
         {/* Badges de Estado/Calidad */}
-        <div className="absolute z-30 flex flex-col gap-1" style={{ top: 'calc(0.75rem + 6mm)', left: 'calc(0.75rem + 6mm)' }}>
+        <div className="absolute z-30 flex flex-col gap-1" style={{ top: 'calc(0.75rem + 2mm)', left: 'calc(0.75rem + 1mm)' }}>
           {product.badges.includes('RUO') && (
             <span className="inline-flex items-center rounded-sm bg-[#0d1a2a] px-2 py-0.5 text-[8px] font-mono font-bold uppercase tracking-wider text-white shadow-sm">
               RUO
