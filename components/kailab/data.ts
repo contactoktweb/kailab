@@ -200,19 +200,17 @@ export const formatCOP = (value: number) =>
 
 // --- Checkout Types ---
 
-export type DocumentType = 'CC' | 'CE' | 'NIT' | 'PASAPORTE'
-
 export type CheckoutFormData = {
+  email: string
+  country: string
   firstName: string
   lastName: string
-  email: string
-  phone: string
-  documentType: DocumentType
-  documentNumber: string
-  country: string
-  city: string
   address: string
-  addressExtra: string
-  orderNote: string
+  addressExtra?: string
+  city: string
+  state: string
+  zipCode?: string
+  phone?: string
 }
+
 

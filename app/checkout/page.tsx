@@ -3,47 +3,45 @@
 import { useState, FormEvent } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
 import { useCart } from '@/components/kailab/cart-context'
-import { formatCOP, type CheckoutFormData, type DocumentType } from '@/components/kailab/data'
+import { formatCOP, type CheckoutFormData } from '@/components/kailab/data'
 
-// --- Constantes ---
-const DOCUMENT_TYPES: { value: DocumentType; label: string }[] = [
-  { value: 'CC', label: 'Cédula de Ciudadanía (CC)' },
-  { value: 'CE', label: 'Cédula de Extranjería (CE)' },
-  { value: 'NIT', label: 'NIT' },
-  { value: 'PASAPORTE', label: 'Pasaporte' },
-]
-
-const COLOMBIA_CITIES = [
-  'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena',
-  'Bucaramanga', 'Cúcuta', 'Pereira', 'Manizales', 'Santa Marta',
-  'Ibagué', 'Villavicencio', 'Pasto', 'Montería', 'Neiva',
-  'Armenia', 'Sincelejo', 'Valledupar', 'Tunja', 'Popayán',
-  'Otra ciudad',
+const COUNTRIES = [
+  'Colombia',
+  'México',
+  'Chile',
+  'Perú',
+  'Argentina',
+  'Ecuador',
+  'Panamá',
+  'Costa Rica',
+  'Otro país',
 ]
 
 const INITIAL_FORM: CheckoutFormData = {
+  email: '',
+  country: 'Colombia',
   firstName: '',
   lastName: '',
-  email: '',
-  phone: '',
-  documentType: 'CC',
-  documentNumber: '',
-  country: 'Colombia',
-  city: '',
   address: '',
   addressExtra: '',
-  orderNote: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  phone: '',
 }
 
 type FormErrors = Partial<Record<keyof CheckoutFormData, string>>
 
-// Campos requeridos
 const REQUIRED: (keyof CheckoutFormData)[] = [
-  'firstName', 'lastName', 'email', 'phone',
-  'documentType', 'documentNumber', 'city', 'address',
+  'email',
+  'country',
+  'firstName',
+  'lastName',
+  'address',
+  'city',
+  'state',
 ]
 
 function validate(form: CheckoutFormData): FormErrors {
@@ -59,7 +57,7 @@ function validate(form: CheckoutFormData): FormErrors {
     errors.email = 'Ingresa un correo electrónico válido.'
   }
 
-  if (form.phone && !/^[0-9+\s\-()]{7,15}$/.test(form.phone)) {
+  if (form.phone && form.phone.trim() && !/^[0-9+\s\-()]{7,15}$/.test(form.phone)) {
     errors.phone = 'Número de teléfono inválido.'
   }
 
@@ -68,9 +66,9 @@ function validate(form: CheckoutFormData): FormErrors {
 
 // --- Sub-componentes ---
 
-function FieldLabel({ children, required }: { children: React.ReactNode; required?: boolean }) {
+function FieldLabel({ htmlFor, children, required }: { htmlFor?: string; children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="block font-mono text-xs font-semibold text-foreground mb-1.5">
+    <label htmlFor={htmlFor} className="block font-mono text-xs font-semibold text-foreground mb-0.5">
       {children}
       {required && <span className="ml-1 text-rose-400">*</span>}
     </label>
@@ -94,7 +92,6 @@ function InputField({
   value,
   onChange,
   error,
-  icon,
 }: {
   id: string
   type?: string
@@ -102,23 +99,16 @@ function InputField({
   value: string
   onChange: (v: string) => void
   error?: string
-  icon?: string
 }) {
   return (
     <div className="relative">
-      {icon && (
-        <Icon
-          icon={icon}
-          className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
-        />
-      )}
       <input
         id={id}
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full rounded-md border bg-secondary/40 ${icon ? 'pl-9' : 'pl-4'} pr-4 py-2.5 font-mono text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-colors ${
+        className={`w-full rounded-md border bg-secondary/40 px-4 py-[7px] font-mono text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-colors ${
           error
             ? 'border-rose-500/60 focus:border-rose-500'
             : 'border-border focus:border-primary'
@@ -128,14 +118,12 @@ function InputField({
   )
 }
 
-// --- Página principal ---
-
 export default function CheckoutPage() {
-  const router = useRouter()
-  const { items, cartTotal, clearCart } = useCart()
+  const { items, cartTotal } = useCart()
 
   const [form, setForm] = useState<CheckoutFormData>(INITIAL_FORM)
   const [errors, setErrors] = useState<FormErrors>({})
+  const [showExtraAddress, setShowExtraAddress] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -150,14 +138,12 @@ export default function CheckoutPage() {
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs)
-      // Scroll al primer error
       const firstKey = Object.keys(errs)[0]
       document.getElementById(firstKey)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
 
     setLoading(true)
-    // Simula procesamiento — aquí va la lógica de Wompi
     setTimeout(() => {
       setLoading(false)
       setSubmitted(true)
@@ -194,9 +180,9 @@ export default function CheckoutPage() {
           <Icon icon="lucide:check-circle-2" className="h-9 w-9 text-emerald-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold font-mono text-foreground">¡Pedido confirmado!</h1>
+          <h1 className="text-2xl font-bold font-mono text-foreground">¡Información de envío guardada!</h1>
           <p className="mt-2 text-sm text-muted-foreground max-w-sm">
-            Hemos recibido tu información. El equipo de KAILAB se comunicará contigo en breve para coordinar el pago y el envío.
+            Hemos registrado tus datos de contacto y envío correctamente.
           </p>
         </div>
         <div className="flex gap-3">
@@ -220,7 +206,6 @@ export default function CheckoutPage() {
   }
 
   const subtotal = cartTotal
-  const shipping = 0 // El cobro de envío lo gestiona el equipo KAILAB
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -231,11 +216,10 @@ export default function CheckoutPage() {
             <Image src="/kailab-logo.png" alt="KAILAB" width={110} height={32} className="h-7 w-auto" />
           </Link>
 
-          {/* Breadcrumb */}
           <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-muted-foreground">
             <span>Carrito</span>
             <Icon icon="lucide:chevron-right" className="h-3 w-3" />
-            <span className="text-foreground font-bold">Datos de Contacto</span>
+            <span className="text-foreground font-bold">Información de envío</span>
             <Icon icon="lucide:chevron-right" className="h-3 w-3" />
             <span>Pago</span>
           </div>
@@ -251,48 +235,84 @@ export default function CheckoutPage() {
       </header>
 
       {/* Main content */}
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 lg:gap-12 items-start">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-8 lg:pt-7 lg:pb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
 
-          {/* ========== FORMULARIO (izquierda en desktop) ========== */}
-          <section aria-labelledby="contact-form-heading">
-            <div className="mb-6">
-              <h1 id="contact-form-heading" className="text-2xl font-bold font-mono tracking-tight text-foreground">
-                Datos de Contacto y Envío
-              </h1>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Completa el formulario para procesar tu pedido. Los campos marcados con <span className="text-rose-400">*</span> son obligatorios.
-              </p>
-            </div>
+          {/* ========== FORMULARIO ========== */}
+          <section aria-labelledby="checkout-form-heading">
+            <h1 id="checkout-form-heading" className="sr-only">Proceso de Pago y Envío KAILAB</h1>
+            <form id="checkout-form" onSubmit={handleSubmit} noValidate className="space-y-6">
 
-            <form id="checkout-form" onSubmit={handleSubmit} noValidate className="space-y-8">
+              {/* SECCIÓN 1: Información de contacto */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold font-mono tracking-tight text-foreground">
+                  Información de contacto
+                </h2>
+                <div>
+                  <FieldLabel htmlFor="email" required>Dirección de correo electrónico</FieldLabel>
+                  <InputField
+                    id="email"
+                    type="email"
+                    placeholder="Dirección de correo electrónico"
+                    value={form.email}
+                    onChange={set('email')}
+                    error={errors.email}
+                  />
+                  <FieldError message={errors.email} />
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Actualmente estás realizando el pago como invitado.
+                  </p>
+                </div>
+              </div>
 
-              {/* Sección 1 — Datos personales */}
-              <fieldset className="rounded-xl border border-border/60 bg-card/40 p-5 sm:p-6 space-y-5 backdrop-blur-sm">
-                <legend className="flex items-center gap-2 px-1 font-mono text-xs font-bold text-primary uppercase tracking-widest">
-                  <Icon icon="lucide:user" className="h-3.5 w-3.5" />
-                  Información Personal
-                </legend>
+              {/* SECCIÓN 2: Dirección de envío */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold font-mono tracking-tight text-foreground">
+                  Dirección de envío
+                </h2>
+
+                {/* País / Región */}
+                <div>
+                  <FieldLabel htmlFor="country" required>País/Región</FieldLabel>
+                  <div className="relative">
+                    <select
+                      id="country"
+                      value={form.country}
+                      onChange={(e) => set('country')(e.target.value)}
+                      className={`w-full rounded-md border bg-secondary/40 px-4 py-[7px] font-mono text-sm text-foreground focus:outline-none transition-colors appearance-none cursor-pointer ${
+                        errors.country ? 'border-rose-500/60' : 'border-border focus:border-primary'
+                      }`}
+                    >
+                      <option value="" disabled className="bg-[#17294F]">Selecciona un país/región</option>
+                      {COUNTRIES.map((c) => (
+                        <option key={c} value={c} className="bg-[#17294F]">
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                    <Icon icon="lucide:chevron-down" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
+                  <FieldError message={errors.country} />
+                </div>
 
                 {/* Nombre + Apellidos */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <FieldLabel required>Nombre</FieldLabel>
+                    <FieldLabel htmlFor="firstName" required>Nombre</FieldLabel>
                     <InputField
                       id="firstName"
-                      placeholder="Ej. Carlos"
+                      placeholder="Nombre"
                       value={form.firstName}
                       onChange={set('firstName')}
                       error={errors.firstName}
-                      icon="lucide:user"
                     />
                     <FieldError message={errors.firstName} />
                   </div>
                   <div>
-                    <FieldLabel required>Apellidos</FieldLabel>
+                    <FieldLabel htmlFor="lastName" required>Apellidos</FieldLabel>
                     <InputField
                       id="lastName"
-                      placeholder="Ej. Rodríguez"
+                      placeholder="Apellidos"
                       value={form.lastName}
                       onChange={set('lastName')}
                       error={errors.lastName}
@@ -301,183 +321,113 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Email + Teléfono */}
+                {/* Dirección */}
+                <div>
+                  <FieldLabel htmlFor="address" required>Dirección</FieldLabel>
+                  <InputField
+                    id="address"
+                    placeholder="Dirección"
+                    value={form.address}
+                    onChange={set('address')}
+                    error={errors.address}
+                  />
+                  <FieldError message={errors.address} />
+                </div>
+
+                {/* Apartamento / Habitación (con opción toggleable o input directo) */}
+                <div>
+                  {showExtraAddress || form.addressExtra ? (
+                    <div>
+                      <FieldLabel htmlFor="addressExtra">Apartamento, habitación, etc. (opcional)</FieldLabel>
+                      <InputField
+                        id="addressExtra"
+                        placeholder="Apartamento, habitación, etc."
+                        value={form.addressExtra || ''}
+                        onChange={set('addressExtra')}
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setShowExtraAddress(true)}
+                      className="text-xs font-mono text-primary hover:underline flex items-center gap-1"
+                    >
+                      + Add apartamento, habitación, etc.
+                    </button>
+                  )}
+                </div>
+
+                {/* Ciudad + Estado / Municipio */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <FieldLabel required>Correo Electrónico</FieldLabel>
+                    <FieldLabel htmlFor="city" required>Ciudad</FieldLabel>
                     <InputField
-                      id="email"
-                      type="email"
-                      placeholder="correo@ejemplo.com"
-                      value={form.email}
-                      onChange={set('email')}
-                      error={errors.email}
-                      icon="lucide:mail"
+                      id="city"
+                      placeholder="Ciudad"
+                      value={form.city}
+                      onChange={set('city')}
+                      error={errors.city}
                     />
-                    <FieldError message={errors.email} />
+                    <FieldError message={errors.city} />
                   </div>
                   <div>
-                    <FieldLabel required>Teléfono / Celular</FieldLabel>
+                    <FieldLabel htmlFor="state" required>Estado/Municipio</FieldLabel>
+                    <InputField
+                      id="state"
+                      placeholder="Estado/Municipio"
+                      value={form.state}
+                      onChange={set('state')}
+                      error={errors.state}
+                    />
+                    <FieldError message={errors.state} />
+                  </div>
+                </div>
+
+                {/* Código postal + Teléfono (opcional) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <FieldLabel htmlFor="zipCode">Código postal</FieldLabel>
+                    <InputField
+                      id="zipCode"
+                      placeholder="Código postal"
+                      value={form.zipCode || ''}
+                      onChange={set('zipCode')}
+                      error={errors.zipCode}
+                    />
+                    <FieldError message={errors.zipCode} />
+                  </div>
+                  <div>
+                    <FieldLabel htmlFor="phone">Teléfono (opcional)</FieldLabel>
                     <InputField
                       id="phone"
                       type="tel"
-                      placeholder="+57 300 000 0000"
-                      value={form.phone}
+                      placeholder="Teléfono (opcional)"
+                      value={form.phone || ''}
                       onChange={set('phone')}
                       error={errors.phone}
-                      icon="lucide:phone"
                     />
                     <FieldError message={errors.phone} />
                   </div>
                 </div>
 
-                {/* Tipo documento + Número */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <FieldLabel required>Tipo de Documento</FieldLabel>
-                    <div className="relative">
-                      <Icon icon="lucide:id-card" className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                      <select
-                        id="documentType"
-                        value={form.documentType}
-                        onChange={(e) => set('documentType')(e.target.value)}
-                        className={`w-full rounded-md border bg-secondary/40 pl-9 pr-4 py-2.5 font-mono text-sm text-foreground focus:outline-none transition-colors appearance-none cursor-pointer ${
-                          errors.documentType ? 'border-rose-500/60' : 'border-border focus:border-primary'
-                        }`}
-                      >
-                        {DOCUMENT_TYPES.map((dt) => (
-                          <option key={dt.value} value={dt.value} className="bg-[#17294F]">
-                            {dt.label}
-                          </option>
-                        ))}
-                      </select>
-                      <Icon icon="lucide:chevron-down" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                    </div>
-                    <FieldError message={errors.documentType} />
-                  </div>
-                  <div>
-                    <FieldLabel required>Número de Documento</FieldLabel>
-                    <InputField
-                      id="documentNumber"
-                      placeholder="Ej. 1234567890"
-                      value={form.documentNumber}
-                      onChange={set('documentNumber')}
-                      error={errors.documentNumber}
-                      icon="lucide:hash"
-                    />
-                    <FieldError message={errors.documentNumber} />
-                  </div>
-                </div>
-              </fieldset>
+              </div>
 
-              {/* Sección 2 — Dirección de envío */}
-              <fieldset className="rounded-xl border border-border/60 bg-card/40 p-5 sm:p-6 space-y-5 backdrop-blur-sm">
-                <legend className="flex items-center gap-2 px-1 font-mono text-xs font-bold text-primary uppercase tracking-widest">
-                  <Icon icon="lucide:map-pin" className="h-3.5 w-3.5" />
-                  Dirección de Entrega
-                </legend>
-
-                {/* País (fijo Colombia) + Ciudad */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <FieldLabel>País</FieldLabel>
-                    <div className="relative">
-                      <Icon icon="lucide:globe" className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                      <input
-                        id="country"
-                        type="text"
-                        value="Colombia"
-                        readOnly
-                        className="w-full rounded-md border border-border bg-secondary/20 pl-9 pr-4 py-2.5 font-mono text-sm text-muted-foreground cursor-not-allowed"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <FieldLabel required>Ciudad / Municipio</FieldLabel>
-                    <div className="relative">
-                      <Icon icon="lucide:building-2" className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                      <select
-                        id="city"
-                        value={form.city}
-                        onChange={(e) => set('city')(e.target.value)}
-                        className={`w-full rounded-md border bg-secondary/40 pl-9 pr-4 py-2.5 font-mono text-sm text-foreground focus:outline-none transition-colors appearance-none cursor-pointer ${
-                          errors.city ? 'border-rose-500/60' : 'border-border focus:border-primary'
-                        }`}
-                      >
-                        <option value="" className="bg-[#17294F]">Selecciona tu ciudad...</option>
-                        {COLOMBIA_CITIES.map((c) => (
-                          <option key={c} value={c} className="bg-[#17294F]">{c}</option>
-                        ))}
-                      </select>
-                      <Icon icon="lucide:chevron-down" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                    </div>
-                    <FieldError message={errors.city} />
-                  </div>
-                </div>
-
-                {/* Dirección principal */}
-                <div>
-                  <FieldLabel required>Dirección de Entrega</FieldLabel>
-                  <InputField
-                    id="address"
-                    placeholder="Ej. Calle 100 # 15-30, Barrio Chicó"
-                    value={form.address}
-                    onChange={set('address')}
-                    error={errors.address}
-                    icon="lucide:map-pin"
-                  />
-                  <FieldError message={errors.address} />
-                </div>
-
-                {/* Barrio / Apto */}
-                <div>
-                  <FieldLabel>Barrio / Apartamento / Piso <span className="font-normal text-muted-foreground">(opcional)</span></FieldLabel>
-                  <InputField
-                    id="addressExtra"
-                    placeholder="Ej. Apto 301, Torre B"
-                    value={form.addressExtra}
-                    onChange={set('addressExtra')}
-                  />
-                </div>
-              </fieldset>
-
-              {/* Sección 3 — Nota al pedido */}
-              <fieldset className="rounded-xl border border-border/60 bg-card/40 p-5 sm:p-6 space-y-4 backdrop-blur-sm">
-                <legend className="flex items-center gap-2 px-1 font-mono text-xs font-bold text-primary uppercase tracking-widest">
-                  <Icon icon="lucide:message-square" className="h-3.5 w-3.5" />
-                  Nota al Pedido
-                </legend>
-                <div>
-                  <FieldLabel>Instrucciones especiales <span className="font-normal text-muted-foreground">(opcional)</span></FieldLabel>
-                  <textarea
-                    id="orderNote"
-                    rows={3}
-                    placeholder="Ej. Entregar en la portería. No llamar antes de las 9am..."
-                    value={form.orderNote}
-                    onChange={(e) => set('orderNote')(e.target.value)}
-                    className="w-full rounded-md border border-border bg-secondary/40 px-4 py-2.5 font-mono text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors resize-none"
-                  />
-                </div>
-              </fieldset>
-
-              {/* CTA Mobile — Botón pagar (solo en mobile, debajo del form) */}
+              {/* CTA Mobile */}
               <div className="lg:hidden">
                 <WompiButton loading={loading} total={subtotal} />
               </div>
             </form>
           </section>
 
-          {/* ========== RESUMEN DEL PEDIDO (derecha en desktop, arriba en mobile lo omitimos) ========== */}
-          <aside aria-label="Resumen del pedido" className="lg:sticky lg:top-24 space-y-4">
+          {/* ========== RESUMEN DEL PEDIDO ========== */}
+          <aside aria-label="Resumen del pedido" className="lg:sticky lg:top-24 space-y-5 lg:pt-10">
 
-            {/* Card resumen */}
-            <div className="rounded-xl border border-border/60 bg-card/50 p-5 sm:p-6 backdrop-blur-sm space-y-4">
-              <h2 className="font-mono text-sm font-bold text-foreground flex items-center gap-2">
-                <Icon icon="lucide:receipt" className="h-4 w-4 text-primary" />
+            <div className="rounded-xl border border-border/60 bg-card/50 p-6 sm:p-7 backdrop-blur-sm space-y-5">
+              <h2 className="font-mono text-base font-bold text-foreground flex items-center gap-2">
+                <Icon icon="lucide:receipt" className="h-5 w-5 text-primary" />
                 Resumen del pedido
               </h2>
 
-              {/* Lista de productos */}
               <ul className="divide-y divide-border/50 space-y-0">
                 {items.map(({ product, variant, qty }) => {
                   const itemImage = variant?.image || product.image
@@ -485,14 +435,14 @@ export default function CheckoutPage() {
                   const itemName = variant ? `${product.title} · ${variant.name}` : product.title
 
                   return (
-                    <li key={`${product.id}-${variant?.id ?? 'nv'}`} className="flex items-center gap-3 py-3">
-                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-border bg-white">
+                    <li key={`${product.id}-${variant?.id ?? 'nv'}`} className="flex items-center gap-4 py-3.5">
+                      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md border border-border bg-white">
                         {itemImage ? (
                           <Image
                             src={itemImage}
                             alt={product.title}
                             fill
-                            sizes="48px"
+                            sizes="56px"
                             className="object-contain p-1"
                           />
                         ) : (
@@ -500,16 +450,15 @@ export default function CheckoutPage() {
                             {product.title.slice(0, 2)}
                           </span>
                         )}
-                        {/* Badge cantidad */}
-                        <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
+                        <span className="absolute -right-1.5 -top-1.5 flex h-5.5 w-5.5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-white">
                           {qty}
                         </span>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium">{itemName}</p>
+                        <p className="truncate text-base font-semibold">{itemName}</p>
                         <p className="font-mono text-xs text-muted-foreground">{product.lot}</p>
                       </div>
-                      <span className="font-mono text-sm tabular-nums shrink-0">
+                      <span className="font-mono text-base font-bold tabular-nums shrink-0">
                         {formatCOP(itemPrice * qty)}
                       </span>
                     </li>
@@ -517,59 +466,35 @@ export default function CheckoutPage() {
                 })}
               </ul>
 
-              {/* Línea divisora */}
-              <div className="border-t border-border/50 pt-3 space-y-2">
-                <div className="flex justify-between text-sm text-muted-foreground">
+              <div className="border-t border-border/50 pt-4 space-y-2.5">
+                <div className="flex justify-between text-base text-muted-foreground">
                   <span>Subtotal</span>
                   <span className="font-mono tabular-nums">{formatCOP(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>Envío</span>
-                  <span className="font-mono text-emerald-400 font-semibold">
-                    {shipping === 0 ? 'A coordinar' : formatCOP(shipping)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-baseline pt-2 border-t border-border/50">
-                  <span className="font-mono text-sm font-bold text-foreground">Total</span>
-                  <span className="font-mono text-xl font-bold tabular-nums text-foreground">
-                    {formatCOP(subtotal + shipping)}
+                <div className="flex justify-between items-baseline pt-3 border-t border-border/50">
+                  <span className="font-mono text-base font-bold text-foreground">Total</span>
+                  <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
+                    {formatCOP(subtotal)}
                   </span>
                 </div>
               </div>
 
-              {/* Editar carrito */}
               <Link
                 href="/tienda"
-                className="flex items-center justify-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center justify-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors pt-1"
               >
-                <Icon icon="lucide:pencil" className="h-3 w-3" />
+                <Icon icon="lucide:pencil" className="h-3.5 w-3.5" />
                 Editar carrito
               </Link>
             </div>
 
-            {/* Badge seguridad */}
-            <div className="rounded-xl border border-border/40 bg-card/30 px-4 py-3 flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10">
-                <Icon icon="lucide:shield-check" className="h-4 w-4 text-emerald-400" />
+            <div className="rounded-xl border border-border/40 bg-card/30 px-5 py-4 flex items-center gap-3.5">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10">
+                <Icon icon="lucide:shield-check" className="h-5 w-5 text-emerald-400" />
               </div>
               <div>
                 <p className="font-mono text-xs font-bold text-foreground">Compra Segura · Wompi</p>
                 <p className="font-mono text-[11px] text-muted-foreground">Transacción cifrada SSL 256-bit</p>
-              </div>
-            </div>
-
-            {/* Métodos de pago aceptados */}
-            <div className="rounded-xl border border-border/40 bg-card/30 px-4 py-3 space-y-2">
-              <p className="font-mono text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Métodos aceptados</p>
-              <div className="flex flex-wrap gap-2">
-                {['Tarjeta crédito', 'Tarjeta débito', 'Nequi', 'Bancolombia', 'PSE'].map((m) => (
-                  <span
-                    key={m}
-                    className="rounded border border-border/50 bg-secondary/30 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
-                  >
-                    {m}
-                  </span>
-                ))}
               </div>
             </div>
 
@@ -581,7 +506,7 @@ export default function CheckoutPage() {
         </div>
       </main>
 
-      {/* Footer mínimo */}
+      {/* Footer */}
       <footer className="border-t border-border mt-12 py-6 text-center font-mono text-xs text-muted-foreground space-y-1">
         <p>© {new Date().getFullYear()} KAILAB · Uso Exclusivo para Investigación (RUO)</p>
         <a
@@ -600,7 +525,6 @@ export default function CheckoutPage() {
   )
 }
 
-// --- Botón Wompi (placeholder listo para conectar) ---
 function WompiButton({ loading, total }: { loading: boolean; total: number }) {
   return (
     <button
