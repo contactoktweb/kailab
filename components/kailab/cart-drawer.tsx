@@ -28,16 +28,7 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
   }, 0)
   const count = items.reduce((sum, i) => sum + i.qty, 0)
 
-  // Build WhatsApp order message
-  const buildWhatsAppMessage = () => {
-    const lines = items.map((i) => {
-      const name = i.variant ? `${i.product.title} (${i.variant.name})` : i.product.title
-      const price = i.variant?.priceCOP ?? i.product.priceCOP ?? 0
-      return `• ${name} x${i.qty} — ${formatCOP(price * i.qty)}`
-    })
-    const msg = `Hola KAILAB! Me interesa hacer el siguiente pedido:\n\n${lines.join('\n')}\n\nTotal: ${formatCOP(subtotal)}`
-    return `https://wa.me/573001234567?text=${encodeURIComponent(msg)}`
-  }
+
 
   return (
     <>
@@ -182,19 +173,19 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
 
             {/* Info note */}
             <p className="text-[10px] text-muted-foreground leading-relaxed">
-              Agua bacteriostática incluida.
+              Agua bacteriostática incluida. Envíos a todo Colombia.
             </p>
 
-            {/* WhatsApp CTA */}
-            <a
-              href={buildWhatsAppMessage()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex w-full items-center justify-center gap-2 rounded-sm border-2 border-[#25D366] bg-[#25D366] py-3 text-sm font-bold text-white transition-all duration-300 hover:bg-transparent hover:text-[#25D366] active:scale-[0.98]"
+            {/* Checkout CTA — principal */}
+            <Link
+              href="/checkout"
+              onClick={onClose}
+              className="group relative inline-flex w-full items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary py-3 text-sm font-bold text-white transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-[0.98]"
             >
-              <Icon icon="mdi:whatsapp" className="h-4 w-4" aria-hidden="true" />
-              Hacer pedido por WhatsApp
-            </a>
+              <Icon icon="lucide:lock" className="h-4 w-4" aria-hidden="true" />
+              Ir al Checkout
+              <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+            </Link>
 
             {/* Continue shopping */}
             <button

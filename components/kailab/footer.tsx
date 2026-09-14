@@ -19,7 +19,7 @@ const columns = [
 export function Footer() {
   return (
     <footer id="soporte" className="bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-16">
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-10">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_2fr]">
           <div>
             <Image

@@ -86,6 +86,15 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
               {cartCount}
             </span>
           </button>
+
+          <Link
+            href="/login"
+            className="group relative flex items-center justify-center border border-border bg-secondary/40 p-2.5 font-mono text-xs font-bold text-foreground transition-all duration-300 hover:bg-secondary hover:text-primary active:scale-95"
+            aria-label="Acceso Admin / Login"
+            title="Acceso Admin / Login"
+          >
+            <Icon icon="lucide:user" className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
       </nav>
     </header>
