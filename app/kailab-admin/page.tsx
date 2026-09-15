@@ -23,7 +23,6 @@ export default function AdminDashboardPage() {
   const [, setRefreshState] = useState(0)
 
   useEffect(() => {
-    // Si no está autenticado, asignamos sesión de administrador por defecto para navegación fluida
     const currentUser = AuthService.getCurrentUser()
     if (!currentUser) {
       AuthService.login('admin@kailab.co', 'admin123')
@@ -42,7 +41,6 @@ export default function AdminDashboardPage() {
     setRefreshState(prev => prev + 1)
   }
 
-  // Carga de datos unificados desde la capa de servicio
   const products = AdminService.getSanityProducts()
   const presentations = AdminService.getSanityPresentations()
   const contentBlocks = AdminService.getSanityContentBlocks()
@@ -55,7 +53,6 @@ export default function AdminDashboardPage() {
   const attempts = AdminService.getPaymentAttempts()
   const summary = AdminService.getCommercialSummary()
 
-  // Búsqueda global opcional
   const filteredOrders = searchTerm 
     ? orders.filter(o => o.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) || o.customerName.toLowerCase().includes(searchTerm.toLowerCase()))
     : orders
@@ -71,7 +68,6 @@ export default function AdminDashboardPage() {
       <aside className="hidden lg:flex w-72 flex-col border-r border-border bg-card/60 p-6 backdrop-blur-md shrink-0 justify-between">
         <div className="space-y-8">
           
-          {/* Logo Brand Admin */}
           <div className="flex items-center gap-3">
             <Image
               src="/kailab-logo.png"
@@ -83,7 +79,6 @@ export default function AdminDashboardPage() {
             <span className="rounded-sm border border-primary/40 bg-primary/10 px-2 py-0.5 font-mono text-[10px] font-bold text-primary">ADMIN</span>
           </div>
 
-          {/* Tarjeta de Perfil de Usuario Activo */}
           {user && (
             <div className="rounded-md border border-border bg-secondary/30 p-3 space-y-1">
               <div className="flex items-center justify-between">
@@ -95,9 +90,7 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
-          {/* Menú de Navegación Principal */}
           <nav className="space-y-1">
-            
             <button
               onClick={() => setActiveTab('overview')}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md font-mono text-xs font-semibold transition-all ${activeTab === 'overview' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground'}`}
@@ -135,12 +128,10 @@ export default function AdminDashboardPage() {
               <Icon icon="lucide:bar-chart-3" className="h-4 w-4" />
               <span>Datos Comerciales</span>
             </button>
-
           </nav>
 
         </div>
 
-        {/* Estado de Conexiones, Retorno a Tienda & Logout */}
         <div className="space-y-4 pt-6 border-t border-border">
           <div className="space-y-2 font-mono text-[11px]">
             <div className="flex items-center justify-between text-muted-foreground">
@@ -242,7 +233,6 @@ export default function AdminDashboardPage() {
       {/* ÁREA PRINCIPAL DE CONTENIDO */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-8 overflow-y-auto">
         
-        {/* Barra Superior con Búsqueda Global */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl font-mono">
@@ -265,7 +255,6 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Tarjetas KPI Superiores (Siempre Visibles en Overview) */}
         <AdminKpiCards
           summary={summary}
           ordersCount={orders.length}
@@ -274,10 +263,8 @@ export default function AdminDashboardPage() {
           customersCount={customers.length}
         />
 
-        {/* CONTENIDO SEGÚN LA PESTAÑA SELECCIONADA */}
         {activeTab === 'overview' && (
           <div className="space-y-10">
-            {/* Sanity Module Preview */}
             <SanityCmsModule
               products={filteredProducts}
               presentations={presentations}
@@ -286,8 +273,6 @@ export default function AdminDashboardPage() {
               coas={coas}
               onRefresh={refreshData}
             />
-
-            {/* Supabase Module Preview */}
             <SupabaseModule
               customers={customers}
               orders={filteredOrders}

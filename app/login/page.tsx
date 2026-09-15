@@ -23,7 +23,7 @@ export default function LoginPage() {
     setTimeout(() => {
       const res = AuthService.login(email, password)
       if (res.success) {
-        router.push('/admin')
+        router.push('/kailab-admin')
       } else {
         setError(res.error || 'Error de autenticación.')
         setLoading(false)
