@@ -30,7 +30,7 @@ export function StoreTrustBadges() {
             <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110">
               <Icon icon={badge.icon} className="h-6 w-6" />
             </div>
-            <h3 className="text-base font-bold font-mono text-foreground tracking-tight">
+            <h3 className="text-base font-bold text-foreground tracking-tight">
               {badge.title}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xs">

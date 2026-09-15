@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { TopBar } from '@/components/kailab/top-bar'
 import { Navbar } from '@/components/kailab/navbar'
 import { ProductGrid } from '@/components/kailab/product-grid'
-import { StoreTrustBadges } from '@/components/kailab/store-trust-badges'
 import { Footer } from '@/components/kailab/footer'
 import { useCart } from '@/components/kailab/cart-context'
 
@@ -38,7 +37,6 @@ export default function TiendaPage() {
           title="Catálogo Completo de Productos"
           subtitle="Explora nuestra selección completa de péptidos y compuestos liofilizados de alta pureza."
         />
-        <StoreTrustBadges />
       </main>
 
       <Footer />

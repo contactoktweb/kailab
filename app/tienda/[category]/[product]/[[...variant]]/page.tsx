@@ -14,6 +14,31 @@ import { useCart } from '@/components/kailab/cart-context'
 import { cn } from '@/lib/utils'
 import { WompiCheckoutButton } from '@/components/kailab/wompi-checkout'
 
+function AccordionItem({ title, contentHtml }: { title: string, contentHtml: string }) {
+  const [isOpen, setIsOpen] = useState(false)
+  return (
+    <div className="border border-slate-200 bg-white rounded-lg overflow-hidden">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex w-full items-center justify-between p-4 text-left text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50"
+      >
+        {title}
+        <Icon icon="lucide:chevron-down" className={cn("h-4 w-4 text-slate-500 transition-transform duration-300", isOpen && "rotate-180")} />
+      </button>
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+        className="overflow-hidden"
+      >
+        <div 
+          className="p-4 pt-0 text-[13px] leading-relaxed text-slate-700" 
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
+        />
+      </motion.div>
+    </div>
+  )
+}
+
 export default function CanonicalProductPage({
   params
 }: {
@@ -30,8 +55,10 @@ export default function CanonicalProductPage({
   if (!product) notFound()
 
   const hasVariants = product.variants && product.variants.length > 0
-  const variantSlug = resolvedParams.variant?.[0]
-  const activeVariant = hasVariants ? product.variants!.find(v => v.slug === variantSlug) : null
+  
+  // Usamos estado local para la variante para evitar un re-render/salto completo de la página de Next.js al navegar
+  const [localVariantSlug, setLocalVariantSlug] = useState<string | undefined>(resolvedParams.variant?.[0])
+  const activeVariant = hasVariants ? product.variants!.find(v => v.slug === localVariantSlug) : null
 
   // UI States
   const activeImage = activeVariant?.image || product.image || "/placeholder.jpg"
@@ -60,7 +87,8 @@ export default function CanonicalProductPage({
 
   const handleVariantChange = (slug: string) => {
     setQty(1)
-    router.push(`/tienda/${product.categorySlug}/${product.slug}/${slug}`, { scroll: false })
+    setLocalVariantSlug(slug)
+    window.history.replaceState(null, '', `/tienda/${product.categorySlug}/${product.slug}/${slug}`)
   }
 
   const handleAddToCart = () => {
@@ -75,8 +103,8 @@ export default function CanonicalProductPage({
 
   const coaBlockElement = (
     <motion.div
-      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={displayCOA}
-      className={cn("rounded-xl border p-5 mt-4 md:mt-0 shadow-lg transition-colors", displayCOA === 'available' ? "bg-white border-green-200" : "bg-slate-50 border-slate-200")}
+      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+      className={cn("rounded-xl border p-5 mt-4 md:mt-0 shadow-lg transition-colors h-full flex flex-col justify-center", displayCOA === 'available' ? "bg-white border-green-200" : "bg-slate-50 border-slate-200")}
     >
       <div className="flex items-start gap-3">
         <div className={cn("rounded-full p-2.5", displayCOA === 'available' ? "bg-green-100" : "bg-slate-200")}>
@@ -112,13 +140,18 @@ export default function CanonicalProductPage({
   )
 
   const titleAndCategoryElement = (
-    <div className="flex flex-col items-start gap-2">
-      <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+    <div className="flex flex-col items-start gap-1.5">
+      <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-semibold text-slate-700">
         {product.category}
       </div>
-      <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+      <h1 className="text-base font-extrabold tracking-tight text-slate-900 sm:text-lg">
         {product.title}
       </h1>
+      {product.subtitle && (
+        <p className="text-xs sm:text-sm font-medium text-slate-700">
+          {product.subtitle}
+        </p>
+      )}
     </div>
   )
 
@@ -135,10 +168,10 @@ export default function CanonicalProductPage({
           {titleAndCategoryElement}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-[1fr_1fr] lg:gap-8">
+        <div className="grid gap-6 md:grid-cols-[1.1fr_1fr] lg:gap-8">
 
           {/* LEFT: Image + COA (desktop) */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 h-full">
             <div style={{ perspective: 2000 }}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -165,7 +198,6 @@ export default function CanonicalProductPage({
                   className="relative h-full w-full z-10"
                 >
                   <Image
-                    key={activeImage}
                     src={activeImage}
                     alt={product.title}
                     fill
@@ -174,7 +206,7 @@ export default function CanonicalProductPage({
                 </motion.div>
               </motion.div>
             </div>
-            <div className="hidden md:block">
+            <div className="hidden md:flex flex-col flex-1">
               {coaBlockElement}
             </div>
           </div>
@@ -183,122 +215,154 @@ export default function CanonicalProductPage({
           <div className="relative flex flex-col rounded-xl bg-white p-5 lg:p-6 shadow-2xl justify-between">
 
             {/* DESKTOP: Breadcrumb + Title */}
-            <div className="hidden md:flex flex-col gap-3 mb-3">
+            <div className="hidden md:flex flex-col gap-2 mb-2">
               {breadcrumbElement}
               {titleAndCategoryElement}
             </div>
 
-            <p className="text-sm leading-relaxed text-slate-600 mb-1">
-              Fórmula: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{product.formula}</span>. {product.description}
-            </p>
-
-            {hasVariants && (
-              <div className="mt-3 border-y border-slate-200 py-3">
-                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-2">Presentación</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {product.variants!.map((v) => {
-                    const isSelected = activeVariant?.id === v.id
-                    return (
-                      <button
-                        key={v.id}
-                        onClick={() => handleVariantChange(v.slug)}
-                        className={cn(
-                          "flex items-center justify-center rounded-lg border-2 py-2 text-xs font-bold font-mono transition-all duration-300",
-                          isSelected
-                            ? "border-[#1959D7] bg-[#1959D7] text-white shadow-md"
-                            : "border-[#1959D7]/50 bg-[#1959D7]/[0.04] text-[#1959D7] hover:border-[#1959D7] hover:bg-[#1959D7]/10"
-                        )}
-                      >
-                        {v.name}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
+            {product.description ? (
+              <p className="text-[12px] leading-snug text-slate-700 mb-3">
+                {product.description}
+              </p>
+            ) : (
+              <p className="text-sm leading-relaxed text-slate-600 mb-4">
+                Fórmula: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
+              </p>
             )}
 
-            <div className="mt-3 flex flex-col gap-1">
-              <p className="text-xs font-semibold text-slate-500">Precio</p>
-              <div className="flex items-baseline justify-between gap-4">
-                <div className="flex flex-col">
-                  {hasVariants && !activeVariant && (
-                    <span className="text-[10px] font-bold text-slate-500 uppercase">Desde</span>
-                  )}
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">{formatCOP(activePrice)}</span>
-                    <span className="text-[10px] text-slate-500 font-bold uppercase">COP</span>
+            <div className="mb-3">
+              {/* FEATURES */}
+              {product.features && product.features.length > 0 && (
+                <div className="grid gap-y-1.5 gap-x-3 w-full grid-cols-2">
+                  {product.features.map((feat, idx) => (
+                    <div key={idx} className="flex items-center gap-1.5">
+                      <Icon icon="lucide:check" className="h-3.5 w-3.5 text-slate-900 shrink-0" />
+                      <span className="text-[11px] text-slate-700 leading-tight">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-0 border-y border-slate-200 py-3 flex flex-row flex-wrap items-end justify-between gap-x-4 gap-y-3">
+              
+              {/* PRECIO Y DISPONIBILIDAD */}
+              <div className="flex flex-col gap-1.5 items-start shrink-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Precio</p>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`h-1.5 w-1.5 rounded-full ${isOutOfStock ? 'bg-slate-300' : isLowStock ? 'bg-red-500' : 'bg-green-500'}`} />
+                    <span className={`text-[8px] font-bold uppercase tracking-widest ${isOutOfStock ? 'text-slate-500' : isLowStock ? 'text-red-600' : 'text-green-600'}`}>
+                      {isOutOfStock ? 'Agotado' : 'Disponible'}
+                    </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className={`h-2 w-2 rounded-full ${isOutOfStock ? 'bg-slate-300' : isLowStock ? 'bg-red-500' : 'bg-green-500'}`} />
-                  <span className={`text-[10px] font-bold uppercase tracking-widest ${isOutOfStock ? 'text-slate-500' : isLowStock ? 'text-red-600' : 'text-green-600'}`}>
-                    {isOutOfStock ? 'Agotado' : isLowStock ? `Últimas ${activeStock}` : 'Disponible'}
-                  </span>
+                
+                <div className="flex flex-col items-start">
+                  {hasVariants && !activeVariant && (
+                    <span className="text-[10px] font-bold text-slate-500 uppercase leading-none mb-0.5">Desde</span>
+                  )}
+                  <div className="flex items-center gap-1 h-8">
+                    <span className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 leading-none">{formatCOP(activePrice)}</span>
+                    <span className="text-[9px] text-slate-500 font-bold uppercase leading-none mt-1">COP</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* PRESENTACIÓN (Centro) */}
+              {hasVariants && (
+                <div className="flex flex-col gap-1.5 shrink-0">
+                  <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest text-left">Presentación</p>
+                  <div className="flex flex-row flex-wrap gap-1.5 justify-start">
+                    {product.variants!.map((v) => {
+                      const isSelected = activeVariant?.id === v.id
+                      return (
+                        <button
+                          key={v.id}
+                          onClick={() => handleVariantChange(v.slug)}
+                          className={cn(
+                            "flex h-8 min-w-[3.5rem] px-2 items-center justify-center rounded-lg border-2 text-[11px] font-bold font-mono transition-all duration-300",
+                            isSelected
+                              ? "border-[#1959D7] bg-[#1959D7] text-white shadow-md"
+                              : "border-[#1959D7]/50 bg-[#1959D7]/[0.04] text-[#1959D7] hover:border-[#1959D7] hover:bg-[#1959D7]/10"
+                          )}
+                        >
+                          {v.name}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* BOTONES */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full mt-2">
+                {/* Qty selector */}
+                <div className="flex h-11 shrink-0 items-center rounded-lg border border-slate-300 bg-white">
+                  <button
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    disabled={qty <= 1}
+                    className="flex h-full w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
+                    aria-label="Disminuir cantidad"
+                  >
+                    <Icon icon="lucide:minus" className="h-4 w-4" />
+                  </button>
+                  <span className="w-8 text-center font-mono text-sm font-bold text-slate-900 tabular-nums">{qty}</span>
+                  <button
+                    onClick={() => setQty((q) => Math.max(activeStock || 99, q + 1))}
+                    disabled={isOutOfStock}
+                    className="flex h-full w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
+                    aria-label="Aumentar cantidad"
+                  >
+                    <Icon icon="lucide:plus" className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="flex flex-row items-center gap-3 flex-1 w-full">
+                  {/* Add to cart */}
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={isOutOfStock || (hasVariants && !activeVariant)}
+                    title="Agregar al Carrito"
+                    aria-label="Agregar al Carrito"
+                    className={cn(
+                      "group flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
+                      addedFeedback
+                        ? "bg-green-600 text-white"
+                        : "bg-[#1959D7] text-white hover:bg-[#1959D7]/90"
+                    )}
+                  >
+                    <Icon
+                      icon={addedFeedback ? "lucide:check" : "lucide:shopping-cart"}
+                      className={cn("h-5 w-5 transition-transform duration-300", !addedFeedback && "group-hover:-rotate-12")}
+                    />
+                  </button>
+                  <WompiCheckoutButton
+                    amountCOP={activePrice * qty}
+                    productName={product.title}
+                    label="Pagar"
+                    onSuccess={(data) => console.log('Wompi success', data)}
+                    onError={(err) => console.error('Wompi error', err)}
+                  />
                 </div>
               </div>
             </div>
 
-            <div className="mt-3 flex flex-col sm:flex-row gap-3">
-              {/* Qty selector */}
-              <div className="flex h-11 items-center rounded-lg border border-slate-300 bg-white">
-                <button
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
-                  disabled={qty <= 1}
-                  className="flex h-full w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
-                  aria-label="Disminuir cantidad"
-                >
-                  <Icon icon="lucide:minus" className="h-4 w-4" />
-                </button>
-                <span className="w-8 text-center font-mono text-sm font-bold text-slate-900 tabular-nums">{qty}</span>
-                <button
-                  onClick={() => setQty((q) => Math.min(activeStock || 99, q + 1))}
-                  disabled={isOutOfStock}
-                  className="flex h-full w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
-                  aria-label="Aumentar cantidad"
-                >
-                  <Icon icon="lucide:plus" className="h-4 w-4" />
-                </button>
-              </div>
-
-              <div className="flex flex-row items-center gap-3 flex-1">
-                {/* Add to cart */}
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isOutOfStock || (hasVariants && !activeVariant)}
-                  title="Agregar al Carrito"
-                  aria-label="Agregar al Carrito"
-                  className={cn(
-                    "group flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
-                    addedFeedback
-                      ? "bg-green-600 text-white"
-                      : "bg-[#1959D7] text-white hover:bg-[#1959D7]/90"
-                  )}
-                >
-                  <Icon
-                    icon={addedFeedback ? "lucide:check" : "lucide:shopping-cart"}
-                    className={cn("h-5 w-5 transition-transform duration-300", !addedFeedback && "group-hover:-rotate-12")}
-                  />
-                </button>
-                <WompiCheckoutButton
-                  amountCOP={activePrice * qty}
-                  productName={product.title}
-                  label="Pagar"
-                  onSuccess={(data) => console.log('Wompi success', data)}
-                  onError={(err) => console.error('Wompi error', err)}
-                />
+            {/* Shipping Info Block */}
+            <div className="mt-4 flex gap-2 text-slate-700">
+              <Icon icon="lucide:truck" className="h-4 w-4 shrink-0 text-slate-900" />
+              <div className="flex flex-col gap-0.5">
+                <p className="text-[13px] font-bold text-slate-900">Envío gratuito a toda Colombia</p>
+                <p className="text-xs font-semibold text-[#1959D7]">Despacho en 1 día hábil</p>
+                <ul className="mt-1.5 list-disc pl-3.5 space-y-1 text-[11px] leading-relaxed text-slate-600">
+                  <li>Los pedidos se envían en empaque sellado y sobrio.</li>
+                  <li>Entrega al siguiente día hábil en principales ciudades y de 2 a 3 días hábiles en el resto del país.</li>
+                  <li>Al despachar el pedido recibes el número de guía para hacer seguimiento.</li>
+                </ul>
               </div>
             </div>
 
-            <ul className="mt-3 space-y-2 text-xs text-slate-600">
-              <li className="flex items-center gap-2.5">
-                <Icon icon="lucide:flask-conical" className="h-4 w-4 text-[#1959D7] shrink-0" />
-                <span className="font-semibold text-slate-900">Agua bacteriostática incluida</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Icon icon="lucide:truck" className="h-4 w-4 text-slate-600 shrink-0" />
-                Envío gratis a toda Colombia.
-              </li>
-            </ul>
+
 
             {/* COA MOBILE */}
             <div className="block md:hidden">
@@ -306,6 +370,17 @@ export default function CanonicalProductPage({
             </div>
           </div>
         </div>
+
+        {/* Info Accordions */}
+        {product.infoAccordions && product.infoAccordions.length > 0 && (
+          <div className="mt-8 md:mt-12 pt-8 border-t border-slate-200/80">
+            <div className="grid gap-4 md:grid-cols-2 items-start">
+              {product.infoAccordions.map((acc, i) => (
+                <AccordionItem key={i} title={acc.title} contentHtml={acc.contentHtml} />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
@@ -326,7 +401,7 @@ export default function CanonicalProductPage({
             onClick={handleAddToCart}
             disabled={isOutOfStock || (hasVariants && !activeVariant)}
             className={cn(
-              "group relative flex h-11 flex-1 items-center justify-center gap-2 rounded-sm border-2 px-4 text-sm font-bold transition-all duration-300 active:scale-95 disabled:pointer-events-none disabled:opacity-50",
+              "group relative flex h-10 flex-1 items-center justify-center gap-2 rounded-sm border-2 px-4 text-sm font-bold transition-all duration-300 active:scale-95 disabled:pointer-events-none disabled:opacity-50",
               addedFeedback
                 ? "border-green-600 bg-green-600 text-white"
                 : "border-[#1959D7] bg-[#1959D7] text-white hover:bg-transparent hover:text-[#1959D7]"

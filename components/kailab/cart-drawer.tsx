@@ -171,10 +171,6 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
               </span>
             </div>
 
-            {/* Info note */}
-            <p className="text-[10px] text-muted-foreground leading-relaxed">
-              Agua bacteriostática incluida. Envíos a todo Colombia.
-            </p>
 
             {/* Checkout CTA — principal */}
             <Link

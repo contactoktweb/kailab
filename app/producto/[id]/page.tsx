@@ -14,14 +14,46 @@ import { useCart } from '@/components/kailab/cart-context'
 import { cn } from '@/lib/utils'
 import { WompiCheckoutButton } from '@/components/kailab/wompi-checkout'
 
+function AccordionItem({ title, contentHtml }: { title: string, contentHtml: string }) {
+  const [isOpen, setIsOpen] = useState(false)
+  return (
+    <div className="border border-slate-200 bg-white rounded-lg overflow-hidden">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex w-full items-center justify-between p-4 text-left text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50"
+      >
+        {title}
+        <Icon icon="lucide:chevron-down" className={cn("h-4 w-4 text-slate-500 transition-transform duration-300", isOpen && "rotate-180")} />
+      </button>
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+        className="overflow-hidden"
+      >
+        <div 
+          className="p-4 pt-2 text-[13px] leading-relaxed text-slate-700" 
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
+        />
+      </motion.div>
+    </div>
+  )
+}
+
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
   const { cartCount, addToCart, toggleCart, openSearch } = useCart()
 
   const [qty, setQty] = useState(1)
   const [addedFeedback, setAddedFeedback] = useState(false)
+  const [currentImage, setCurrentImage] = useState<string | null>(null)
 
   const product = products.find((p) => p.id === resolvedParams.id)
+
+  useEffect(() => {
+    if (product?.image && !currentImage) {
+      setCurrentImage(product.image)
+    }
+  }, [product, currentImage])
 
   if (!product) notFound()
 
@@ -63,7 +95,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           </Link>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-[1fr_1fr] lg:gap-12">
+        <div className="grid gap-8 md:grid-cols-[1.1fr_1fr] lg:gap-12">
           {/* LEFT: Visual & Quality */}
           <div className="flex flex-col justify-between space-y-6 h-full" style={{ perspective: 2000 }}>
             <motion.div
@@ -106,13 +138,31 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   className="relative h-full w-full"
                 >
                   <Image
-                    src={product.image || "/placeholder.jpg"}
+                    src={currentImage || product.image || "/placeholder.jpg"}
                     alt={product.title}
                     fill
                     className="object-contain drop-shadow-2xl mix-blend-multiply"
                   />
                 </motion.div>
               </motion.div>
+
+              {/* Thumbnails */}
+              {product.images && product.images.length > 1 && (
+                <div className="absolute bottom-4 left-0 right-0 z-30 flex justify-center gap-2">
+                  {product.images.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentImage(img)}
+                      className={cn(
+                        "relative h-12 w-12 rounded-md border-2 overflow-hidden bg-white shadow-sm transition-all hover:scale-105",
+                        currentImage === img ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
+                      )}
+                    >
+                      <Image src={img} alt="Thumbnail" fill className="object-contain mix-blend-multiply" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </motion.div>
 
             {/* Quality Signal Card */}
@@ -140,7 +190,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           </div>
 
           {/* RIGHT: Commerce / Details */}
-          <div className="relative flex flex-col justify-between rounded-xl bg-white p-5 lg:p-6 shadow-2xl h-full">
+          <div className="relative flex flex-col justify-center rounded-xl bg-white p-5 lg:p-6 shadow-2xl h-full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -155,55 +205,59 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-              className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl"
+              className="mt-1.5 text-lg font-extrabold tracking-tight text-slate-900 sm:text-xl flex flex-col gap-0.5"
             >
-              {product.title}
+              <span dangerouslySetInnerHTML={{ __html: product.title.replace(' ', '&nbsp;') }} />
+              {product.subtitle && (
+                <span className="text-xs sm:text-sm font-medium text-slate-700">
+                  {product.subtitle}
+                </span>
+              )}
             </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              className="text-sm leading-relaxed text-slate-600 mb-1"
-            >
-              Fórmula: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
-            </motion.p>
-
-            {/* Specs grid */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-              className="mt-2 grid grid-cols-2 gap-3 border-y border-slate-200 py-3 text-xs"
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              className="mt-2.5 flex flex-col gap-2"
             >
-              <div>
-                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Concentración</p>
-                <p className="mt-1 font-mono text-sm font-semibold text-slate-900">{product.concentration}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Presentación</p>
-                <p className="mt-1 font-mono text-sm font-semibold text-slate-900">{product.presentation}</p>
-              </div>
-              <div className="col-span-2">
-                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Incluye</p>
-                <p className="mt-1 text-sm font-semibold text-slate-900">Agua bacteriostática</p>
-              </div>
+              {product.description ? (
+              <p className="text-[12px] leading-snug text-slate-700">
+                {product.description}
+              </p>
+              ) : (
+                <p className="text-sm leading-relaxed text-slate-600">
+                  Fórmula: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
+                </p>
+              )}
+
+              {product.features && product.features.length > 0 && (
+                <div className="grid grid-cols-2 gap-y-1.5 gap-x-4">
+                  {product.features.map((feat, idx) => (
+                    <div key={idx} className="flex items-center gap-1.5">
+                      <Icon icon="lucide:check" className="h-3.5 w-3.5 text-slate-900 shrink-0" />
+                      <span className="text-[11px] text-slate-700">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </motion.div>
+
 
             {/* Price */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-              className="mt-2 flex flex-col gap-1"
+              className="mt-3 flex flex-col gap-0.5"
             >
-              <p className="text-xs font-semibold text-slate-500">Precio</p>
+              <p className="text-[11px] font-semibold text-slate-500">Precio</p>
               <div className="flex items-baseline justify-between gap-4">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+                  <span className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900">
                     {formatCOP((product.priceCOP ?? 0) * qty)}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase">COP</span>
+                  <span className="text-[9px] text-slate-500 font-bold uppercase">COP</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span
@@ -272,24 +326,37 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               </div>
             </motion.div>
 
-            {/* Inclusions */}
-            <motion.ul
+            {/* Shipping Info Block */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-              className="mt-3 space-y-2 text-xs text-slate-600"
+              className="mt-4 flex gap-2.5 text-slate-700"
             >
-              <li className="flex items-center gap-2.5">
-                <Icon icon="lucide:truck" className="h-4 w-4 text-slate-600 shrink-0" />
-                Despacho en 24h para Bogotá.
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Icon icon="lucide:file-check-2" className="h-4 w-4 text-slate-600 shrink-0" />
-                Incluye reporte impreso del lote <span className="font-mono text-slate-900">{product.lot}</span>.
-              </li>
-            </motion.ul>
+              <Icon icon="lucide:truck" className="h-4 w-4 shrink-0 text-slate-900" />
+              <div className="flex flex-col gap-0.5">
+                <p className="text-[13px] font-bold text-slate-900">Envío gratuito a toda Colombia</p>
+                <p className="text-xs font-semibold text-[#1959D7]">Despacho en 1 día hábil</p>
+                <ul className="mt-1.5 list-disc pl-3.5 space-y-1 text-[11px] leading-relaxed text-slate-600">
+                  <li>Los pedidos se envían en empaque sellado y sobrio.</li>
+                  <li>Entrega al siguiente día hábil en principales ciudades y de 2 a 3 días hábiles en el resto del país.</li>
+                  <li>Al despachar el pedido recibes el número de guía para hacer seguimiento.</li>
+                </ul>
+              </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Info Accordions */}
+        {product.infoAccordions && product.infoAccordions.length > 0 && (
+          <div className="mt-8 md:mt-12 pt-8 border-t border-slate-200/80">
+            <div className="grid gap-4 md:grid-cols-2 items-start">
+              {product.infoAccordions.map((acc, i) => (
+                <AccordionItem key={i} title={acc.title} contentHtml={acc.contentHtml} />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />

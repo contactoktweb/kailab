@@ -46,7 +46,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             {columns.map((col) => (
               <nav key={col.title} aria-label={col.title}>
-                <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                <h3 className="text-xs uppercase tracking-widest text-muted-foreground">
                   {col.title}
                 </h3>
                 <ul className="mt-4 space-y-2.5">
@@ -67,14 +67,14 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-border pt-8">
-          <p className="font-mono text-xs leading-relaxed text-muted-foreground">
+          <p className="text-xs leading-relaxed text-muted-foreground">
             Solo para uso en investigación (RUO / Research Use Only). No apto para consumo humano ni
             animal, ni para uso diagnóstico o terapéutico. Los productos no han sido evaluados por el
             INVIMA. La venta está dirigida exclusivamente a investigadores y entidades cualificadas.
           </p>
           <div className="mt-6 flex flex-col justify-between gap-3 text-xs text-muted-foreground sm:flex-row">
             <div className="flex flex-col gap-2">
-              <span className="font-mono">© {new Date().getFullYear()} KAILAB · Bogotá, Colombia</span>
+              <span>© {new Date().getFullYear()} KAILAB · Bogotá, Colombia</span>
               <a
                 href="https://www.kytcode.lat"
                 target="_blank"

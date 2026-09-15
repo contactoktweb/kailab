@@ -62,7 +62,7 @@ export function ProductGrid({
             >
               <Link 
                 href="/tienda" 
-                className="group inline-flex items-center gap-2 font-mono text-sm font-bold text-primary transition-all hover:text-primary/80"
+                className="group inline-flex items-center gap-2 text-sm font-bold text-primary transition-all hover:text-primary/80"
               >
                 <span>Ver toda la tienda</span>
                 <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform group-hover:translate-x-1" />

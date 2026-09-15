@@ -5,7 +5,7 @@ import { TopBar } from './top-bar'
 import { Navbar } from './navbar'
 import { Hero } from './hero'
 import { ProductGrid } from './product-grid'
-import { WhatsIncluded, QualityCoa, GuidesBlock, TrustIndicators } from './home-blocks'
+import { WhatsIncluded, CommitmentBlock, TrustIndicators } from './home-blocks'
 import { Footer } from './footer'
 import { useCart } from './cart-context'
 
@@ -42,9 +42,7 @@ export function KailabLanding() {
           showViewAllLink={true}
         />
         <WhatsIncluded />
-        <QualityCoa />
-        <GuidesBlock />
-        <TrustIndicators />
+        <CommitmentBlock />
       </main>
       <Footer />
     </div>

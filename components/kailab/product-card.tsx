@@ -96,7 +96,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        <div className="mb-2 border-b border-border/40 pb-2 flex items-end justify-between gap-2">
+        <div className="mb-2 border-b border-border/40 pb-2 flex flex-col gap-2">
           <div className="min-w-0">
             <motion.p 
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
@@ -107,7 +107,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
             
             <motion.h3 
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
-              className="mt-0.5 font-mono text-lg font-bold tracking-tight text-foreground transition-colors duration-300"
+              className="mt-0.5 text-lg font-bold tracking-tight text-foreground transition-colors duration-300"
             >
               <Link href={linkUrl} className="focus:outline-none">
                 <span className="absolute inset-0" aria-hidden="true" />
@@ -116,11 +116,11 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
             </motion.h3>
           </div>
 
-          {/* Selector de Presentación — inline junto al título */}
+          {/* Selector de Presentación */}
           {hasVariants && (
             <motion.div 
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-              className="flex flex-row gap-1 relative z-20 shrink-0"
+              className="flex flex-wrap gap-[3px] relative z-20"
             >
               {product.variants!.map((variant) => {
                 const isSelected = selectedVariant?.id === variant.id;
@@ -132,7 +132,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
                       setSelectedVariant(isSelected ? null : variant);
                     }}
                     className={cn(
-                      "rounded-sm border px-2 py-0.5 text-[10px] font-mono font-bold transition-all duration-300",
+                      "rounded-sm border px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold transition-all duration-300",
                       isSelected 
                         ? "bg-primary border-primary text-primary-foreground shadow-sm" 
                         : "bg-white/10 border-border/50 text-foreground hover:bg-white/20 hover:border-primary/30"
@@ -176,13 +176,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
             </div>
           </motion.div>
 
-          {/* Línea Compacta de Valor */}
-          <motion.div 
-             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-             className="mt-1.5 text-[10px] leading-tight text-white/70"
-          >
-            Agua bacteriostática incluida · Envío gratis a toda Colombia
-          </motion.div>
+
 
           {/* CTAs */}
           <motion.div 
