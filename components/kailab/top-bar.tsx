@@ -2,6 +2,6 @@
 
 
 
-export function TopBar({ onSearch }: { onSearch: () => void }) {
+export function TopBar() {
   return null
 }

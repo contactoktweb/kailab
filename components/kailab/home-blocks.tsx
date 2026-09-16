@@ -4,14 +4,21 @@ import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import type { HomePageData, GuidesPageData, QualityPageData } from '@/lib/sanity-queries'
 
-export function WhatsIncluded() {
-  const items = [
+export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }) {
+  const defaultItems = [
     { name: 'Solución Reconstituyente', desc: 'Agua bacteriostática grado USP (10ml o 30ml).', icon: 'lucide:droplets' },
     { name: 'Instrumental Analítico', desc: 'Jeringas estériles U-100 para dosificación precisa.', icon: 'lucide:syringe' },
     { name: 'Kit de Asepsia', desc: 'Almohadillas impregnadas en alcohol isopropílico (70%).', icon: 'lucide:shield-plus' },
     { name: 'Cadena de Custodia', desc: 'Estuche térmico protector de poliestireno (según envío).', icon: 'lucide:box' }
   ]
+
+  const items = data?.items?.map((item, index) => ({
+    name: item.name || defaultItems[index]?.name || '',
+    desc: item.desc || defaultItems[index]?.desc || '',
+    icon: defaultItems[index]?.icon || 'lucide:check-circle'
+  })) || defaultItems
 
   return (
     <motion.section 
@@ -28,13 +35,19 @@ export function WhatsIncluded() {
           <div className="lg:col-span-4">
             <div className="mb-4 flex items-center gap-2 text-primary">
                <Icon icon="lucide:package-check" className="h-5 w-5" />
-               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Dotación de Envíos</span>
+               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+                 {data?.tag || 'Dotación de Envíos'}
+               </span>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
-              Equipamiento<br/>Incluido
+              {data?.title ? (
+                <div dangerouslySetInnerHTML={{ __html: data.title.replace(' ', '<br/>') }} />
+              ) : (
+                <>Equipamiento<br/>Incluido</>
+              )}
             </h2>
             <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
-              Cada vial o kit de investigación se despacha con la dotación completa requerida para su reconstitución segura bajo estrictas normas de laboratorio.
+              {data?.description || 'Cada vial o kit de investigación se despacha con la dotación completa requerida para su reconstitución segura bajo estrictas normas de laboratorio.'}
             </p>
             <div className="mt-8 hidden flex-col gap-2 lg:flex">
               <div className="h-px w-16 bg-primary/40"></div>
@@ -72,15 +85,20 @@ export function WhatsIncluded() {
   )
 }
 
-export function CommitmentBlock() {
+export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
-  const items = [
+  const defaultFaq = [
     { q: '¿A qué ciudades realizan envíos?', a: 'Realizamos envíos a nivel nacional, cubriendo las principales ciudades y municipios de Colombia.' },
     { q: '¿Cuáles son los tiempos de entrega?', a: 'En las principales ciudades la entrega suele hacerse al siguiente día hábil. En otras ciudades y municipios, entre 2 y 3 días hábiles.' },
     { q: '¿Los envíos son discretos?', a: 'Sí. Todos los pedidos se despachan en empaque discreto y profesional, sin referencias visibles al contenido ni a la tienda.' },
     { q: '¿Cómo puedo hacer seguimiento a mi pedido?', a: 'Una vez confirmado el envío, recibirás la información de seguimiento para monitorear el estado de tu pedido hasta la entrega.' }
   ]
+
+  const items = data?.faq?.map(item => ({
+    q: item.question || '',
+    a: item.answer || ''
+  })) || defaultFaq
 
   return (
     <motion.section 
@@ -101,7 +119,9 @@ export function CommitmentBlock() {
           <div className="lg:col-span-12 mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
               <div>
-                <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">Compromiso con la seriedad</h3>
+                <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">
+                  {data?.title1 || 'Compromiso con la seriedad'}
+                </h3>
               </div>
               <div className="hidden sm:block h-px bg-gray-200/80 flex-1 ml-6"></div>
             </div>
@@ -110,14 +130,14 @@ export function CommitmentBlock() {
               <div className="relative overflow-hidden rounded-sm border border-gray-200/80 bg-white p-5 sm:p-6 flex items-center">
                 <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7]" />
                 <p className="text-[15px] leading-relaxed text-slate-600">
-                  En KaiLab trabajamos bajo un enfoque serio y ordenado, priorizando la selección cuidadosa de cada compuesto, una gestión responsable de los pedidos y una comunicación clara en cada etapa del proceso.
+                  {data?.desc1 || 'En KaiLab trabajamos bajo un enfoque serio y ordenado, priorizando la selección cuidadosa de cada compuesto, una gestión responsable de los pedidos y una comunicación clara en cada etapa del proceso.'}
                 </p>
               </div>
 
               <div className="relative overflow-hidden rounded-sm border border-gray-200/80 bg-white p-5 sm:p-6 flex items-center">
                 <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7]" />
                 <p className="text-[15px] leading-relaxed text-slate-600">
-                  Nuestro objetivo es ofrecer una experiencia confiable y transparente para quienes entienden el valor de un manejo riguroso en productos de investigación.
+                  {data?.desc2 || 'Nuestro objetivo es ofrecer una experiencia confiable y transparente para quienes entienden el valor de un manejo riguroso en productos de investigación.'}
                 </p>
               </div>
             </div>
@@ -128,8 +148,12 @@ export function CommitmentBlock() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
               <div className="hidden sm:block h-px bg-gray-200/80 flex-1 mr-6"></div>
               <div className="text-left sm:text-right">
-                <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">Envíos rápidos y seguros</h3>
-                <p className="text-sm text-slate-500 mt-1">Entregas eficientes a nivel nacional, con empaque profesional.</p>
+                <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">
+                  {data?.title2 || 'Envíos rápidos y seguros'}
+                </h3>
+                <p className="text-sm text-slate-500 mt-1">
+                  {data?.subtitle2 || 'Entregas eficientes a nivel nacional, con empaque profesional.'}
+                </p>
               </div>
             </div>
             
@@ -200,7 +224,14 @@ export function CommitmentBlock() {
   )
 }
 
-export function QualityCoa() {
+export function QualityCoa({ data }: { data?: QualityPageData | null }) {
+  const statsList = data?.statsList || [
+    { label: 'Método de Ensayo', value: 'Cromatografía HPLC' },
+    { label: 'Pureza Analizada', value: '≥ 99.1%' },
+    { label: 'Trazabilidad', value: 'Código QR en vial' },
+    { label: 'Firma Digital', value: '0x3F9A...B8C2' },
+  ]
+
   return (
     <motion.section 
       initial={{ opacity: 0, y: 30 }}
@@ -216,17 +247,23 @@ export function QualityCoa() {
           <div>
             <div className="mb-4 flex items-center gap-2 text-primary">
                <Icon icon="lucide:microscope" className="h-5 w-5" />
-               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Laboratorio Analítico</span>
+               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+                 {data?.headerTag || 'Laboratorio Analítico'}
+               </span>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
-              Calidad y COA<br/>Por Lote
+              {data?.title?.split('\n').map((line, i) => (
+                <span key={i}>{line}<br/></span>
+              )) || <>Calidad y COA<br/>Por Lote</>}
             </h2>
             <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
-              La pureza no se asume, se demuestra. Cada lote que distribuimos cuenta con un Certificado de Análisis (COA) emitido por laboratorios independientes. Validamos la integridad molecular antes de cualquier despacho.
+              {data?.description || 'La pureza no se asume, se demuestra. Cada lote que distribuimos cuenta con un Certificado de Análisis (COA) emitido por laboratorios independientes. Validamos la integridad molecular antes de cualquier despacho.'}
             </p>
             <div className="mt-8">
-              <a href="#calidad" className="group inline-flex items-center gap-2.5 text-base font-bold text-primary transition-all hover:text-primary/80">
-                <span className="border-b-2 border-primary/50 pb-0.5 transition-all group-hover:border-primary">Ver reporte de ejemplo</span>
+              <a href={data?.linkUrl || "#calidad"} className="group inline-flex items-center gap-2.5 text-base font-bold text-primary transition-all hover:text-primary/80">
+                <span className="border-b-2 border-primary/50 pb-0.5 transition-all group-hover:border-primary">
+                  {data?.linkText || 'Ver reporte de ejemplo'}
+                </span>
                 <Icon icon="lucide:arrow-right" className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </a>
             </div>
@@ -245,28 +282,26 @@ export function QualityCoa() {
                 <div className="mb-6 flex items-center justify-between border-b border-border/40 pb-4">
                   <div className="flex items-center gap-3">
                     <Icon icon="lucide:shield-check" className="h-7 w-7 text-primary" />
-                    <span className="font-mono text-base font-bold text-foreground">REPORTE_HPLC-MS.pdf</span>
+                    <span className="font-mono text-base font-bold text-foreground">
+                      {data?.reportName || 'REPORTE_HPLC-MS.pdf'}
+                    </span>
                   </div>
-                  <span className="animate-pulse rounded-sm bg-primary/20 px-2.5 py-1 font-mono text-xs font-semibold text-primary">VERIFICADO</span>
+                  <span className="animate-pulse rounded-sm bg-primary/20 px-2.5 py-1 font-mono text-xs font-semibold text-primary">
+                    {data?.status || 'VERIFICADO'}
+                  </span>
                 </div>
                 
                 <div className="space-y-5 text-sm sm:text-base">
-                  <div className="group/row flex items-center justify-between">
-                     <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">Método de Ensayo</span>
-                     <span className="font-semibold text-foreground">Cromatografía HPLC</span>
-                  </div>
-                  <div className="group/row flex items-center justify-between">
-                     <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">Pureza Analizada</span>
-                     <span className="text-lg sm:text-xl font-bold text-primary">≥ 99.1%</span>
-                  </div>
-                  <div className="group/row flex items-center justify-between">
-                     <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">Trazabilidad</span>
-                     <span className="font-semibold text-foreground">Código QR en vial</span>
-                  </div>
-                  <div className="group/row mt-2 flex items-center justify-between border-t border-border/40 pt-4">
-                     <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">Firma Digital</span>
-                     <span className="max-w-[160px] truncate text-xs sm:text-sm font-semibold text-primary/70">0x3F9A...B8C2</span>
-                  </div>
+                  {statsList.map((stat, idx) => (
+                    <div key={idx} className={`group/row flex items-center justify-between ${idx === statsList.length - 1 ? 'mt-2 border-t border-border/40 pt-4' : ''}`}>
+                       <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">
+                         {stat.label}
+                       </span>
+                       <span className={idx === 1 ? 'text-lg sm:text-xl font-bold text-primary' : (idx === statsList.length - 1 ? 'max-w-[160px] truncate text-xs sm:text-sm font-semibold text-primary/70' : 'font-semibold text-foreground')}>
+                         {stat.value}
+                       </span>
+                    </div>
+                  ))}
                </div>
              </div>
           </div>
@@ -277,12 +312,14 @@ export function QualityCoa() {
   )
 }
 
-export function GuidesBlock() {
-  const guides = [
-    { title: 'Calculadora de Reconstitución', desc: 'Herramienta interactiva para determinar concentraciones exactas según el volumen de disolvente.', icon: 'lucide:calculator' },
-    { title: 'Guía de Conservación Térmica', desc: 'Protocolos de almacenamiento en cadena de frío para preservación de enlaces peptídicos.', icon: 'lucide:thermometer-snowflake' },
-    { title: 'Interpretación de HPLC-MS', desc: 'Manual técnico para leer e interpretar certificados de espectrometría de masas y pureza.', icon: 'lucide:bar-chart-2' }
+export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
+  const guidesList = data?.guidesList || [
+    { title: 'Calculadora de Reconstitución', desc: 'Herramienta interactiva para determinar concentraciones exactas según el volumen de disolvente.', icon: 'lucide:calculator', link: '#guias' },
+    { title: 'Guía de Conservación Térmica', desc: 'Protocolos de almacenamiento en cadena de frío para preservación de enlaces peptídicos.', icon: 'lucide:thermometer-snowflake', link: '#guias' },
+    { title: 'Interpretación de HPLC-MS', desc: 'Manual técnico para leer e interpretar certificados de espectrometría de masas y pureza.', icon: 'lucide:bar-chart-2', link: '#guias' }
   ]
+
+  const defaultIcons = ['lucide:calculator', 'lucide:thermometer-snowflake', 'lucide:bar-chart-2']
 
   return (
     <motion.section 
@@ -353,120 +390,11 @@ export function GuidesBlock() {
 type FaqItem = { q: string; a: string }
 type FaqCategory = { label: string; items: FaqItem[] }
 
-const FAQ_DATA: FaqCategory[] = [
-  {
-    label: 'Productos',
-    items: [
-      {
-        q: '¿Qué vende KaiLab?',
-        a: 'KaiLab comercializa compuestos liofilizados y reactivos para investigación científica y de laboratorio. Cada ficha de producto indica el compuesto, el contenido nominal en miligramos, la pureza reportada y las condiciones de almacenamiento. No son medicamentos, suplementos ni productos de uso clínico.',
-      },
-      {
-        q: '¿Qué pureza tienen los productos?',
-        a: 'La pureza se comunica por producto y lote, no como un porcentaje general para todo el catálogo. Cuando existe un COA publicado, mostramos el resultado exacto reportado por el laboratorio independiente y el enlace al documento correspondiente.',
-      },
-      {
-        q: '¿Los productos cuentan con análisis de pureza?',
-        a: 'Los productos y lotes cuentan con certificados de análisis publicados. En cada COA encontrarás el laboratorio, el lote, los resultados reportados y el enlace al documento.',
-      },
-      {
-        q: '¿Necesito ser un laboratorio o una institución para comprar?',
-        a: 'No solicitamos documentación institucional. Toda compra se realiza bajo los términos de uso exclusivo en investigación, y el comprador asume la responsabilidad de contar con las condiciones, la capacitación y las autorizaciones que correspondan a su actividad.',
-      },
-    ],
-  },
-  {
-    label: 'Pedidos y Pagos',
-    items: [
-      {
-        q: '¿Cómo hago un pedido?',
-        a: 'Selecciona el producto y la cantidad, añádelo al carrito y completa los datos de envío. Antes de pagar podrás revisar los productos, las cantidades, la dirección y el valor total.',
-      },
-      {
-        q: '¿Qué métodos de pago aceptan?',
-        a: 'Aceptamos tarjetas de crédito y débito, PSE, Nequi, Daviplata y botón Bancolombia. Los pagos se procesan a través de una pasarela certificada y KaiLab no almacena datos de tarjetas.',
-      },
-      {
-        q: '¿Cómo confirmo que mi pedido quedó registrado?',
-        a: 'Al aprobarse el pago recibirás un correo con el número y el resumen del pedido. Si no llega en pocos minutos, revisa la carpeta de correo no deseado y escríbenos antes de intentar pagar de nuevo.',
-      },
-      {
-        q: '¿Puedo modificar o cancelar un pedido?',
-        a: 'Escríbenos lo antes posible. Podemos modificar o cancelar un pedido mientras no haya sido despachado. Una vez entregado a la transportadora, aplican las condiciones descritas en nuestros Términos Legales.',
-      },
-      {
-        q: '¿Ofrecen precios para pedidos por volumen?',
-        a: 'Sí. Contamos con precios diferenciales para compras por cantidad y para distribuidores. Escríbenos por WhatsApp o correo indicando los productos y las cantidades que necesitas.',
-      },
-    ]
-  },
-  {
-    label: 'Envíos',
-    items: [
-      {
-        q: '¿A dónde envían?',
-        a: 'Enviamos a toda Colombia, a ciudades principales y municipios, a través de transportadoras con cobertura nacional.',
-      },
-      {
-        q: '¿Cuánto tarda la entrega?',
-        a: 'En las principales ciudades la entrega suele hacerse al siguiente día hábil. En otras ciudades y municipios, entre 2 y 3 días hábiles. Los pedidos con pago confirmado se despachan en días hábiles; los recibidos en fin de semana o festivo se procesan el siguiente día hábil.',
-      },
-      {
-        q: '¿El envío tiene costo?',
-        a: 'El envío es gratuito a toda Colombia.',
-      },
-      {
-        q: '¿Cómo llega empacado el pedido?',
-        a: 'Los productos se envían en empaque sellado y sobrio, preparado para proteger el contenido durante el transporte. Al despachar recibirás el número de guía para hacer seguimiento.',
-      },
-    ]
-  },
-  {
-    label: 'Almacenamiento',
-    items: [
-      {
-        q: '¿Cómo debo almacenar el producto en polvo liofilizado?',
-        a: 'Sin reconstituir, consérvalo a -20 °C para almacenamiento prolongado, protegido de la luz y en ambiente seco. En estas condiciones el material mantiene su estabilidad durante períodos prolongados.',
-      },
-      {
-        q: '¿Cómo se conserva una vez reconstituido?',
-        a: 'Una vez reconstituido con agua bacteriostática en condiciones de laboratorio, consérvalo refrigerado entre 2 °C y 8 °C. Evita los ciclos repetidos de congelación y descongelación, y manipula el material con técnica aséptica y material de laboratorio apropiado.',
-      },
-      {
-        q: '¿El producto se daña si llega sin refrigeración?',
-        a: 'No. El polvo liofilizado es estable a temperatura ambiente durante los tiempos de transporte habituales. Al recibirlo, guárdalo lo antes posible en las condiciones indicadas arriba.',
-      },
-      {
-        q: '¿Qué hago si el pedido llega incompleto, incorrecto o el vial presenta una apariencia inusual?',
-        a: 'No utilices el material si el sello está comprometido, hay pérdida de contenido, humedad visible o un cambio inesperado de apariencia. Toma fotografías del producto y del empaque y escríbenos indicando el número de pedido.',
-      },
-    ]
-  },
-  {
-    label: 'Uso e Investigación',
-    items: [
-      {
-        q: '¿Qué significa uso exclusivo para investigación?',
-        a: 'Significa que el material se ofrece para actividades científicas o analíticas realizadas bajo protocolos adecuados. No está destinado al uso humano, veterinario ni clínico, ni al diagnóstico, tratamiento o prevención de enfermedades. Los productos no cuentan con registro INVIMA.',
-      },
-      {
-        q: '¿KaiLab indica dosis, ciclos o formas de administración?',
-        a: 'No. No proporcionamos dosis, ciclos, protocolos de aplicación ni asesoría médica. Podemos aclarar información técnica o comercial publicada en la ficha del producto.',
-      },
-      {
-        q: '¿KaiLab recomienda productos según objetivos personales?',
-        a: 'No. No recomendamos productos para pérdida de peso, recuperación, rendimiento ni composición corporal. Las referencias que aparecen en las fichas describen áreas de estudio científico y no constituyen una promesa de resultados.',
-      },
-    ]
-  },
-]
+export type FaqCategory = {
+  label: string
+  items: FaqItem[]
+}
 
-const TRUST_BADGES = [
-  { icon: 'lucide:zap',          title: 'Entrega rápida',   desc: '24–48h en ciudades principales' },
-  { icon: 'lucide:package',      title: 'Empaque sobrio',   desc: 'Discreto. Sin referencias visibles' },
-  { icon: 'lucide:credit-card',  title: 'Tarjeta y Crypto', desc: 'Pagos verificados y seguros' },
-  { icon: 'lucide:file-check-2', title: 'COA disponibles',  desc: 'Reportes independientes por producto y lote' },
-]
 
 function FaqAccordion({ items }: { items: FaqItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
@@ -538,8 +466,18 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
   )
 }
 
-export function FaqShort() {
+export function FaqShort({ data }: { data?: HelpPageData | null }) {
   const [activeTab, setActiveTab] = useState(0)
+
+  const FAQ_DATA: FaqCategory[] = data?.faqCategories?.length ? (data.faqCategories as any) : []
+  
+  const TRUST_BADGES = data?.trustBadges?.length ? data.trustBadges : [
+    { title: 'Entrega rápida',   desc: '24–48h en ciudades principales' },
+    { title: 'Empaque sobrio',   desc: 'Discreto. Sin referencias visibles' },
+    { title: 'Tarjeta y Crypto', desc: 'Pagos verificados y seguros' },
+    { title: 'COA disponibles',  desc: 'Reportes independientes por producto y lote' },
+  ]
+  const trustIcons = ['lucide:zap', 'lucide:package', 'lucide:credit-card', 'lucide:file-check-2']
 
   return (
     <section className="relative overflow-hidden border-y border-gray-100 bg-white py-8 sm:py-10">
@@ -556,14 +494,14 @@ export function FaqShort() {
           <div className="mb-2 flex items-center justify-center gap-2">
             <Icon icon="lucide:help-circle" className="h-4 w-4 text-[#1959D7]" />
             <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#1959D7]">
-              Base de Conocimiento
+              {data?.headerTag || 'Base de Conocimiento'}
             </span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Preguntas Frecuentes
+            {data?.title || 'Preguntas Frecuentes'}
           </h2>
           <p className="mt-2 text-base leading-relaxed text-gray-500">
-            Respuestas claras sobre productos, envíos, pagos y uso.
+            {data?.description || 'Respuestas claras sobre productos, envíos, pagos y uso.'}
           </p>
         </motion.div>
 
@@ -598,18 +536,18 @@ export function FaqShort() {
         <FaqAccordion items={FAQ_DATA[activeTab].items} />
 
         {/* Trust Badges */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 border-t border-gray-100 pt-12">
           {TRUST_BADGES.map((badge, i) => (
-            <div
-              key={i}
-              className="group relative overflow-hidden border border-gray-200 bg-[#17294F] p-5 sm:p-6 transition-all duration-300 hover:border-[#1959D7]/50"
-            >
-              <div className="absolute left-0 top-0 h-full w-[2px] bg-[#1959D7] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <div className="mb-3 text-[#1959D7]">
-                <Icon icon={badge.icon} className="h-5 w-5" />
+            <div key={i} className="flex flex-col items-center justify-center p-6 text-center rounded-sm bg-gray-50/50 border border-gray-100 transition-all hover:bg-white hover:border-gray-200 hover:shadow-sm">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-sm bg-[#1959D7]/10 text-[#1959D7]">
+                <Icon icon={trustIcons[i % trustIcons.length]} className="h-5 w-5" />
               </div>
-              <p className="text-sm font-bold tracking-tight text-white">{badge.title}</p>
-              <p className="mt-1 text-xs leading-snug text-white/60">{badge.desc}</p>
+              <h4 className="mb-1.5 font-bold text-gray-900 text-sm">
+                {badge.title}
+              </h4>
+              <p className="text-xs leading-relaxed text-gray-500 max-w-[200px]">
+                {badge.desc}
+              </p>
             </div>
           ))}
         </div>

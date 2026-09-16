@@ -8,8 +8,16 @@ import { ProductGrid } from './product-grid'
 import { WhatsIncluded, CommitmentBlock, TrustIndicators } from './home-blocks'
 import { Footer } from './footer'
 import { useCart } from './cart-context'
+import type { HomePageData, SiteSettings } from '@/lib/sanity-queries'
+import type { Product } from './data'
 
-export function KailabLanding() {
+interface KailabLandingProps {
+  homeData?: HomePageData | null
+  siteSettings?: SiteSettings | null
+  products: Product[]
+}
+
+export function KailabLanding({ homeData, siteSettings, products }: KailabLandingProps) {
   const { cartCount, addToCart, toggleCart, openSearch } = useCart()
 
   // Global ⌘K / Ctrl+K to open the command palette
@@ -26,25 +34,26 @@ export function KailabLanding() {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <TopBar onSearch={openSearch} />
-      <Navbar
-        cartCount={cartCount}
-        onSearch={openSearch}
-        onCart={toggleCart}
-      />
+      <TopBar />
+      <Navbar siteSettings={siteSettings} />
       <main>
-        <Hero onAdd={addToCart} onSearch={openSearch} />
-        <ProductGrid 
+        <Hero 
           onAdd={addToCart} 
-          limit={2}
-          title="Productos Destacados"
-          subtitle="Nuestra selección destacada de péptidos y compuestos liofilizados de alta pureza."
+          onSearch={openSearch} 
+          heroData={homeData?.hero} 
+        />
+        <ProductGrid 
+          sanityProducts={products}
+          onAdd={addToCart} 
+          limit={4}
+          title={homeData?.featuredProducts?.title || "Productos Destacados"}
+          subtitle={homeData?.featuredProducts?.subtitle || "Nuestra selección destacada de péptidos y compuestos liofilizados de alta pureza."}
           showViewAllLink={true}
         />
-        <WhatsIncluded />
-        <CommitmentBlock />
+        <WhatsIncluded data={homeData?.whatsIncluded} />
+        <CommitmentBlock data={homeData?.commitment} />
       </main>
-      <Footer />
+      <Footer siteSettings={siteSettings} />
     </div>
   )
 }

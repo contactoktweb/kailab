@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { cn } from '@/lib/utils'
+import { urlFor } from '@/sanity/lib/image'
+import type { SiteSettings } from '@/lib/sanity-queries'
 
 const menu = [
   { label: 'Tienda', href: '/tienda' },
@@ -13,12 +15,15 @@ const menu = [
 ]
 
 type NavbarProps = {
-  cartCount: number
-  onSearch: () => void
-  onCart: () => void
+  siteSettings?: SiteSettings | null
 }
 
-export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
+import { useCart } from './cart-context'
+
+export function Navbar({ siteSettings }: NavbarProps) {
+  const { cartCount, openSearch, toggleCart } = useCart()
+  const logoUrl = siteSettings?.logo ? urlFor(siteSettings.logo).url() : "/KAILAB_Logo_White.png"
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/70 backdrop-blur-xl shadow-sm transition-all duration-300">
       <nav
@@ -32,8 +37,8 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
             aria-label="KAILAB inicio"
           >
             <Image
-              src="/KAILAB_Logo_White.png"
-              alt="KAILAB"
+              src={logoUrl}
+              alt={siteSettings?.siteName || "KAILAB"}
               width={132}
               height={38}
               priority
@@ -57,7 +62,7 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={onSearch}
+            onClick={openSearch}
             className="group relative flex items-center gap-2 overflow-hidden bg-primary px-4 py-2 font-mono text-xs font-bold tracking-widest text-primary-foreground transition-all duration-500 hover:bg-primary/90 active:scale-95"
             aria-label="Buscar"
           >
@@ -71,7 +76,7 @@ export function Navbar({ cartCount, onSearch, onCart }: NavbarProps) {
           </button>
 
           <button
-            onClick={onCart}
+            onClick={toggleCart}
             className="group relative flex items-center gap-2 overflow-hidden bg-primary px-4 py-2 font-mono text-xs font-bold tracking-widest text-primary-foreground transition-all duration-500 hover:bg-primary/90 active:scale-95"
             aria-label={`Carrito, ${cartCount} artículos`}
           >

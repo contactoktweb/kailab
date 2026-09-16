@@ -43,7 +43,7 @@ const ListIcon = () =>
 
 export const homePageType = defineType({
   name: 'homePage',
-  title: 'Página de Inicio',
+  title: 'Home',
   type: 'document',
   icon: HomeIcon,
   preview: {

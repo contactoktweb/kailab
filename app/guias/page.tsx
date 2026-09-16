@@ -1,73 +1,25 @@
-'use client'
-
-import { useState } from 'react'
 import { TopBar } from '@/components/kailab/top-bar'
 import { Navbar } from '@/components/kailab/navbar'
 import { GuidesBlock } from '@/components/kailab/home-blocks'
 import { Footer } from '@/components/kailab/footer'
-import { CommandPalette } from '@/components/kailab/command-palette'
-import { CartDrawer } from '@/components/kailab/cart-drawer'
-import type { CartItem, Product } from '@/components/kailab/data'
+import { getGuidesPage, getSiteSettings } from '@/lib/sanity-queries'
 
-export default function GuiasPage() {
-  const [items, setItems] = useState<CartItem[]>([])
-  const [paletteOpen, setPaletteOpen] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
-
-  const cartCount = items.reduce((sum, i) => sum + i.qty, 0)
-
-  const addToCart = (product: Product) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id)
-      if (existing) {
-        return prev.map((i) =>
-          i.product.id === product.id ? { ...i, qty: i.qty + 1 } : i,
-        )
-      }
-      return [...prev, { product, qty: 1 }]
-    })
-    setCartOpen(true)
-  }
-
-  const changeQty = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev
-        .map((i) => (i.product.id === id ? { ...i, qty: i.qty + delta } : i))
-        .filter((i) => i.qty > 0),
-    )
-  }
-
-  const removeItem = (id: string) => {
-    setItems((prev) => prev.filter((i) => i.product.id !== id))
-  }
+export default async function GuiasPage() {
+  const [guidesData, siteSettings] = await Promise.all([
+    getGuidesPage(),
+    getSiteSettings(),
+  ])
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <TopBar onSearch={() => setPaletteOpen(true)} />
-      <Navbar
-        cartCount={cartCount}
-        onSearch={() => setPaletteOpen(true)}
-        onCart={() => setCartOpen(true)}
-      />
+      <TopBar />
+      <Navbar siteSettings={siteSettings} />
       
       <main className="pt-8">
-        <GuidesBlock />
+        <GuidesBlock data={guidesData} />
       </main>
 
-      <Footer />
-
-      <CommandPalette
-        open={paletteOpen}
-        onClose={() => setPaletteOpen(false)}
-        onAdd={addToCart}
-      />
-      <CartDrawer
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
-        items={items}
-        onQty={changeQty}
-        onRemove={removeItem}
-      />
+      <Footer siteSettings={siteSettings} />
     </div>
   )
 }

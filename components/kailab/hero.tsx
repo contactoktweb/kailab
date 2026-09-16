@@ -4,20 +4,25 @@ import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
 import type { Product } from './data'
+import { urlFor } from '@/sanity/lib/image'
+import type { HomePageData } from '@/lib/sanity-queries'
 
 type HeroProps = {
   onAdd: (product: Product) => void
   onSearch: () => void
+  heroData?: HomePageData['hero']
 }
 
-export function Hero({ onAdd, onSearch }: HeroProps) {
+export function Hero({ onAdd, onSearch, heroData }: HeroProps) {
+  const bgImage = heroData?.backgroundImage ? urlFor(heroData.backgroundImage).url() : "/kailab-images/hero-image.png"
+
   return (
     <section className="relative flex min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] w-full items-center overflow-hidden border-b border-border">
       
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/kailab-images/hero-image.png"
+          src={bgImage}
           alt="Kailab Laboratorio Background"
           fill
           priority
@@ -51,9 +56,9 @@ export function Hero({ onAdd, onSearch }: HeroProps) {
               transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-balance text-5xl tracking-tight text-white sm:text-6xl lg:text-[5.5rem] lg:leading-[1.1]"
             >
-              <span className="font-light text-white/70">Péptidos de</span><br />
+              <span className="font-light text-white/70">{heroData?.titlePart1 || 'Péptidos de'}</span><br />
               <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
-                Investigación
+                {heroData?.titlePart2 || 'Investigación'}
               </span>
             </motion.h1>
 
@@ -64,7 +69,7 @@ export function Hero({ onAdd, onSearch }: HeroProps) {
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="max-w-xl text-balance text-base font-light leading-relaxed text-gray-400 sm:text-lg"
             >
-              Compuestos científicos de alta pureza para uso profesional. Resultados analíticos verificables con transparencia radical para laboratorios.
+              {heroData?.subtitle || 'Compuestos científicos de alta pureza para uso profesional. Resultados analíticos verificables con transparencia radical para laboratorios.'}
             </motion.p>
 
             {/* Original CTA */}
@@ -75,7 +80,7 @@ export function Hero({ onAdd, onSearch }: HeroProps) {
               className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center"
             >
               <a
-                href="#catalogo"
+                href={heroData?.ctaLink || "#catalogo"}
                 className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-8 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
               >
                 {/* L-Shape Border Left */}
@@ -83,7 +88,7 @@ export function Hero({ onAdd, onSearch }: HeroProps) {
                 {/* L-Shape Border Top */}
                 <div className="absolute left-0 top-0 h-[2px] w-12 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
                 
-                Explora nuestros productos
+                {heroData?.ctaText || 'Explora nuestros productos'}
                 <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
               </a>
             </motion.div>

@@ -4,11 +4,12 @@
 import { MicroBadge } from './badge'
 import { ProductCard } from './product-card'
 import { motion } from 'framer-motion'
-import { products, type Product, type Variant } from './data'
+import type { Product, Variant } from './data'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 
 type ProductGridProps = {
+  sanityProducts: Product[]
   onAdd: (product: Product, variant?: Variant) => void
   title?: string
   subtitle?: string
@@ -18,6 +19,7 @@ type ProductGridProps = {
 }
 
 export function ProductGrid({ 
+  sanityProducts = [],
   onAdd, 
   title = "Explora nuestra selección de péptidos", 
   subtitle = "En KaiLab trabajamos bajo un enfoque serio y ordenado, priorizando la selección cuidadosa de cada compuesto y una gestión responsable de los pedidos.", 
@@ -26,7 +28,7 @@ export function ProductGrid({
   showViewAllLink = false
 }: ProductGridProps) {
   
-  const displayProducts = limit ? products.slice(0, limit) : products;
+  const displayProducts = limit ? sanityProducts.slice(0, limit) : sanityProducts;
 
   return (
     <section id="catalogo" className="border-b border-border bg-white">

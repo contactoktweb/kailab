@@ -31,7 +31,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
   const hasAvailableCOA = hasVariants ? product.variants!.some(v => v.coaStatus === 'available') : product.badges.includes('COA')
   
   // Url base de la familia
-  const productUrl = hasVariants ? `/tienda/${product.categorySlug}/${product.slug}` : `/producto/${product.id}`
+  const productUrl = hasVariants ? `/tienda/${product.categorySlug}/${product.slug}` : `/producto/${product.slug}`
   const linkUrl = selectedVariant ? `${productUrl}/${selectedVariant.slug}` : productUrl
 
   return (

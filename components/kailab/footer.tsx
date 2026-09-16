@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import { WhatsAppIcon, whatsappHref } from './whatsapp'
+import type { SiteSettings } from '@/lib/sanity-queries'
+import { urlFor } from '@/sanity/lib/image'
 
 const columns = [
   {
@@ -16,15 +18,19 @@ const columns = [
   },
 ]
 
-export function Footer() {
+export function Footer({ siteSettings }: { siteSettings?: SiteSettings | null }) {
+  const logoUrl = siteSettings?.logo ? urlFor(siteSettings.logo).url() : "/KAILAB_Logo_White.png"
+  const phoneFormatted = siteSettings?.phone ? siteSettings.phone.replace(/\D/g, '') : null
+  const dynamicWhatsapp = phoneFormatted ? `https://wa.me/57${phoneFormatted}` : whatsappHref
+
   return (
     <footer id="soporte" className="bg-background">
       <div className="mx-auto max-w-7xl px-4 pt-6 pb-10">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_2fr]">
           <div>
             <Image
-              src="/kailab-logo.png"
-              alt="KAILAB"
+              src={logoUrl}
+              alt={siteSettings?.siteName || "KAILAB"}
               width={132}
               height={38}
               className="h-8 w-auto"
@@ -33,7 +39,7 @@ export function Footer() {
               Péptidos de investigación y reactivos de laboratorio liofilizados en Colombia. Uso exclusivo en investigación, no para consumo humano.
             </p>
             <a
-              href={whatsappHref}
+              href={dynamicWhatsapp}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-md border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
@@ -68,9 +74,7 @@ export function Footer() {
 
         <div className="mt-12 border-t border-border pt-8">
           <p className="text-xs leading-relaxed text-muted-foreground">
-            Solo para uso en investigación (RUO / Research Use Only). No apto para consumo humano ni
-            animal, ni para uso diagnóstico o terapéutico. Los productos no han sido evaluados por el
-            INVIMA. La venta está dirigida exclusivamente a investigadores y entidades cualificadas.
+            {siteSettings?.footerNotice || 'Solo para uso en investigación (RUO / Research Use Only). No apto para consumo humano ni animal, ni para uso diagnóstico o terapéutico. Los productos no han sido evaluados por el INVIMA. La venta está dirigida exclusivamente a investigadores y entidades cualificadas.'}
           </p>
           <div className="mt-6 flex flex-col justify-between gap-3 text-xs text-muted-foreground sm:flex-row">
             <div className="flex flex-col gap-2">

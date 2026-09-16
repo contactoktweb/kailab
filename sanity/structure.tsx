@@ -21,6 +21,25 @@ const TagIcon = () => (
     <circle cx="7" cy="7" r="1.5"/>
   </svg>
 )
+const BookIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+  </svg>
+)
+
+const ShieldIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+  </svg>
+)
+
+const HelpCircleIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+)
 
 const PackageIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -46,7 +65,7 @@ export const structure: StructureResolver = (S) =>
             .title('Información de Contacto y Marca')
         ),
       S.listItem()
-        .title('Página de Inicio')
+        .title('Home')
         .icon(HomeIcon)
         .child(
           S.document()
@@ -54,14 +73,57 @@ export const structure: StructureResolver = (S) =>
             .documentId('homePage')
             .title('Contenido del Home')
         ),
-      S.divider(),
-      // Categorías y Productos
       S.listItem()
-        .title('Categorías de Productos')
-        .icon(TagIcon)
-        .child(S.documentTypeList('category').title('Categorías')),
-      S.listItem()
-        .title('Productos / Péptidos')
+        .title('Tienda')
         .icon(PackageIcon)
-        .child(S.documentTypeList('product').title('Productos')),
+        .child(
+          S.list()
+            .title('Gestión de Tienda')
+            .items([
+              S.listItem()
+                .title('Configuración')
+                .icon(GearIcon)
+                .child(
+                  S.document()
+                    .schemaType('storePage')
+                    .documentId('storePage')
+                    .title('Contenido de la Tienda')
+                ),
+              S.listItem()
+                .title('Categorías de Productos')
+                .icon(TagIcon)
+                .child(S.documentTypeList('category').title('Categorías')),
+              S.listItem()
+                .title('Productos / Péptidos')
+                .icon(PackageIcon)
+                .child(S.documentTypeList('product').title('Productos')),
+            ])
+        ),
+      S.listItem()
+        .title('Guía')
+        .icon(BookIcon)
+        .child(
+          S.document()
+            .schemaType('guidesPage')
+            .documentId('guidesPage')
+            .title('Contenido de Guía')
+        ),
+      S.listItem()
+        .title('Calidad')
+        .icon(ShieldIcon)
+        .child(
+          S.document()
+            .schemaType('qualityPage')
+            .documentId('qualityPage')
+            .title('Contenido de Calidad')
+        ),
+      S.listItem()
+        .title('Ayuda')
+        .icon(HelpCircleIcon)
+        .child(
+          S.document()
+            .schemaType('helpPage')
+            .documentId('helpPage')
+            .title('Contenido de Ayuda')
+        ),
     ])
