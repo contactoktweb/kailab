@@ -259,14 +259,7 @@ export function QualityCoa({ data }: { data?: QualityPageData | null }) {
             <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
               {data?.description || 'La pureza no se asume, se demuestra. Cada lote que distribuimos cuenta con un Certificado de Análisis (COA) emitido por laboratorios independientes. Validamos la integridad molecular antes de cualquier despacho.'}
             </p>
-            <div className="mt-8">
-              <a href={data?.linkUrl || "#calidad"} className="group inline-flex items-center gap-2.5 text-base font-bold text-primary transition-all hover:text-primary/80">
-                <span className="border-b-2 border-primary/50 pb-0.5 transition-all group-hover:border-primary">
-                  {data?.linkText || 'Ver reporte de ejemplo'}
-                </span>
-                <Icon icon="lucide:arrow-right" className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
+
           </div>
           
           {/* Holographic / Scanner Box */}
@@ -354,8 +347,8 @@ export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
 
           <div className="lg:col-span-8 lg:row-start-1">
             <div className="flex flex-col border-t border-border/40">
-              {guides.map((guide, i) => (
-                <a href="#guias" key={i} className="group relative flex items-center justify-between border-b border-border/40 py-7 sm:py-8 transition-all duration-500 hover:bg-secondary/10 hover:pl-6">
+              {guidesList.map((guide, i) => (
+                <a href={guide.link || "#guias"} key={i} className="group relative flex items-center justify-between border-b border-border/40 py-7 sm:py-8 transition-all duration-500 hover:bg-secondary/10 hover:pl-6">
                   {/* Left glow indicator */}
                   <div className="absolute left-0 top-0 h-full w-[3px] bg-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                   

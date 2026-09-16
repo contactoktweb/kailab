@@ -132,7 +132,7 @@ export default function CheckoutPage() {
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }))
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const errs = validate(form)
 
@@ -144,10 +144,71 @@ export default function CheckoutPage() {
     }
 
     setLoading(true)
-    setTimeout(() => {
+    try {
+      const reference = `KL-${Date.now()}`
+      const amountInCents = cartTotal * 100
+      const currency = 'COP'
+      const redirectUrl = `${window.location.origin}/pago/resultado`
+      const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY!
+
+      // Obtener firma de integridad del servidor
+      const res = await fetch('/api/wompi/signature', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference, amountInCents, currency }),
+      })
+      if (!res.ok) throw new Error('Error generando firma')
+      const { signature } = await res.json()
+
+      // Crear el form de Wompi programáticamente (evita el error JSX de namespace con ':')
+      // El widget de Wompi escanea el DOM buscando forms con data-wompi-public-key
+      const existingForm = document.getElementById('wompi-hidden-form')
+      if (existingForm) existingForm.remove()
+
+      const wForm = document.createElement('form')
+      wForm.id = 'wompi-hidden-form'
+      wForm.style.display = 'none'
+      wForm.setAttribute('data-wompi-public-key', publicKey)
+      wForm.setAttribute('data-currency', currency)
+      wForm.setAttribute('data-amount-in-cents', String(amountInCents))
+      wForm.setAttribute('data-reference', reference)
+      wForm.setAttribute('data-signature:integrity', signature)
+      wForm.setAttribute('data-redirect-url', redirectUrl)
+      wForm.setAttribute('data-customer-data:email', form.email)
+      wForm.setAttribute('data-customer-data:full-name', `${form.firstName} ${form.lastName}`.trim())
+      if (form.phone) wForm.setAttribute('data-customer-data:phone-number', form.phone)
+
+      const submitBtn = document.createElement('input')
+      submitBtn.type = 'submit'
+      wForm.appendChild(submitBtn)
+      document.body.appendChild(wForm)
+
+      // Cargar el script de Wompi y esperar a que inicialice el widget
+      const loadScript = () =>
+        new Promise<void>((resolve, reject) => {
+          if (document.querySelector('script[src*="checkout.wompi.co/widget.js"]')) {
+            // Script ya cargado — esperar a que procese el nuevo form
+            setTimeout(resolve, 300)
+            return
+          }
+          const script = document.createElement('script')
+          script.src = 'https://checkout.wompi.co/widget.js'
+          script.async = true
+          script.onload = () => setTimeout(resolve, 300)
+          script.onerror = reject
+          document.body.appendChild(script)
+        })
+
+      await loadScript()
+
+      // Wompi convierte el input[type=submit] en su botón; lo buscamos y hacemos click
+      const wompiBtn = wForm.querySelector<HTMLElement>('input[type=submit], button')
+      wompiBtn?.click()
+    } catch (err) {
+      console.error('[Wompi Checkout]', err)
+    } finally {
       setLoading(false)
-      setSubmitted(true)
-    }, 600)
+    }
   }
 
   // Si el carrito está vacío, redirigir
@@ -506,7 +567,7 @@ export default function CheckoutPage() {
         </div>
       </main>
 
-      {/* Footer */}
+{/* Footer */}
       <footer className="border-t border-border mt-12 py-6 text-center font-mono text-xs text-muted-foreground space-y-1">
         <p>© {new Date().getFullYear()} KAILAB · Uso Exclusivo para Investigación (RUO)</p>
         <a
@@ -542,7 +603,7 @@ function WompiButton({ loading, total }: { loading: boolean; total: number }) {
       ) : (
         <>
           <Icon icon="lucide:lock" className="h-5 w-5" />
-          <span>Continuar al pago</span>
+          <span>Ir a pagar</span>
           <span className="ml-1 rounded bg-white/15 px-2 py-0.5 text-[11px] font-bold">
             {formatCOP(total)}
           </span>

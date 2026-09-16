@@ -181,9 +181,11 @@ export function ProductDetailClient({ product, siteSettings }: ProductDetailClie
                   <p className="mt-1 text-sm text-slate-600">
                     Lote <span className="font-mono text-primary font-bold">{product.lot}</span> con pureza de {product.purity}
                   </p>
-                  <a href="#coa" className="mt-2 inline-block text-sm font-medium text-primary hover:underline">
-                    Ver Certificado de Análisis (COA) &rarr;
-                  </a>
+                  {product.badges?.includes('COA') && (
+                    <a href="#coa" className="mt-2 inline-block text-sm font-medium text-primary hover:underline">
+                      Ver Certificado de Análisis (COA) &rarr;
+                    </a>
+                  )}
                 </div>
               </div>
             </motion.div>
