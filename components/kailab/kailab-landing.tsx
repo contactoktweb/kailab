@@ -5,7 +5,7 @@ import { TopBar } from './top-bar'
 import { Navbar } from './navbar'
 import { Hero } from './hero'
 import { ProductGrid } from './product-grid'
-import { WhatsIncluded, CommitmentBlock, TrustIndicators } from './home-blocks'
+import { BenefitsStrip, WhatsIncluded, CommitmentBlock, QualityCoa, GuidesBlock } from './home-blocks'
 import { Footer } from './footer'
 import { useCart } from './cart-context'
 import type { HomePageData, SiteSettings } from '@/lib/sanity-queries'
@@ -19,6 +19,9 @@ interface KailabLandingProps {
 
 export function KailabLanding({ homeData, siteSettings, products }: KailabLandingProps) {
   const { cartCount, addToCart, toggleCart, openSearch } = useCart()
+
+  // Solo mostrar productos públicos en la página de inicio
+  const publicProducts = products.filter(p => p.isPublic)
 
   // Global ⌘K / Ctrl+K to open the command palette
   useEffect(() => {
@@ -42,15 +45,18 @@ export function KailabLanding({ homeData, siteSettings, products }: KailabLandin
           onSearch={openSearch} 
           heroData={homeData?.hero} 
         />
+        <BenefitsStrip />
         <ProductGrid 
-          sanityProducts={products}
+          sanityProducts={publicProducts}
           onAdd={addToCart} 
           limit={4}
-          title={homeData?.featuredProducts?.title || "Productos Destacados"}
-          subtitle={homeData?.featuredProducts?.subtitle || "Nuestra selección destacada de péptidos y compuestos liofilizados de alta pureza."}
+          title="Nuestros productos"
+          subtitle=""
           showViewAllLink={true}
         />
         <WhatsIncluded data={homeData?.whatsIncluded} />
+        <QualityCoa data={homeData?.quality as any} />
+        <GuidesBlock data={homeData?.guides as any} />
         <CommitmentBlock data={homeData?.commitment} />
       </main>
       <Footer siteSettings={siteSettings} />

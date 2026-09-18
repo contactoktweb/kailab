@@ -16,6 +16,7 @@ type ProductGridProps = {
   badgeText?: string
   limit?: number
   showViewAllLink?: boolean
+  isTiendaPage?: boolean
 }
 
 export function ProductGrid({ 
@@ -25,7 +26,8 @@ export function ProductGrid({
   subtitle = "En KaiLab trabajamos bajo un enfoque serio y ordenado, priorizando la selección cuidadosa de cada compuesto y una gestión responsable de los pedidos.", 
   badgeText = "catalog",
   limit,
-  showViewAllLink = false
+  showViewAllLink = false,
+  isTiendaPage = false
 }: ProductGridProps) {
   
   const displayProducts = limit ? sanityProducts.slice(0, limit) : sanityProducts;
@@ -35,15 +37,22 @@ export function ProductGrid({
       <div className="mx-auto max-w-7xl px-4 py-8">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
-            <motion.h2 
+            <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-              className="text-balance text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl"
             >
-              {title}
-            </motion.h2>
+              {isTiendaPage ? (
+                <h1 className="text-balance text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+                  {title}
+                </h1>
+              ) : (
+                <h2 className="text-balance text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+                  {title}
+                </h2>
+              )}
+            </motion.div>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

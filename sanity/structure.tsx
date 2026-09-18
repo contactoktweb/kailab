@@ -57,6 +57,7 @@ export const structure: StructureResolver = (S) =>
       // Singleton de Configuración Global
       S.listItem()
         .title('Configuración Global')
+        .id('siteSettings')
         .icon(GearIcon)
         .child(
           S.document()
@@ -66,6 +67,7 @@ export const structure: StructureResolver = (S) =>
         ),
       S.listItem()
         .title('Home')
+        .id('homePage')
         .icon(HomeIcon)
         .child(
           S.document()
@@ -75,6 +77,7 @@ export const structure: StructureResolver = (S) =>
         ),
       S.listItem()
         .title('Tienda')
+        .id('storePageWrapper')
         .icon(PackageIcon)
         .child(
           S.list()
@@ -82,6 +85,7 @@ export const structure: StructureResolver = (S) =>
             .items([
               S.listItem()
                 .title('Configuración')
+                .id('storePage')
                 .icon(GearIcon)
                 .child(
                   S.document()
@@ -101,6 +105,7 @@ export const structure: StructureResolver = (S) =>
         ),
       S.listItem()
         .title('Guía')
+        .id('guidesPage')
         .icon(BookIcon)
         .child(
           S.document()
@@ -110,6 +115,7 @@ export const structure: StructureResolver = (S) =>
         ),
       S.listItem()
         .title('Calidad')
+        .id('qualityPage')
         .icon(ShieldIcon)
         .child(
           S.document()
@@ -119,6 +125,7 @@ export const structure: StructureResolver = (S) =>
         ),
       S.listItem()
         .title('Ayuda')
+        .id('helpPage')
         .icon(HelpCircleIcon)
         .child(
           S.document()

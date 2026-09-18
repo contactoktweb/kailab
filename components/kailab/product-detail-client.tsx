@@ -85,7 +85,7 @@ export function ProductDetailClient({ product, siteSettings }: ProductDetailClie
   return (
     <div className="min-h-[100dvh] bg-background pb-24 md:pb-0">
       <TopBar onSearch={openSearch} />
-      <Navbar cartCount={cartCount} onSearch={openSearch} onCart={toggleCart} siteSettings={siteSettings} />
+      <Navbar siteSettings={siteSettings} />
 
       <main className="mx-auto max-w-5xl px-4 lg:px-8 py-8">
         <div className="mb-6">

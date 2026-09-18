@@ -6,19 +6,44 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import type { HomePageData, GuidesPageData, QualityPageData } from '@/lib/sanity-queries'
 
+export function BenefitsStrip() {
+  return (
+    <div className="w-full border-y border-border bg-background py-3 shadow-sm">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-3 px-4 sm:flex-row sm:gap-6 lg:px-8">
+        
+        <div className="flex items-center gap-2">
+          <Icon icon="lucide:droplets" className="h-4 w-4 text-blue-400" />
+          <p className="text-center text-xs font-semibold text-slate-200 sm:text-left sm:text-sm">
+            Agua bacteriostática incluida <span className="mx-1 text-slate-400">·</span> Envío gratis a toda Colombia
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Icon icon="lucide:flask-conical" className="h-4 w-4 text-slate-500" />
+          <p className="text-center text-[11px] font-medium text-slate-400 sm:text-right sm:text-xs">
+            Exclusivamente para investigación. No destinado a uso humano ni veterinario.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
 export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }) {
   const defaultItems = [
-    { name: 'Solución Reconstituyente', desc: 'Agua bacteriostática grado USP (10ml o 30ml).', icon: 'lucide:droplets' },
-    { name: 'Instrumental Analítico', desc: 'Jeringas estériles U-100 para dosificación precisa.', icon: 'lucide:syringe' },
-    { name: 'Kit de Asepsia', desc: 'Almohadillas impregnadas en alcohol isopropílico (70%).', icon: 'lucide:shield-plus' },
-    { name: 'Cadena de Custodia', desc: 'Estuche térmico protector de poliestireno (según envío).', icon: 'lucide:box' }
+    { name: 'Agua bacteriostática', desc: '', icon: 'lucide:droplets', link: undefined },
+    { name: 'Toallitas con alcohol', desc: '', icon: 'lucide:shield-plus', link: undefined },
+    { name: 'Acceso a la guía en línea', desc: '', icon: 'lucide:book-open', link: '#guia-manejo' },
+    { name: 'Envío gratis a toda Colombia, en empaque discreto', desc: '', icon: 'lucide:package-check', link: undefined }
   ]
 
-  const items = data?.items?.map((item, index) => ({
+  const items = data?.items?.length ? data.items.map((item, index) => ({
     name: item.name || defaultItems[index]?.name || '',
     desc: item.desc || defaultItems[index]?.desc || '',
-    icon: defaultItems[index]?.icon || 'lucide:check-circle'
-  })) || defaultItems
+    icon: defaultItems[index]?.icon || 'lucide:check-circle',
+    link: defaultItems[index]?.link
+  })) : defaultItems
 
   return (
     <motion.section 
@@ -26,7 +51,7 @@ export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-      className="relative overflow-hidden border-b border-border bg-secondary/5 py-14 sm:py-16"
+      className="relative overflow-hidden border-b border-border bg-secondary/5 py-8 sm:py-10"
     >
       
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -40,15 +65,13 @@ export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }
                </span>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
-              {data?.title ? (
-                <div dangerouslySetInnerHTML={{ __html: data.title.replace(' ', '<br/>') }} />
-              ) : (
-                <>Equipamiento<br/>Incluido</>
-              )}
+              {data?.title || 'Incluido con tu compra'}
             </h2>
-            <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
-              {data?.description || 'Cada vial o kit de investigación se despacha con la dotación completa requerida para su reconstitución segura bajo estrictas normas de laboratorio.'}
-            </p>
+            {data?.description && (
+              <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
+                {data.description}
+              </p>
+            )}
             <div className="mt-8 hidden flex-col gap-2 lg:flex">
               <div className="h-px w-16 bg-primary/40"></div>
               <div className="h-px w-10 bg-primary/20"></div>
@@ -57,25 +80,38 @@ export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }
 
           <div className="lg:col-span-8">
             <div className="grid gap-5 sm:grid-cols-2">
-              {items.map((item, i) => (
-                <div key={i} className="group relative overflow-hidden bg-background p-7 sm:p-8 transition-all duration-500 hover:-translate-y-1 border border-border/40 shadow-sm hover:shadow-md">
-                  {/* Decorative asymmetric borders */}
-                  <div className="absolute left-0 top-0 h-full w-[3px] bg-border transition-colors duration-500 group-hover:bg-primary"></div>
-                  <div className="absolute left-0 top-0 h-[3px] w-10 bg-border transition-all duration-500 group-hover:w-full group-hover:bg-primary/50"></div>
-                  
-                  <div className="absolute -right-4 -top-4 opacity-[0.02] transition-all duration-500 group-hover:-rotate-12 group-hover:scale-150 group-hover:text-primary group-hover:opacity-[0.04]">
-                    <Icon icon={item.icon} className="h-36 w-36 [&_*]:!stroke-[0.25px]" />
-                  </div>
-                  
-                  <div className="relative z-10">
-                    <div className="mb-5 flex h-11 w-11 items-center justify-center border border-primary/30 text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Icon icon={item.icon} className="h-5 w-5" />
+              {items.map((item, i) => {
+                const CardWrapper = item.link ? Link : 'div'
+                return (
+                  <CardWrapper 
+                    key={i} 
+                    href={item.link as any}
+                    className="group relative flex flex-col justify-center overflow-hidden bg-background p-7 sm:p-8 transition-all duration-500 hover:-translate-y-1 border border-border/40 shadow-sm hover:shadow-md h-full cursor-pointer"
+                  >
+                    {/* Decorative asymmetric borders */}
+                    <div className="absolute left-0 top-0 h-full w-[3px] bg-border transition-colors duration-500 group-hover:bg-primary"></div>
+                    <div className="absolute left-0 top-0 h-[3px] w-10 bg-border transition-all duration-500 group-hover:w-full group-hover:bg-primary/50"></div>
+                    
+                    <div className="absolute -right-4 -top-4 opacity-[0.02] transition-all duration-500 group-hover:-rotate-12 group-hover:scale-150 group-hover:text-primary group-hover:opacity-[0.04]">
+                      <Icon icon={item.icon} className="h-36 w-36 [&_*]:!stroke-[0.25px]" />
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">{item.name}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+                    
+                    <div className="relative z-10 flex items-center gap-4">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-primary/30 text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Icon icon={item.icon} className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-base sm:text-lg font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
+                          {item.name}
+                        </h3>
+                        {item.desc && (
+                          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+                        )}
+                      </div>
+                    </div>
+                  </CardWrapper>
+                )
+              })}
             </div>
           </div>
           
@@ -86,19 +122,25 @@ export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }
 }
 
 export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
-
-  const defaultFaq = [
-    { q: '¿A qué ciudades realizan envíos?', a: 'Realizamos envíos a nivel nacional, cubriendo las principales ciudades y municipios de Colombia.' },
-    { q: '¿Cuáles son los tiempos de entrega?', a: 'En las principales ciudades la entrega suele hacerse al siguiente día hábil. En otras ciudades y municipios, entre 2 y 3 días hábiles.' },
-    { q: '¿Los envíos son discretos?', a: 'Sí. Todos los pedidos se despachan en empaque discreto y profesional, sin referencias visibles al contenido ni a la tienda.' },
-    { q: '¿Cómo puedo hacer seguimiento a mi pedido?', a: 'Una vez confirmado el envío, recibirás la información de seguimiento para monitorear el estado de tu pedido hasta la entrega.' }
+  // Using explicit JSX for answers to allow embedded links as requested by the client
+  const faqItems = [
+    { 
+      q: '¿Hacen envíos a toda Colombia?', 
+      a: <>Sí. El envío es gratis a toda Colombia.</> 
+    },
+    { 
+      q: '¿Dónde consulto el certificado de un producto?', 
+      a: <>En la página del producto o en <Link href="/calidad" className="font-semibold text-primary hover:underline">Calidad</Link>. Revisa la presentación y el lote indicados en el informe. Si no hay un certificado publicado, verás «Certificado pendiente».</> 
+    },
+    { 
+      q: '¿Dónde encuentro la información de cada presentación?', 
+      a: <>En la página del producto. Selecciona una presentación para consultar su precio, disponibilidad y documentación correspondiente.</> 
+    },
+    { 
+      q: '¿Cómo puedo contactar a KAILAB?', 
+      a: <>Escríbenos por WhatsApp al <a href="https://wa.me/573023041412" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">+57 302 304 1412</a> o a <a href="mailto:info@kailab.com.co" className="font-semibold text-primary hover:underline">info@kailab.com.co</a>.</> 
+    }
   ]
-
-  const items = data?.faq?.map(item => ({
-    q: item.question || '',
-    a: item.answer || ''
-  })) || defaultFaq
 
   return (
     <motion.section 
@@ -145,55 +187,25 @@ export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] })
 
           {/* Bottom Section: Shipping FAQ */}
           <div className="lg:col-span-12 -mt-4 lg:-mt-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-              <div className="hidden sm:block h-px bg-gray-200/80 flex-1 mr-6"></div>
-              <div className="text-left sm:text-right">
-                <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">
-                  {data?.title2 || 'Envíos rápidos y seguros'}
-                </h3>
-                <p className="text-sm text-slate-500 mt-1">
-                  {data?.subtitle2 || 'Entregas eficientes a nivel nacional, con empaque profesional.'}
-                </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-t border-gray-200/80 pt-10">
+              <div className="text-left">
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">
+                  Preguntas frecuentes
+                </h2>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-              {items.map((item, i) => {
-                const isOpen = openIndex === i
-                return (
-                  <div 
-                    key={i} 
-                    className={`relative overflow-hidden rounded-sm border transition-all duration-300 ${
-                      isOpen ? 'border-[#1959D7]/40 bg-white shadow-sm' : 'border-gray-200/80 bg-white'
-                    }`}
-                  >
-                    <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7]" />
-                    <button onClick={() => setOpenIndex(isOpen ? null : i)} className="flex w-full items-center justify-between px-6 py-5 text-left focus:outline-none">
-                      <span className={`font-semibold tracking-tight transition-colors text-[15px] ${isOpen ? 'text-[#1959D7]' : 'text-slate-800'}`}>
-                        {item.q}
-                      </span>
-                      <span className={`ml-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-sm transition-all duration-300 ${isOpen ? 'bg-[#1959D7] text-white rotate-180' : 'bg-gray-100 text-gray-500'}`}>
-                        <Icon icon="lucide:chevron-down" className="h-4 w-4" />
-                      </span>
-                    </button>
-                    <AnimatePresence>
-                      {isOpen && (
-                        <motion.div 
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: 'easeInOut' }}
-                          className="overflow-hidden"
-                        >
-                          <div className="border-t border-gray-100 px-6 pb-6 pt-4">
-                            <p className="text-[14px] leading-relaxed text-slate-600">{item.a}</p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 items-start">
+              {faqItems.map((item, i) => (
+                <div key={i} className="flex flex-col">
+                  <h3 className="text-lg font-bold tracking-tight text-slate-900">
+                    {item.q}
+                  </h3>
+                  <div className="mt-3 text-[15px] leading-relaxed text-slate-600">
+                    {item.a}
                   </div>
-                )
-              })}
+                </div>
+              ))}
             </div>
 
             <div className="mt-4 w-full flex flex-col lg:flex-row lg:items-center justify-between gap-4 rounded-sm bg-gradient-to-r from-blue-50/80 to-[#eef4ff] p-4 text-slate-800 border border-blue-100/50 shadow-sm">
@@ -238,7 +250,7 @@ export function QualityCoa({ data }: { data?: QualityPageData | null }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-      className="relative overflow-hidden border-b border-border bg-secondary/5 py-14 sm:py-16"
+      className="relative overflow-hidden border-b border-border bg-secondary/5 py-8 sm:py-10"
     >
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -252,13 +264,21 @@ export function QualityCoa({ data }: { data?: QualityPageData | null }) {
                </span>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
-              {data?.title?.split('\n').map((line, i) => (
-                <span key={i}>{line}<br/></span>
-              )) || <>Calidad y COA<br/>Por Lote</>}
+              {data?.title || 'Calidad que puedes consultar'}
             </h2>
             <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
-              {data?.description || 'La pureza no se asume, se demuestra. Cada lote que distribuimos cuenta con un Certificado de Análisis (COA) emitido por laboratorios independientes. Validamos la integridad molecular antes de cualquier despacho.'}
+              {data?.description || 'Un certificado de análisis (COA) muestra los resultados de una muestra evaluada por un laboratorio. Consulta los informes disponibles y revisa el producto, la presentación y el lote de cada uno.'}
             </p>
+            
+            <div className="mt-8">
+              <Link
+                href="/calidad"
+                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-sm bg-[#1959D7] px-6 py-3 font-mono text-xs font-bold tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-[#1959D7]/90 active:scale-95"
+              >
+                Ver certificados
+                <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
 
           </div>
           
@@ -307,12 +327,8 @@ export function QualityCoa({ data }: { data?: QualityPageData | null }) {
 
 export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
   const guidesList = data?.guidesList || [
-    { title: 'Calculadora de Reconstitución', desc: 'Herramienta interactiva para determinar concentraciones exactas según el volumen de disolvente.', icon: 'lucide:calculator', link: '#guias' },
-    { title: 'Guía de Conservación Térmica', desc: 'Protocolos de almacenamiento en cadena de frío para preservación de enlaces peptídicos.', icon: 'lucide:thermometer-snowflake', link: '#guias' },
-    { title: 'Interpretación de HPLC-MS', desc: 'Manual técnico para leer e interpretar certificados de espectrometría de masas y pureza.', icon: 'lucide:bar-chart-2', link: '#guias' }
+    { title: 'Cómo leer un certificado de análisis', desc: 'Aprende a ubicar el producto, el lote y los resultados en un informe real, y a distinguir cantidad de pureza.', icon: 'lucide:file-search', link: '/guias/#leer-certificado' }
   ]
-
-  const defaultIcons = ['lucide:calculator', 'lucide:thermometer-snowflake', 'lucide:bar-chart-2']
 
   return (
     <motion.section 
@@ -320,7 +336,7 @@ export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-      className="relative overflow-hidden border-b border-border bg-background py-14 sm:py-16"
+      className="relative overflow-hidden border-b border-border bg-background py-8 sm:py-10"
     >
       {/* Tech line */}
       <div className="absolute left-1/2 top-0 h-px w-[100vw] -ml-[50vw] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
@@ -334,10 +350,10 @@ export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
                <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Recursos Técnicos</span>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight lg:text-right">
-              Protocolos<br/>RUO
+              {data?.title || 'Guías prácticas'}
             </h2>
             <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground lg:text-right">
-              Documentación y herramientas de análisis diseñadas exclusivamente para uso en investigación de laboratorio.
+              {data?.description || 'Explicaciones paso a paso para entender la información de cada producto.'}
             </p>
             <div className="mt-8 hidden flex-col items-end gap-2 lg:flex">
               <div className="h-px w-16 bg-primary/40"></div>

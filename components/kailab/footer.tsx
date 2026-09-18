@@ -1,22 +1,8 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { WhatsAppIcon, whatsappHref } from './whatsapp'
 import type { SiteSettings } from '@/lib/sanity-queries'
 import { urlFor } from '@/sanity/lib/image'
-
-const columns = [
-  {
-    title: 'Catálogo',
-    links: ['Péptidos', 'Nootrópicos', 'Metabólico', 'Novedades'],
-  },
-  {
-    title: 'Recursos',
-    links: ['COA por lote', 'Guías de manejo', 'Referencias clínicas', 'Trazabilidad'],
-  },
-  {
-    title: 'Soporte',
-    links: ['Preguntas frecuentes', 'Envíos y tiempos', 'Política de devoluciones'],
-  },
-]
 
 export function Footer({ siteSettings }: { siteSettings?: SiteSettings | null }) {
   const logoUrl = siteSettings?.logo ? urlFor(siteSettings.logo).url() : "/KAILAB_Logo_White.png"
@@ -36,49 +22,51 @@ export function Footer({ siteSettings }: { siteSettings?: SiteSettings | null })
               className="h-8 w-auto"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Péptidos de investigación y reactivos de laboratorio liofilizados en Colombia. Uso exclusivo en investigación, no para consumo humano.
+              {siteSettings?.description || 'Información clara sobre péptidos para investigación.'}
             </p>
-            <a
-              href={dynamicWhatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-md border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
-              Soporte por WhatsApp
-            </a>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
-            {columns.map((col) => (
-              <nav key={col.title} aria-label={col.title}>
-                <h3 className="text-xs uppercase tracking-widest text-muted-foreground">
-                  {col.title}
-                </h3>
-                <ul className="mt-4 space-y-2.5">
-                  {col.links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
-                        className="text-sm text-foreground/80 transition-colors hover:text-brand-soft"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ))}
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-2">
+            <nav aria-label="Explora">
+              <h2 className="text-sm font-bold tracking-widest text-foreground">
+                Explora
+              </h2>
+              <ul className="mt-4 space-y-2.5">
+                <li><Link href="/tienda" className="text-sm text-muted-foreground transition-colors hover:text-primary">Tienda</Link></li>
+                <li><Link href="/guias" className="text-sm text-muted-foreground transition-colors hover:text-primary">Guías</Link></li>
+                <li><Link href="/calidad" className="text-sm text-muted-foreground transition-colors hover:text-primary">Calidad</Link></li>
+                <li><Link href="/ayuda" className="text-sm text-muted-foreground transition-colors hover:text-primary">Ayuda</Link></li>
+              </ul>
+            </nav>
+
+            <nav aria-label="Contacto">
+              <h2 className="text-sm font-bold tracking-widest text-foreground">
+                Contacto
+              </h2>
+              <ul className="mt-4 space-y-2.5">
+                <li>
+                  <a href={dynamicWhatsapp} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground transition-colors hover:text-primary inline-flex items-center gap-2">
+                    <WhatsAppIcon className="h-4 w-4" />
+                    Escribir por WhatsApp
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:info@kailab.com.co" className="text-sm text-muted-foreground transition-colors hover:text-primary">
+                    info@kailab.com.co
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
 
         <div className="mt-12 border-t border-border pt-8">
           <p className="text-xs leading-relaxed text-muted-foreground">
-            {siteSettings?.footerNotice || 'Solo para uso en investigación (RUO / Research Use Only). No apto para consumo humano ni animal, ni para uso diagnóstico o terapéutico. Los productos no han sido evaluados por el INVIMA. La venta está dirigida exclusivamente a investigadores y entidades cualificadas.'}
+            {siteSettings?.footerNotice || 'Exclusivamente para investigación. No destinado a uso humano ni veterinario.'}
           </p>
           <div className="mt-6 flex flex-col justify-between gap-3 text-xs text-muted-foreground sm:flex-row">
             <div className="flex flex-col gap-2">
-              <span>© {new Date().getFullYear()} KAILAB · Bogotá, Colombia</span>
+              <span>© {new Date().getFullYear()} KAILAB</span>
               <a
                 href="https://www.kytcode.lat"
                 target="_blank"

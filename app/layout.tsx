@@ -14,10 +14,15 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'KAILAB — Compuestos de investigación con trazabilidad y COA por lote',
+  title: 'KAILAB | Péptidos para investigación en Colombia',
   description:
-    'Tienda de compuestos para investigación (RUO) con Certificado de Análisis por lote, trazabilidad completa, evidencia clínica referenciada y logística local en Colombia.',
+    'Explora péptidos de investigación, consulta sus presentaciones y los certificados de análisis disponibles. Envío gratis a toda Colombia.',
   generator: 'v0.app',
+  openGraph: {
+    title: 'KAILAB | Péptidos para investigación en Colombia',
+    description: 'Explora péptidos de investigación, consulta sus presentaciones y los certificados de análisis disponibles. Envío gratis a toda Colombia.',
+    images: ['/03 — Banners y gráficos opcionales-20260918T175123Z-1-001/03 — Banners y gráficos opcionales/KAILAB_Product-Lineup_6-Vials_Banner_White.png'],
+  },
   icons: {
     icon: '/KAILAB_Favicon_512.svg',
     apple: '/apple-icon.png',

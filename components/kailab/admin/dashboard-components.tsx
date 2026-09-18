@@ -13,35 +13,101 @@ import {
   SupabasePayment,
   PaymentAttempt,
   CommercialSummary,
-  formatCOP
+  formatCOP,
 } from '@/lib/admin-data'
 import { AdminService } from '@/lib/admin-service'
 
-// --- BADGE DE ORIGEN ARQUITECTÓNICO ---
+// ─────────────────────────────────────────────────────────────
+// PAGES CONFIG
+// ─────────────────────────────────────────────────────────────
+const SANITY_BASE = '/admin'
+
+const CONTENT_PAGES = [
+  {
+    label: 'Inicio',
+    description: 'Hero, secciones principales y llamadas a la acción del home.',
+    icon: 'lucide:house',
+    iconBg: 'bg-blue-50',
+    iconColor: 'text-blue-600',
+    href: `${SANITY_BASE}/intent/edit/id=homePage;type=homePage`,
+    tag: 'Singleton',
+  },
+  {
+    label: 'Tienda / Productos',
+    description: 'Configuración de la página de tienda, catálogo de péptidos y categorías.',
+    icon: 'lucide:shopping-bag',
+    iconBg: 'bg-emerald-50',
+    iconColor: 'text-emerald-600',
+    href: `${SANITY_BASE}/intent/edit/id=storePage;type=storePage`,
+    tag: 'Singleton',
+  },
+  {
+    label: 'Guía',
+    description: 'Contenido educativo, protocolos y guías de uso de productos.',
+    icon: 'lucide:book-open',
+    iconBg: 'bg-violet-50',
+    iconColor: 'text-violet-600',
+    href: `${SANITY_BASE}/intent/edit/id=guidesPage;type=guidesPage`,
+    tag: 'Singleton',
+  },
+  {
+    label: 'Calidad',
+    description: 'Página de calidad, certificaciones y estándares del laboratorio.',
+    icon: 'lucide:shield-check',
+    iconBg: 'bg-teal-50',
+    iconColor: 'text-teal-600',
+    href: `${SANITY_BASE}/intent/edit/id=qualityPage;type=qualityPage`,
+    tag: 'Singleton',
+  },
+  {
+    label: 'Ayuda',
+    description: 'Preguntas frecuentes, soporte y recursos de ayuda para clientes.',
+    icon: 'lucide:circle-help',
+    iconBg: 'bg-amber-50',
+    iconColor: 'text-amber-600',
+    href: `${SANITY_BASE}/intent/edit/id=helpPage;type=helpPage`,
+    tag: 'Singleton',
+  },
+  {
+    label: 'Configuración Global',
+    description: 'Información de contacto, marca, redes sociales y datos generales del sitio.',
+    icon: 'lucide:settings-2',
+    iconBg: 'bg-gray-50',
+    iconColor: 'text-gray-600',
+    href: `${SANITY_BASE}/intent/edit/id=siteSettings;type=siteSettings`,
+    tag: 'Global',
+  },
+]
+
+// ─────────────────────────────────────────────────────────────
+// SOURCE BADGE
+// ─────────────────────────────────────────────────────────────
 export function SourceBadge({ source }: { source: 'Sanity' | 'Supabase' }) {
   if (source === 'Sanity') {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[11px] font-bold text-emerald-400">
-        <Icon icon="lucide:layers" className="h-3.5 w-3.5" />
-        Sanity CMS
+      <span className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
+        <Icon icon="lucide:book-open" className="h-3 w-3" />
+        Gestor de Contenido
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 px-2.5 py-0.5 font-mono text-[11px] font-bold text-purple-400">
-      <Icon icon="lucide:database" className="h-3.5 w-3.5" />
-      PostgreSQL / Supabase
+    <span className="inline-flex items-center gap-1 rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-700">
+      <Icon icon="lucide:server" className="h-3 w-3" />
+      Base de Datos
     </span>
   )
 }
 
-// --- TARJETAS KPI SUPERIORES ---
+// ─────────────────────────────────────────────────────────────
+// KPI CARDS
+// ─────────────────────────────────────────────────────────────
 export function AdminKpiCards({
   summary,
   ordersCount,
   lotsCount,
   coasCount,
-  customersCount
+  customersCount,
 }: {
   summary: CommercialSummary
   ordersCount: number
@@ -49,88 +115,99 @@ export function AdminKpiCards({
   coasCount: number
   customersCount: number
 }) {
+  const cards = [
+    {
+      label: 'Ventas Totales',
+      value: formatCOP(summary.totalSalesCOP),
+      trend: '+14.2% este mes',
+      trendUp: true as boolean | null,
+      icon: 'lucide:banknote',
+      iconBg: 'bg-emerald-50',
+      iconColor: 'text-emerald-600',
+    },
+    {
+      label: 'Pedidos Activos',
+      value: String(ordersCount),
+      trend: `Ticket prom. ${formatCOP(summary.averageTicketCOP)}`,
+      trendUp: null as boolean | null,
+      icon: 'lucide:package',
+      iconBg: 'bg-blue-50',
+      iconColor: 'text-blue-600',
+    },
+    {
+      label: 'Clientes',
+      value: String(customersCount),
+      trend: `Conversión: ${summary.conversionRate}%`,
+      trendUp: true as boolean | null,
+      icon: 'lucide:users-round',
+      iconBg: 'bg-violet-50',
+      iconColor: 'text-violet-600',
+    },
+    {
+      label: 'Lotes de Productos',
+      value: String(lotsCount),
+      trend: 'Trazabilidad activa',
+      trendUp: true as boolean | null,
+      icon: 'lucide:flask-conical',
+      iconBg: 'bg-amber-50',
+      iconColor: 'text-amber-600',
+    },
+    {
+      label: 'Certificados COA',
+      value: String(coasCount),
+      trend: 'Ensayos HPLC-MS',
+      trendUp: null as boolean | null,
+      icon: 'lucide:file-check-2',
+      iconBg: 'bg-teal-50',
+      iconColor: 'text-teal-600',
+    },
+  ]
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-      
-      <div className="relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground">Ventas Totales</span>
-          <SourceBadge source="Supabase" />
+      {cards.map((card) => (
+        <div
+          key={card.label}
+          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div className="flex items-start justify-between mb-4">
+            <div className={`h-10 w-10 rounded-lg ${card.iconBg} flex items-center justify-center`}>
+              <Icon icon={card.icon} className={`h-5 w-5 ${card.iconColor}`} />
+            </div>
+            <Icon icon="lucide:more-horizontal" className="h-4 w-4 text-gray-300" />
+          </div>
+          <p className="text-xs text-gray-500 mb-1">{card.label}</p>
+          <p className="text-2xl font-bold text-gray-900 leading-none">{card.value}</p>
+          <p
+            className={`mt-2 text-xs flex items-center gap-1 ${
+              card.trendUp === true
+                ? 'text-emerald-600'
+                : card.trendUp === false
+                ? 'text-rose-500'
+                : 'text-gray-400'
+            }`}
+          >
+            {card.trendUp === true && <Icon icon="lucide:trending-up" className="h-3 w-3" />}
+            {card.trendUp === false && <Icon icon="lucide:trending-down" className="h-3 w-3" />}
+            {card.trendUp === null && <Icon icon="lucide:minus" className="h-3 w-3" />}
+            {card.trend}
+          </p>
         </div>
-        <div className="mt-3 text-2xl font-bold font-mono text-foreground">
-          {formatCOP(summary.totalSalesCOP)}
-        </div>
-        <div className="mt-1 flex items-center gap-1 text-xs text-emerald-400">
-          <Icon icon="lucide:trending-up" className="h-3.5 w-3.5" />
-          <span>+14.2% este mes</span>
-        </div>
-      </div>
-
-      <div className="relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground">Pedidos Activos</span>
-          <SourceBadge source="Supabase" />
-        </div>
-        <div className="mt-3 text-2xl font-bold font-mono text-foreground">
-          {ordersCount}
-        </div>
-        <div className="mt-1 text-xs text-muted-foreground">
-          Ticket Promedio: <span className="font-mono font-semibold text-foreground">{formatCOP(summary.averageTicketCOP)}</span>
-        </div>
-      </div>
-
-      <div className="relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground">Clientes</span>
-          <SourceBadge source="Supabase" />
-        </div>
-        <div className="mt-3 text-2xl font-bold font-mono text-foreground">
-          {customersCount}
-        </div>
-        <div className="mt-1 text-xs text-muted-foreground">
-          Tasa Conversión: <span className="font-mono font-semibold text-primary">{summary.conversionRate}%</span>
-        </div>
-      </div>
-
-      <div className="relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground">Lotes de Productos</span>
-          <SourceBadge source="Sanity" />
-        </div>
-        <div className="mt-3 text-2xl font-bold font-mono text-foreground">
-          {lotsCount}
-        </div>
-        <div className="mt-1 text-xs text-emerald-400 flex items-center gap-1">
-          <Icon icon="lucide:check-circle" className="h-3.5 w-3.5" />
-          <span>Trazabilidad Activa</span>
-        </div>
-      </div>
-
-      <div className="relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground">Certificados COA</span>
-          <SourceBadge source="Sanity" />
-        </div>
-        <div className="mt-3 text-2xl font-bold font-mono text-foreground">
-          {coasCount}
-        </div>
-        <div className="mt-1 text-xs text-muted-foreground">
-          Ensayos HPLC-MS validados
-        </div>
-      </div>
-
+      ))}
     </div>
   )
 }
 
-// --- GESTOR DE CONTENIDO SANITY CMS ---
+// ─────────────────────────────────────────────────────────────
+// GESTOR DE CONTENIDO (SANITY)
+// ─────────────────────────────────────────────────────────────
 export function SanityCmsModule({
   products,
   presentations,
   contentBlocks,
   lots,
   coas,
-  onRefresh
+  onRefresh,
 }: {
   products: SanityProduct[]
   presentations: SanityPresentation[]
@@ -154,94 +231,91 @@ export function SanityCmsModule({
     onRefresh()
   }
 
+  const SUB_TABS = [
+    { id: 'products' as const, label: 'Productos', count: products.length },
+    { id: 'presentations' as const, label: 'Presentaciones', count: presentations.length },
+    { id: 'content' as const, label: 'Contenido', count: contentBlocks.length },
+    { id: 'lots' as const, label: 'Lotes', count: lots.length },
+    { id: 'coas' as const, label: 'COAs', count: coas.length },
+  ]
+
   return (
-    <div className="space-y-6">
-      
-      {/* Toast Notification */}
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+
+      {/* Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-md border border-primary/40 bg-card p-4 font-mono text-sm font-semibold text-primary shadow-lg animate-in fade-in slide-in-from-bottom-5">
-          <Icon icon="lucide:check-circle-2" className="h-5 w-5 text-primary" />
-          <span>{toastMessage}</span>
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-800 shadow-xl">
+          <Icon icon="lucide:check-circle-2" className="h-4 w-4 text-emerald-500 shrink-0" />
+          {toastMessage}
         </div>
       )}
 
-      {/* Header del Módulo Sanity */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-foreground">Gestor de Contenido & Catálogo</h2>
-            <SourceBadge source="Sanity" />
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between px-6 py-5 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+            <Icon icon="lucide:book-open" className="h-4.5 w-4.5 text-emerald-600" />
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Administración centralizada de productos, presentaciones, lotes y certificados de análisis.
-          </p>
+          <div>
+            <h2 className="text-base font-bold text-gray-900">Gestor de Contenido &amp; Catálogo</h2>
+            <p className="text-xs text-gray-500">Productos, presentaciones, lotes y certificados de análisis</p>
+          </div>
         </div>
 
-        {/* Sub Pestañas */}
-        <div className="flex flex-wrap gap-2 rounded-md border border-border bg-secondary/20 p-1">
-          <button
-            onClick={() => setSubTab('products')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'products' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Productos ({products.length})
-          </button>
-          <button
-            onClick={() => setSubTab('presentations')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'presentations' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Presentaciones ({presentations.length})
-          </button>
-          <button
-            onClick={() => setSubTab('content')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'content' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Contenido ({contentBlocks.length})
-          </button>
-          <button
-            onClick={() => setSubTab('lots')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'lots' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Lotes ({lots.length})
-          </button>
-          <button
-            onClick={() => setSubTab('coas')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'coas' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            COAs ({coas.length})
-          </button>
+        {/* Sub-tabs */}
+        <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-lg shrink-0">
+          {SUB_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setSubTab(tab.id)}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all ${
+                subTab === tab.id
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {tab.label}
+              <span className={`ml-1.5 text-[10px] ${subTab === tab.id ? 'text-gray-500' : 'text-gray-400'}`}>
+                {tab.count}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* VISTA PRODUCTOS SANITY */}
+      {/* PRODUCTOS */}
       {subTab === 'products' && (
-        <div className="overflow-x-auto rounded-md border border-border bg-card">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="p-4">Producto</th>
-                <th className="p-4">Categoría</th>
-                <th className="p-4">Pureza</th>
-                <th className="p-4">Lote Asociado</th>
-                <th className="p-4">Stock Total</th>
-                <th className="p-4">Estado COA</th>
-                <th className="p-4 text-right">Acción</th>
+                {['Producto', 'Categoría', 'Pureza', 'Lote Asociado', 'Stock Total', 'Estado COA', ''].map((h) => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/60">
+            <tbody className="divide-y divide-gray-50">
               {products.map((p) => (
-                <tr key={p.id} className="hover:bg-secondary/10 transition-colors">
-                  <td className="p-4 font-semibold text-foreground font-mono">{p.title}</td>
-                  <td className="p-4 text-muted-foreground">{p.category}</td>
-                  <td className="p-4 font-mono font-medium text-emerald-400">{p.purity}</td>
-                  <td className="p-4 font-mono text-xs text-muted-foreground">{p.lotNumber}</td>
-                  <td className="p-4 font-mono">{p.stockTotal} viales</td>
-                  <td className="p-4">
-                    <span className={`inline-flex items-center gap-1 rounded-sm px-2 py-0.5 font-mono text-xs font-bold ${p.coaStatus === 'Verificado' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}`}>
-                      {p.coaStatus}
-                    </span>
+                <tr key={p.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-semibold text-gray-900">{p.title}</td>
+                  <td className="px-5 py-3.5 text-gray-500">{p.category}</td>
+                  <td className="px-5 py-3.5 font-semibold text-emerald-600">{p.purity}</td>
+                  <td className="px-5 py-3.5 text-xs font-mono text-gray-400">{p.lotNumber}</td>
+                  <td className="px-5 py-3.5 text-gray-700">{p.stockTotal} viales</td>
+                  <td className="px-5 py-3.5">
+                    <StatusPill
+                      active={p.coaStatus === 'Verificado'}
+                      label={p.coaStatus}
+                      activeColor="emerald"
+                      inactiveColor="amber"
+                    />
                   </td>
-                  <td className="p-4 text-right">
-                    <button className="font-mono text-xs text-primary hover:underline font-semibold">Editar en Sanity</button>
+                  <td className="px-5 py-3.5 text-right">
+                    <button className="text-xs font-semibold text-gray-400 hover:text-gray-700 transition-colors">
+                      Editar
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -250,30 +324,29 @@ export function SanityCmsModule({
         </div>
       )}
 
-      {/* VISTA PRESENTACIONES */}
+      {/* PRESENTACIONES */}
       {subTab === 'presentations' && (
-        <div className="overflow-x-auto rounded-md border border-border bg-card">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="p-4">Producto</th>
-                <th className="p-4">Presentación</th>
-                <th className="p-4">SKU</th>
-                <th className="p-4">Precio COP</th>
-                <th className="p-4">Stock</th>
-                <th className="p-4">Estado</th>
+                {['Producto', 'Presentación', 'SKU', 'Precio COP', 'Stock', 'Estado'].map((h) => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/60">
+            <tbody className="divide-y divide-gray-50">
               {presentations.map((pres) => (
-                <tr key={pres.id} className="hover:bg-secondary/10 transition-colors">
-                  <td className="p-4 font-semibold text-foreground">{pres.productTitle}</td>
-                  <td className="p-4 font-mono font-semibold text-primary">{pres.name}</td>
-                  <td className="p-4 font-mono text-xs text-muted-foreground">{pres.sku}</td>
-                  <td className="p-4 font-mono font-bold text-foreground">{formatCOP(pres.priceCOP)}</td>
-                  <td className="p-4 font-mono">{pres.stock} unidades</td>
-                  <td className="p-4">
-                    <span className="rounded-sm bg-primary/10 border border-primary/30 px-2 py-0.5 font-mono text-xs text-primary">
+                <tr key={pres.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-semibold text-gray-900">{pres.productTitle}</td>
+                  <td className="px-5 py-3.5 font-semibold text-blue-600">{pres.name}</td>
+                  <td className="px-5 py-3.5 text-xs font-mono text-gray-400">{pres.sku}</td>
+                  <td className="px-5 py-3.5 font-bold text-gray-900">{formatCOP(pres.priceCOP)}</td>
+                  <td className="px-5 py-3.5 text-gray-600">{pres.stock} unidades</td>
+                  <td className="px-5 py-3.5">
+                    <span className="inline-flex items-center rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-700">
                       {pres.status}
                     </span>
                   </td>
@@ -284,52 +357,56 @@ export function SanityCmsModule({
         </div>
       )}
 
-      {/* VISTA CONTENIDO */}
+      {/* CONTENIDO */}
       {subTab === 'content' && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 p-6">
           {contentBlocks.map((c) => (
-            <div key={c.id} className="rounded-md border border-border bg-card p-5 shadow-sm space-y-3">
+            <div key={c.id} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow space-y-3">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-primary">{c.section}</span>
-                <span className="font-mono text-[11px] text-muted-foreground">{c.publishedAt}</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md">
+                  {c.section}
+                </span>
+                <span className="text-[11px] text-gray-400">{c.publishedAt}</span>
               </div>
-              <h3 className="font-mono text-base font-bold text-foreground">{c.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{c.excerpt}</p>
-              <div className="pt-2 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
-                <span>Autor: {c.author}</span>
-                <span className="font-mono text-primary cursor-pointer hover:underline">Publicado</span>
+              <h3 className="text-sm font-bold text-gray-900">{c.title}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">{c.excerpt}</p>
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+                <span>{c.author}</span>
+                <span className="font-semibold text-emerald-600 cursor-pointer hover:underline">Publicado</span>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* VISTA LOTES */}
+      {/* LOTES */}
       {subTab === 'lots' && (
-        <div className="overflow-x-auto rounded-md border border-border bg-card">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="p-4">Número de Lote</th>
-                <th className="p-4">Compuesto</th>
-                <th className="p-4">Fecha Síntesis</th>
-                <th className="p-4">Pureza HPLC</th>
-                <th className="p-4">Viales Producidos</th>
-                <th className="p-4">Estado</th>
+                {['Nº Lote', 'Compuesto', 'Fecha Síntesis', 'Pureza HPLC', 'Viales', 'Estado'].map((h) => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/60">
+            <tbody className="divide-y divide-gray-50">
               {lots.map((l) => (
-                <tr key={l.id} className="hover:bg-secondary/10 transition-colors">
-                  <td className="p-4 font-mono font-bold text-primary">{l.lotNumber}</td>
-                  <td className="p-4 font-semibold text-foreground">{l.compoundName}</td>
-                  <td className="p-4 font-mono text-xs text-muted-foreground">{l.synthesisDate}</td>
-                  <td className="p-4 font-mono font-bold text-emerald-400">{l.purityPercentage}</td>
-                  <td className="p-4 font-mono">{l.vialsProduced}</td>
-                  <td className="p-4">
-                    <span className={`px-2 py-0.5 font-mono text-xs font-bold rounded-sm border ${l.status === 'Activo' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}`}>
-                      {l.status}
-                    </span>
+                <tr key={l.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-mono font-bold text-blue-600">{l.lotNumber}</td>
+                  <td className="px-5 py-3.5 font-semibold text-gray-900">{l.compoundName}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-400">{l.synthesisDate}</td>
+                  <td className="px-5 py-3.5 font-bold text-emerald-600">{l.purityPercentage}</td>
+                  <td className="px-5 py-3.5 text-gray-700">{l.vialsProduced}</td>
+                  <td className="px-5 py-3.5">
+                    <StatusPill
+                      active={l.status === 'Activo'}
+                      label={l.status}
+                      activeColor="emerald"
+                      inactiveColor="amber"
+                    />
                   </td>
                 </tr>
               ))}
@@ -338,38 +415,39 @@ export function SanityCmsModule({
         </div>
       )}
 
-      {/* VISTA COAs */}
+      {/* COAs */}
       {subTab === 'coas' && (
-        <div className="overflow-x-auto rounded-md border border-border bg-card">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="p-4">Lote</th>
-                <th className="p-4">Compuesto</th>
-                <th className="p-4">Laboratorio Ensayo</th>
-                <th className="p-4">Método</th>
-                <th className="p-4">Pureza Registrada</th>
-                <th className="p-4">Estado COA</th>
-                <th className="p-4 text-right">Acción</th>
+                {['Lote', 'Compuesto', 'Laboratorio', 'Método', 'Pureza', 'Estado', ''].map((h) => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/60">
+            <tbody className="divide-y divide-gray-50">
               {coas.map((coa) => (
-                <tr key={coa.id} className="hover:bg-secondary/10 transition-colors">
-                  <td className="p-4 font-mono font-bold text-primary">{coa.lotNumber}</td>
-                  <td className="p-4 font-semibold text-foreground">{coa.compoundName}</td>
-                  <td className="p-4 text-xs text-muted-foreground">{coa.labName}</td>
-                  <td className="p-4 font-mono text-xs text-foreground">{coa.method}</td>
-                  <td className="p-4 font-mono font-bold text-emerald-400">{coa.purity}</td>
-                  <td className="p-4">
-                    <span className={`px-2.5 py-0.5 font-mono text-xs font-bold rounded-sm border ${coa.status === 'Verificado' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}`}>
-                      {coa.status}
-                    </span>
+                <tr key={coa.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-mono font-bold text-blue-600">{coa.lotNumber}</td>
+                  <td className="px-5 py-3.5 font-semibold text-gray-900">{coa.compoundName}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-500">{coa.labName}</td>
+                  <td className="px-5 py-3.5 text-xs font-mono text-gray-700">{coa.method}</td>
+                  <td className="px-5 py-3.5 font-bold text-emerald-600">{coa.purity}</td>
+                  <td className="px-5 py-3.5">
+                    <StatusPill
+                      active={coa.status === 'Verificado'}
+                      label={coa.status}
+                      activeColor="emerald"
+                      inactiveColor="amber"
+                    />
                   </td>
-                  <td className="p-4 text-right">
+                  <td className="px-5 py-3.5 text-right">
                     <button
                       onClick={() => handleToggleCoa(coa.id, coa.status)}
-                      className="px-3 py-1 font-mono text-xs font-bold rounded border border-primary/40 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+                      className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
                     >
                       {coa.status === 'Verificado' ? 'Marcar Pendiente' : 'Aprobar COA'}
                     </button>
@@ -380,18 +458,19 @@ export function SanityCmsModule({
           </table>
         </div>
       )}
-
     </div>
   )
 }
 
-// --- GESTOR OPERATIVO POSTGRESQL / SUPABASE ---
+// ─────────────────────────────────────────────────────────────
+// GESTIÓN OPERATIVA (SUPABASE)
+// ─────────────────────────────────────────────────────────────
 export function SupabaseModule({
   customers,
   orders,
   payments,
   attempts,
-  onRefresh
+  onRefresh,
 }: {
   customers: SupabaseCustomer[]
   orders: SupabaseOrder[]
@@ -402,121 +481,121 @@ export function SupabaseModule({
   const [subTab, setSubTab] = useState<'orders' | 'customers' | 'payments' | 'attempts'>('orders')
   const [statusFilter, setStatusFilter] = useState<string>('Todos')
 
-  const filteredOrders = statusFilter === 'Todos' 
-    ? orders 
-    : orders.filter(o => o.status === statusFilter)
+  const filteredOrders =
+    statusFilter === 'Todos' ? orders : orders.filter((o) => o.status === statusFilter)
 
   const handleChangeOrderStatus = (id: string, status: SupabaseOrder['status']) => {
     AdminService.updateOrderStatus(id, status)
     onRefresh()
   }
 
-  return (
-    <div className="space-y-6">
+  const SUB_TABS = [
+    { id: 'orders' as const, label: 'Pedidos', count: orders.length },
+    { id: 'customers' as const, label: 'Clientes', count: customers.length },
+    { id: 'payments' as const, label: 'Pagos', count: payments.length },
+    { id: 'attempts' as const, label: 'Intentos Wompi', count: attempts.length },
+  ]
 
-      {/* Header Módulo Supabase */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-foreground">Gestión Operativa & Comercial</h2>
-            <SourceBadge source="Supabase" />
+  const STATUS_FILTERS = ['Todos', 'Pendiente', 'En Preparación', 'Enviado', 'Entregado', 'Cancelado']
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between px-6 py-5 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+            <Icon icon="lucide:server" className="h-4.5 w-4.5 text-blue-600" />
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Control de pedidos, base de clientes, registros de pasarela Wompi e intentos de pago en tiempo real.
-          </p>
+          <div>
+            <h2 className="text-base font-bold text-gray-900">Gestión Operativa &amp; Comercial</h2>
+            <p className="text-xs text-gray-500">Pedidos, clientes, pagos e intentos en tiempo real</p>
+          </div>
         </div>
 
-        {/* Pestañas de Supabase */}
-        <div className="flex flex-wrap gap-2 rounded-md border border-border bg-secondary/20 p-1">
-          <button
-            onClick={() => setSubTab('orders')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'orders' ? 'bg-purple-600 text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Pedidos ({orders.length})
-          </button>
-          <button
-            onClick={() => setSubTab('customers')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'customers' ? 'bg-purple-600 text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Clientes ({customers.length})
-          </button>
-          <button
-            onClick={() => setSubTab('payments')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'payments' ? 'bg-purple-600 text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Pagos ({payments.length})
-          </button>
-          <button
-            onClick={() => setSubTab('attempts')}
-            className={`px-3 py-1.5 font-mono text-xs font-semibold rounded-sm transition-all ${subTab === 'attempts' ? 'bg-purple-600 text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Intentos Wompi ({attempts.length})
-          </button>
+        {/* Sub-tabs */}
+        <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-lg shrink-0 flex-wrap">
+          {SUB_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setSubTab(tab.id)}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all ${
+                subTab === tab.id
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {tab.label}
+              <span className={`ml-1.5 text-[10px] ${subTab === tab.id ? 'text-gray-500' : 'text-gray-400'}`}>
+                {tab.count}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* VISTA PEDIDOS */}
+      {/* PEDIDOS */}
       {subTab === 'orders' && (
-        <div className="space-y-4">
-          
-          {/* Filtros de estado */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            <span className="font-mono text-xs text-muted-foreground font-semibold">Filtrar Estado:</span>
-            {['Todos', 'Pendiente', 'En Preparación', 'Enviado', 'Entregado', 'Cancelado'].map(st => (
+        <div>
+          {/* Filtros */}
+          <div className="flex items-center gap-2 px-6 py-3 border-b border-gray-100 overflow-x-auto">
+            <span className="text-xs text-gray-400 font-semibold shrink-0">Estado:</span>
+            {STATUS_FILTERS.map((st) => (
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
-                className={`px-3 py-1 rounded-full font-mono text-xs font-semibold transition-all ${statusFilter === st ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-secondary/40'}`}
+                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all shrink-0 ${
+                  statusFilter === st
+                    ? 'bg-gray-900 text-white'
+                    : 'border border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700'
+                }`}
               >
                 {st}
               </button>
             ))}
           </div>
 
-          <div className="overflow-x-auto rounded-md border border-border bg-card">
+          <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+              <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  <th className="p-4">Pedido</th>
-                  <th className="p-4">Cliente</th>
-                  <th className="p-4">Ciudad</th>
-                  <th className="p-4">Productos</th>
-                  <th className="p-4">Total COP</th>
-                  <th className="p-4">Método Pago</th>
-                  <th className="p-4">Estado Operativo</th>
+                  {['Pedido', 'Cliente', 'Ciudad', 'Productos', 'Total COP', 'Método Pago', 'Estado'].map((h) => (
+                    <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/60">
+              <tbody className="divide-y divide-gray-50">
                 {filteredOrders.map((ord) => (
-                  <tr key={ord.id} className="hover:bg-secondary/10 transition-colors">
-                    <td className="p-4 font-mono font-bold text-purple-400">{ord.orderNumber}</td>
-                    <td className="p-4">
-                      <div className="font-semibold text-foreground">{ord.customerName}</div>
-                      <div className="text-xs text-muted-foreground">{ord.customerEmail}</div>
+                  <tr key={ord.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-5 py-3.5 font-mono font-bold text-blue-600">{ord.orderNumber}</td>
+                    <td className="px-5 py-3.5">
+                      <div className="font-semibold text-gray-900">{ord.customerName}</div>
+                      <div className="text-xs text-gray-400">{ord.customerEmail}</div>
                     </td>
-                    <td className="p-4 text-xs font-mono">{ord.city}</td>
-                    <td className="p-4">
-                      <div className="space-y-1">
+                    <td className="px-5 py-3.5 text-xs text-gray-500">{ord.city}</td>
+                    <td className="px-5 py-3.5">
+                      <div className="space-y-0.5">
                         {ord.items.map((item, idx) => (
-                          <div key={idx} className="text-xs font-mono">
-                            <span className="font-semibold text-foreground">{item.productName}</span> ({item.presentation}) x{item.quantity}
+                          <div key={idx} className="text-xs text-gray-600">
+                            <span className="font-semibold text-gray-800">{item.productName}</span>{' '}
+                            ({item.presentation}) ×{item.quantity}
                           </div>
                         ))}
                       </div>
                     </td>
-                    <td className="p-4 font-mono font-bold text-foreground">{formatCOP(ord.totalCOP)}</td>
-                    <td className="p-4 font-mono text-xs text-muted-foreground">{ord.paymentMethod}</td>
-                    <td className="p-4">
+                    <td className="px-5 py-3.5 font-bold text-gray-900">{formatCOP(ord.totalCOP)}</td>
+                    <td className="px-5 py-3.5 text-xs text-gray-500">{ord.paymentMethod}</td>
+                    <td className="px-5 py-3.5">
                       <select
                         value={ord.status}
                         onChange={(e) => handleChangeOrderStatus(ord.id, e.target.value as SupabaseOrder['status'])}
-                        className="rounded border border-border bg-secondary/80 px-2.5 py-1.5 font-mono text-xs font-bold text-foreground focus:outline-none focus:border-primary cursor-pointer shadow-sm"
+                        className="rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-700 focus:outline-none focus:border-gray-400 cursor-pointer shadow-sm"
                       >
-                        <option value="Pendiente" className="bg-[#17294F] text-white font-mono font-semibold">Pendiente</option>
-                        <option value="En Preparación" className="bg-[#17294F] text-white font-mono font-semibold">En Preparación</option>
-                        <option value="Enviado" className="bg-[#17294F] text-white font-mono font-semibold">Enviado</option>
-                        <option value="Entregado" className="bg-[#17294F] text-white font-mono font-semibold">Entregado</option>
-                        <option value="Cancelado" className="bg-[#17294F] text-white font-mono font-semibold">Cancelado</option>
+                        {['Pendiente', 'En Preparación', 'Enviado', 'Entregado', 'Cancelado'].map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
                       </select>
                     </td>
                   </tr>
@@ -527,32 +606,31 @@ export function SupabaseModule({
         </div>
       )}
 
-      {/* VISTA CLIENTES */}
+      {/* CLIENTES */}
       {subTab === 'customers' && (
-        <div className="overflow-x-auto rounded-md border border-border bg-card">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="p-4">Investigador / Cliente</th>
-                <th className="p-4">Contacto</th>
-                <th className="p-4">Ubicación</th>
-                <th className="p-4">Pedidos</th>
-                <th className="p-4">Total Comprado</th>
-                <th className="p-4">Fecha Registro</th>
+                {['Investigador / Cliente', 'Contacto', 'Ubicación', 'Pedidos', 'Total Comprado', 'Registro'].map((h) => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/60">
+            <tbody className="divide-y divide-gray-50">
               {customers.map((cust) => (
-                <tr key={cust.id} className="hover:bg-secondary/10 transition-colors">
-                  <td className="p-4 font-mono font-semibold text-foreground">{cust.fullName}</td>
-                  <td className="p-4 text-xs">
-                    <div className="text-foreground">{cust.email}</div>
-                    <div className="text-muted-foreground font-mono">{cust.phone}</div>
+                <tr key={cust.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-semibold text-gray-900">{cust.fullName}</td>
+                  <td className="px-5 py-3.5 text-xs">
+                    <div className="text-gray-700">{cust.email}</div>
+                    <div className="text-gray-400 font-mono">{cust.phone}</div>
                   </td>
-                  <td className="p-4 font-mono text-xs text-muted-foreground">{cust.city}</td>
-                  <td className="p-4 font-mono font-bold text-primary">{cust.totalOrders} pedidos</td>
-                  <td className="p-4 font-mono font-bold text-foreground">{formatCOP(cust.totalSpentCOP)}</td>
-                  <td className="p-4 font-mono text-xs text-muted-foreground">{cust.registeredAt}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-500">{cust.city}</td>
+                  <td className="px-5 py-3.5 font-bold text-blue-600">{cust.totalOrders} pedidos</td>
+                  <td className="px-5 py-3.5 font-bold text-gray-900">{formatCOP(cust.totalSpentCOP)}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-400">{cust.registeredAt}</td>
                 </tr>
               ))}
             </tbody>
@@ -560,33 +638,35 @@ export function SupabaseModule({
         </div>
       )}
 
-      {/* VISTA PAGOS */}
+      {/* PAGOS */}
       {subTab === 'payments' && (
-        <div className="overflow-x-auto rounded-md border border-border bg-card">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="p-4">Nº Pedido</th>
-                <th className="p-4">Pasarela</th>
-                <th className="p-4">ID Transacción</th>
-                <th className="p-4">Monto COP</th>
-                <th className="p-4">Estado Wompi</th>
-                <th className="p-4">Fecha Pago</th>
+                {['Nº Pedido', 'Pasarela', 'ID Transacción', 'Monto COP', 'Estado Wompi', 'Fecha'].map((h) => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/60">
+            <tbody className="divide-y divide-gray-50">
               {payments.map((p) => (
-                <tr key={p.id} className="hover:bg-secondary/10 transition-colors">
-                  <td className="p-4 font-mono font-bold text-purple-400">{p.orderNumber}</td>
-                  <td className="p-4 font-semibold text-foreground">{p.gateway}</td>
-                  <td className="p-4 font-mono text-xs text-primary">{p.transactionId}</td>
-                  <td className="p-4 font-mono font-bold text-foreground">{formatCOP(p.amountCOP)}</td>
-                  <td className="p-4">
-                    <span className={`px-2.5 py-0.5 font-mono text-xs font-bold rounded-sm border ${p.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}`}>
-                      {p.status}
-                    </span>
+                <tr key={p.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-mono font-bold text-blue-600">{p.orderNumber}</td>
+                  <td className="px-5 py-3.5 font-semibold text-gray-900">{p.gateway}</td>
+                  <td className="px-5 py-3.5 font-mono text-xs text-gray-500">{p.transactionId}</td>
+                  <td className="px-5 py-3.5 font-bold text-gray-900">{formatCOP(p.amountCOP)}</td>
+                  <td className="px-5 py-3.5">
+                    <StatusPill
+                      active={p.status === 'APPROVED'}
+                      label={p.status}
+                      activeColor="emerald"
+                      inactiveColor="amber"
+                    />
                   </td>
-                  <td className="p-4 font-mono text-xs text-muted-foreground">{p.paidAt}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-400">{p.paidAt}</td>
                 </tr>
               ))}
             </tbody>
@@ -594,38 +674,42 @@ export function SupabaseModule({
         </div>
       )}
 
-      {/* VISTA INTENTOS DE PAGO */}
+      {/* INTENTOS DE PAGO */}
       {subTab === 'attempts' && (
-        <div className="overflow-x-auto rounded-md border border-border bg-card">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border bg-secondary/30 font-mono text-xs text-muted-foreground uppercase">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="p-4">Pedido</th>
-                <th className="p-4">Cliente</th>
-                <th className="p-4">Pasarela / Canal</th>
-                <th className="p-4">Dispositivo / IP</th>
-                <th className="p-4">Código Respuesta</th>
-                <th className="p-4">Resultado</th>
+                {['Pedido', 'Cliente', 'Pasarela / Canal', 'Dispositivo / IP', 'Código Respuesta', 'Resultado'].map((h) => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/60">
+            <tbody className="divide-y divide-gray-50">
               {attempts.map((att) => (
-                <tr key={att.id} className="hover:bg-secondary/10 transition-colors">
-                  <td className="p-4 font-mono font-bold text-purple-400">{att.orderNumber}</td>
-                  <td className="p-4 text-xs text-foreground font-mono">{att.customerEmail}</td>
-                  <td className="p-4 text-xs font-semibold">{att.gateway}</td>
-                  <td className="p-4 font-mono text-xs text-muted-foreground">
+                <tr key={att.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-mono font-bold text-blue-600">{att.orderNumber}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-700 font-mono">{att.customerEmail}</td>
+                  <td className="px-5 py-3.5 text-xs font-semibold text-gray-800">{att.gateway}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-500">
                     <div>{att.device}</div>
-                    <div className="text-[11px] text-muted-foreground/70">{att.ipAddress}</div>
+                    <div className="text-[11px] text-gray-400">{att.ipAddress}</div>
                   </td>
-                  <td className="p-4 font-mono text-xs">
-                    <div className="font-bold text-foreground">{att.responseCode}</div>
-                    {att.errorMessage && <div className="text-rose-400 text-[11px] mt-0.5">{att.errorMessage}</div>}
+                  <td className="px-5 py-3.5 text-xs">
+                    <div className="font-bold text-gray-800">{att.responseCode}</div>
+                    {att.errorMessage && (
+                      <div className="text-rose-500 text-[11px] mt-0.5">{att.errorMessage}</div>
+                    )}
                   </td>
-                  <td className="p-4">
-                    <span className={`px-2.5 py-0.5 font-mono text-xs font-bold rounded-sm border ${att.successful ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border-rose-500/30'}`}>
-                      {att.successful ? 'EXITOSO' : 'FALLIDO'}
-                    </span>
+                  <td className="px-5 py-3.5">
+                    <StatusPill
+                      active={att.successful}
+                      label={att.successful ? 'EXITOSO' : 'FALLIDO'}
+                      activeColor="emerald"
+                      inactiveColor="rose"
+                    />
                   </td>
                 </tr>
               ))}
@@ -633,78 +717,194 @@ export function SupabaseModule({
           </table>
         </div>
       )}
-
     </div>
   )
 }
 
-// --- ANALÍTICA COMERCIAL UNIFICADA ---
+// ─────────────────────────────────────────────────────────────
+// MÓDULO DE CONTENIDO (PÁGINAS)
+// ─────────────────────────────────────────────────────────────
+export function ContentModule() {
+  return (
+    <div className="space-y-5">
+
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="h-9 w-9 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+          <Icon icon="lucide:file-text" className="h-4 w-4 text-violet-600" />
+        </div>
+        <div>
+          <h2 className="text-base font-bold text-gray-900">Contenido del Sitio</h2>
+          <p className="text-xs text-gray-500">Edita directamente cada página desde el gestor de contenido</p>
+        </div>
+        <a
+          href="/admin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-800 border border-gray-200 bg-white rounded-lg px-3 py-1.5 shadow-sm transition-colors"
+        >
+          <Icon icon="lucide:external-link" className="h-3.5 w-3.5" />
+          Abrir Studio completo
+        </a>
+      </div>
+
+      {/* Lista de páginas */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Página</th>
+              <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide hidden sm:table-cell">Descripción</th>
+              <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide hidden md:table-cell">Tipo</th>
+              <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide text-right">Acción</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-50">
+            {CONTENT_PAGES.map((page) => (
+              <tr key={page.label} className="hover:bg-gray-50 transition-colors">
+                <td className="px-5 py-3.5">
+                  <div className="flex items-center gap-3">
+                    <div className={`h-8 w-8 rounded-lg ${page.iconBg} flex items-center justify-center shrink-0`}>
+                      <Icon icon={page.icon} className={`h-4 w-4 ${page.iconColor}`} />
+                    </div>
+                    <span className="font-semibold text-gray-900">{page.label}</span>
+                  </div>
+                </td>
+                <td className="px-5 py-3.5 text-xs text-gray-500 hidden sm:table-cell max-w-xs">
+                  {page.description}
+                </td>
+                <td className="px-5 py-3.5 hidden md:table-cell">
+                  <span className="text-[10px] font-bold text-gray-400 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-md">
+                    {page.tag}
+                  </span>
+                </td>
+                <td className="px-5 py-3.5 text-right">
+                  <a
+                    href={page.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 border border-gray-200 bg-white rounded-lg px-3 py-1.5 shadow-sm transition-colors hover:border-gray-300"
+                  >
+                    <Icon icon="lucide:pencil" className="h-3 w-3" />
+                    Editar
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────
+// ANALÍTICA COMERCIAL
+// ─────────────────────────────────────────────────────────────
 export function CommercialAnalytics({ summary }: { summary: CommercialSummary }) {
+  const bars = [
+    { label: 'Péptidos Liofilizados', pct: 62, amount: '8.890.000 COP', color: 'bg-blue-500' },
+    { label: 'Línea Metabólica', pct: 28, amount: '4.015.200 COP', color: 'bg-violet-500' },
+    { label: 'Blends de Investigación', pct: 10, amount: '1.434.800 COP', color: 'bg-emerald-500' },
+  ]
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b border-border pb-4">
-        <div>
-          <h2 className="text-xl font-bold text-foreground">Datos Comerciales & Rendimiento</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Métricas clave de conversión, volumen de ventas y análisis de la demanda.
-          </p>
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="h-9 w-9 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+          <Icon icon="lucide:area-chart" className="h-4.5 w-4.5 text-violet-600" />
         </div>
-        <div className="flex gap-2">
+        <div>
+          <h2 className="text-base font-bold text-gray-900">Datos Comerciales &amp; Rendimiento</h2>
+          <p className="text-xs text-gray-500">Métricas de conversión, volumen de ventas y demanda</p>
+        </div>
+        <div className="ml-auto flex gap-2">
           <SourceBadge source="Supabase" />
           <SourceBadge source="Sanity" />
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="rounded-md border border-border bg-card p-6 shadow-sm space-y-4">
-          <h3 className="font-mono text-sm font-bold text-foreground uppercase tracking-wider">Distribución de Ingresos COP</h3>
-          <div className="space-y-3">
-            <div>
-              <div className="flex justify-between text-xs font-mono mb-1">
-                <span className="text-muted-foreground">Péptidos Liofilizados</span>
-                <span className="font-bold text-foreground">62% (8.890.000 COP)</span>
+
+        {/* Distribución de ingresos */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
+            Distribución de Ingresos COP
+          </h3>
+          <div className="space-y-4">
+            {bars.map((bar) => (
+              <div key={bar.label}>
+                <div className="flex justify-between text-xs mb-1.5">
+                  <span className="text-gray-600">{bar.label}</span>
+                  <span className="font-bold text-gray-900">
+                    {bar.pct}% ({bar.amount})
+                  </span>
+                </div>
+                <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+                  <div className={`h-full rounded-full ${bar.color}`} style={{ width: `${bar.pct}%` }} />
+                </div>
               </div>
-              <div className="h-2 rounded-full bg-secondary overflow-hidden">
-                <div className="h-full bg-primary" style={{ width: '62%' }}></div>
-              </div>
-            </div>
-            <div>
-              <div className="flex justify-between text-xs font-mono mb-1">
-                <span className="text-muted-foreground">Línea Metabólica</span>
-                <span className="font-bold text-foreground">28% (4.015.200 COP)</span>
-              </div>
-              <div className="h-2 rounded-full bg-secondary overflow-hidden">
-                <div className="h-full bg-purple-500" style={{ width: '28%' }}></div>
-              </div>
-            </div>
-            <div>
-              <div className="flex justify-between text-xs font-mono mb-1">
-                <span className="text-muted-foreground">Blends de Investigación</span>
-                <span className="font-bold text-foreground">10% (1.434.800 COP)</span>
-              </div>
-              <div className="h-2 rounded-full bg-secondary overflow-hidden">
-                <div className="h-full bg-emerald-400" style={{ width: '10%' }}></div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="rounded-md border border-border bg-card p-6 shadow-sm space-y-4">
-          <h3 className="font-mono text-sm font-bold text-foreground uppercase tracking-wider">Compuesto Más Solicitado</h3>
+        {/* Compuesto más solicitado */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
+            Compuesto Más Solicitado
+          </h3>
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-md border border-primary/30 bg-primary/10 text-primary">
-              <Icon icon="lucide:award" className="h-6 w-6" />
+            <div className="h-12 w-12 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+              <Icon icon="lucide:award" className="h-6 w-6 text-amber-600" />
             </div>
             <div>
-              <div className="text-lg font-bold font-mono text-foreground">{summary.topSellingProduct}</div>
-              <div className="text-xs text-muted-foreground">Lote activo: <span className="font-mono text-primary font-bold">LOT-RT-2410</span></div>
+              <div className="text-lg font-bold text-gray-900">{summary.topSellingProduct}</div>
+              <div className="text-xs text-gray-500 mt-0.5">
+                Lote activo:{' '}
+                <span className="font-mono font-bold text-blue-600">LOT-RT-2410</span>
+              </div>
             </div>
           </div>
-          <div className="pt-3 border-t border-border/50 text-xs text-muted-foreground">
-            Representa el <span className="font-bold text-foreground font-mono">34%</span> de los despachos totales de este trimestre.
+          <div className="pt-3 border-t border-gray-100 text-xs text-gray-500">
+            Representa el{' '}
+            <span className="font-bold text-gray-900">34%</span> de los despachos totales de este trimestre.
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────
+// HELPER: STATUS PILL
+// ─────────────────────────────────────────────────────────────
+type PillColor = 'emerald' | 'amber' | 'rose' | 'blue'
+
+const PILL_CLASSES: Record<PillColor, string> = {
+  emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  amber: 'bg-amber-50 text-amber-700 border-amber-200',
+  rose: 'bg-rose-50 text-rose-700 border-rose-200',
+  blue: 'bg-blue-50 text-blue-700 border-blue-200',
+}
+
+function StatusPill({
+  active,
+  label,
+  activeColor,
+  inactiveColor,
+}: {
+  active: boolean
+  label: string
+  activeColor: PillColor
+  inactiveColor: PillColor
+}) {
+  const color = active ? activeColor : inactiveColor
+  return (
+    <span
+      className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[11px] font-semibold ${PILL_CLASSES[color]}`}
+    >
+      {label}
+    </span>
   )
 }

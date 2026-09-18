@@ -19,6 +19,7 @@ export type Product = {
   slug: string
   categorySlug: string
   category: string
+  isPublic?: boolean
   title: string
   subtitle?: string
   description?: string
@@ -569,11 +570,12 @@ export const products: Product[] = [
   {
     id: 'PROD-RETATRUTIDE',
     slug: 'retatrutide',
+    isPublic: true,
     categorySlug: 'metabolico',
     category: 'Metabólico',
-    title: 'Retatrutide 10 mg',
-    subtitle: 'Agonista triple de receptores (GLP-1 / GIP / Glucagón)',
-    description: 'Retatrutide (LY3437943) es un péptido sintético de investigación de 39 aminoácidos que actúa como agonista triple de los receptores GLP-1, GIP y glucagón. Es objeto de estudio en la investigación metabólica, principalmente en áreas como la regulación del peso corporal, la grasa hepática (hígado graso) y el control de la glucosa. Se suministra como vial de polvo liofilizado de 10 mg, destinado exclusivamente a investigación científica.',
+    title: 'Retatrutida',
+    subtitle: 'Exclusivamente para investigación. No destinado a uso humano ni veterinario.',
+    description: 'Péptido en investigación que actúa sobre tres receptores relacionados con el metabolismo.',
     features: ['COA disponibles', 'Empaque sellado', 'Péptido grado investigación', 'Polvo liofilizado'],
     infoAccordions: [
       {
@@ -597,10 +599,10 @@ export const products: Product[] = [
     purity: '≥ 99.0%',
     formula: 'C221H342N46O68',
     badges: ['RUO', 'COA'],
-    image: '/kailab-images/Retatrutide-5mg-2048x2048.png.webp',
+    image: '/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png',
     images: [
-      '/kailab-images/Retatrutide-5mg-2048x2048.png.webp',
-      '/kailab-images/Retatrutide-10-MG-1024x1024.png.webp'
+      '/kailab-images/RT5_Retatrutide_5mg_RENDER_WEB_UX_PREVIEW.png',
+      '/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png'
     ],
     variants: [
       {
@@ -610,7 +612,7 @@ export const products: Product[] = [
         priceCOP: 380000,
         stock: 50,
         coaStatus: 'pending',
-        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png.webp',
+        image: '/kailab-images/RT5_Retatrutide_5mg_RENDER_WEB_UX_PREVIEW.png',
         slug: '5mg'
       },
       {
@@ -620,7 +622,7 @@ export const products: Product[] = [
         priceCOP: 490000,
         stock: 50,
         coaStatus: 'available',
-        image: '/kailab-images/Retatrutide-10-MG-1024x1024.png.webp',
+        image: '/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png',
         slug: '10mg'
       }
     ]

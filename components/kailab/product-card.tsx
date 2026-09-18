@@ -17,7 +17,9 @@ type ProductCardProps = {
 export function ProductCard({ product, onAdd }: ProductCardProps) {
   // Manejo de variantes (si aplica)
   const hasVariants = product.variants && product.variants.length > 0
-  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null)
+  const showSelector = hasVariants && product.variants!.length > 1
+  const initialVariant = (hasVariants && product.variants!.length === 1) ? product.variants![0] : null
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(initialVariant)
   
   // Datos activos
   const activeImage = selectedVariant?.image || product.image || "/placeholder.jpg"
@@ -27,8 +29,15 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
   const isOutOfStock = activeStock === 0
   const isLowStock = activeStock > 0 && activeStock <= 15
   
-  // Estado de COA global de la familia
-  const hasAvailableCOA = hasVariants ? product.variants!.some(v => v.coaStatus === 'available') : product.badges.includes('COA')
+  // Estado de COA dinámico por variante o global
+  const hasAvailableCOA = selectedVariant 
+    ? selectedVariant.coaStatus === 'available'
+    : hasVariants 
+      ? product.variants!.some(v => v.coaStatus === 'available') 
+      : product.badges.includes('COA')
+      
+  // Beneficio "Agua incluida"
+  const hasWaterIncluded = product.categorySlug !== 'insumos'
   
   // Url base de la familia
   const productUrl = hasVariants ? `/tienda/${product.categorySlug}/${product.slug}` : `/producto/${product.slug}`
@@ -57,6 +66,11 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
           {hasAvailableCOA && (
             <span className="inline-flex items-center rounded-sm bg-[#0d1a2a] px-2 py-0.5 text-[8px] font-mono font-bold uppercase tracking-wider text-white shadow-sm">
               COA
+            </span>
+          )}
+          {hasWaterIncluded && (
+            <span className="inline-flex items-center rounded-sm bg-[#0d1a2a] px-2 py-0.5 text-[8px] font-mono font-bold uppercase tracking-wider text-white shadow-sm">
+              + AGUA
             </span>
           )}
         </div>
@@ -117,7 +131,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
           </div>
 
           {/* Selector de Presentación */}
-          {hasVariants && (
+          {showSelector && (
             <motion.div 
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               className="flex flex-wrap gap-[3px] relative z-20"
@@ -153,7 +167,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
           >
             <div className="flex flex-col">
               <span className="text-[10px] uppercase font-bold text-muted-foreground/80 mb-0.5">
-                {!selectedVariant && hasVariants ? "Desde" : "Precio"}
+                {!selectedVariant && showSelector ? "Desde" : "Precio"}
               </span>
               <span className="font-mono text-lg sm:text-xl font-bold tabular-nums text-foreground tracking-tight drop-shadow-sm">
                 {formatCOP(activePrice)}
@@ -193,16 +207,17 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  if (hasVariants && !selectedVariant) {
+                  if (showSelector && !selectedVariant) {
                     return;
                   }
+                  // Si no hay selector (una sola variante o ninguna), pasamos la variante seleccionada inicial si existe
                   onAdd(product, selectedVariant || undefined)
                 }}
-                disabled={isOutOfStock || (hasVariants && !selectedVariant)}
+                disabled={isOutOfStock || (showSelector && !selectedVariant)}
                 className="group relative inline-flex items-center justify-center gap-1.5 rounded-sm border-2 border-primary bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground transition-all duration-300 hover:bg-transparent hover:text-primary disabled:pointer-events-none disabled:opacity-50 active:scale-95"
               >
                 <Icon icon="lucide:plus" className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-90" aria-hidden="true" />
-                {hasVariants && !selectedVariant ? "Elige opción" : "Agregar"}
+                {showSelector && !selectedVariant ? "Elige opción" : "Agregar"}
               </button>
           </motion.div>
         </div>

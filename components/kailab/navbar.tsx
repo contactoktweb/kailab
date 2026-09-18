@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { urlFor } from '@/sanity/lib/image'
 import type { SiteSettings } from '@/lib/sanity-queries'
@@ -22,6 +24,7 @@ import { useCart } from './cart-context'
 
 export function Navbar({ siteSettings }: NavbarProps) {
   const { cartCount, openSearch, toggleCart } = useCart()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const logoUrl = siteSettings?.logo ? urlFor(siteSettings.logo).url() : "/KAILAB_Logo_White.png"
 
   return (
@@ -94,14 +97,60 @@ export function Navbar({ siteSettings }: NavbarProps) {
 
           <Link
             href="/login"
-            className="group relative flex items-center justify-center border border-border bg-secondary/40 p-2.5 font-mono text-xs font-bold text-foreground transition-all duration-300 hover:bg-secondary hover:text-primary active:scale-95"
+            className="hidden sm:flex group relative items-center justify-center border border-border bg-secondary/40 p-2.5 font-mono text-xs font-bold text-foreground transition-all duration-300 hover:bg-secondary hover:text-primary active:scale-95"
             aria-label="Acceso Admin / Login"
             title="Acceso Admin / Login"
           >
             <Icon icon="lucide:user" className="h-4 w-4" aria-hidden="true" />
           </Link>
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex md:hidden items-center justify-center p-2 text-foreground transition-colors hover:text-primary"
+            aria-label="Abrir menú"
+          >
+            <Icon icon={mobileMenuOpen ? "lucide:x" : "lucide:menu"} className="h-6 w-6" />
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute left-0 top-full w-full border-b border-border bg-background shadow-lg md:hidden"
+          >
+            <nav className="flex flex-col p-4">
+              <ul className="flex flex-col gap-4">
+                {menu.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block text-lg font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 border-t border-border pt-4">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary"
+                >
+                  <Icon icon="lucide:user" className="h-4 w-4" />
+                  Acceso Admin / Login
+                </Link>
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }

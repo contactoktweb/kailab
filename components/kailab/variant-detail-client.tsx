@@ -54,7 +54,8 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
   const hasVariants = product.variants && product.variants.length > 0
   
   // Usamos estado local para la variante para evitar un re-render/salto completo de la página de Next.js al navegar
-  const [localVariantSlug, setLocalVariantSlug] = useState<string | undefined>(initialVariantSlug)
+  const defaultSlug = hasVariants ? (initialVariantSlug || product.variants![0].slug) : initialVariantSlug
+  const [localVariantSlug, setLocalVariantSlug] = useState<string | undefined>(defaultSlug)
   const activeVariant = hasVariants ? product.variants!.find(v => v.slug === localVariantSlug) : null
 
   // UI States
@@ -64,11 +65,21 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
   const isOutOfStock = activeStock === 0
   const isLowStock = activeStock > 0 && activeStock <= 15
 
-  const displayCOA = activeVariant
+  const isRetatrutide = product.slug === 'retatrutide' || product.id === 'PROD-RETATRUTIDE'
+  const isRT10 = isRetatrutide && activeVariant?.name.includes('10')
+  const isRT5 = isRetatrutide && activeVariant?.name.includes('5')
+
+  let displayCOA = activeVariant
     ? activeVariant.coaStatus
     : (hasVariants
       ? (product.variants!.some(v => v.coaStatus === 'available') ? 'available' : 'pending')
       : 'pending')
+      
+  if (isRT5) {
+    displayCOA = 'pending'
+  } else if (isRT10) {
+    displayCOA = 'available'
+  }
 
   // Global ⌘K
   useEffect(() => {
@@ -98,40 +109,11 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
     toggleCart()
   }
 
-  const coaBlockElement = (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-      className={cn("rounded-xl border p-5 mt-4 md:mt-0 shadow-lg transition-colors h-full flex flex-col justify-center", displayCOA === 'available' ? "bg-white border-green-200" : "bg-slate-50 border-slate-200")}
-    >
-      <div className="flex items-start gap-3">
-        <div className={cn("rounded-full p-2.5", displayCOA === 'available' ? "bg-green-100" : "bg-slate-200")}>
-          <Icon icon={displayCOA === 'available' ? "lucide:shield-check" : "lucide:clock"} className={cn("h-5 w-5", displayCOA === 'available' ? "text-green-600" : "text-slate-500")} />
-        </div>
-        <div>
-          <h3 className="text-sm font-semibold text-slate-900">
-            {displayCOA === 'available' ? "Calidad Verificada" : "Análisis en progreso"}
-          </h3>
-          <p className="mt-0.5 text-xs text-slate-600">
-            Lote <span className="font-mono text-[#1959D7] font-bold">{product.lot}</span> con pureza de {product.purity}
-          </p>
-          {displayCOA === 'available' ? (
-            <a href="#coa" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-green-600 hover:underline">
-              <Icon icon="lucide:file-text" className="h-3.5 w-3.5" />
-              Ver Reporte de Laboratorio
-            </a>
-          ) : (
-            <p className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-slate-500">
-              El COA de esta presentación está pendiente de publicación.
-            </p>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  )
+  // El bloque COA pequeño fue eliminado a favor de la sección completa abajo
 
   const breadcrumbElement = (
-    <Link href="/tienda" className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#1959D7]">
-      <Icon icon="lucide:arrow-left" className="h-4 w-4 text-[#1959D7]" />
+    <Link href="/tienda" className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-blue-400 md:text-[#1959D7] transition-colors hover:text-blue-300 md:hover:text-[#1959D7]/80">
+      <Icon icon="lucide:arrow-left" className="h-4 w-4" />
       Volver a la tienda
     </Link>
   )
@@ -155,7 +137,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
   return (
     <div className="min-h-[100dvh] bg-background pb-24 md:pb-0">
       <TopBar onSearch={openSearch} />
-      <Navbar cartCount={cartCount} onSearch={openSearch} onCart={toggleCart} siteSettings={siteSettings} />
+      <Navbar siteSettings={siteSettings} />
 
       <main className="mx-auto max-w-5xl px-4 lg:px-8 py-8 flex flex-col gap-6">
 
@@ -204,7 +186,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
               </motion.div>
             </div>
             <div className="hidden md:flex flex-col flex-1">
-              {coaBlockElement}
+              {/* Espacio reservado si se necesita algo debajo de la imagen en desktop */}
             </div>
           </div>
 
@@ -256,9 +238,6 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                 </div>
                 
                 <div className="flex flex-col items-start">
-                  {hasVariants && !activeVariant && (
-                    <span className="text-[10px] font-bold text-slate-500 uppercase leading-none mb-0.5">Desde</span>
-                  )}
                   <div className="flex items-center gap-1 h-8">
                     <span className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 leading-none">{formatCOP(activePrice)}</span>
                     <span className="text-[9px] text-slate-500 font-bold uppercase leading-none mt-1">COP</span>
@@ -269,7 +248,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
               {/* PRESENTACIÓN (Centro) */}
               {hasVariants && (
                 <div className="flex flex-col gap-1.5 shrink-0">
-                  <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest text-left">Presentación</p>
+                  <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest text-left">Elige una presentación</p>
                   <div className="flex flex-row flex-wrap gap-1.5 justify-start">
                     {product.variants!.map((v) => {
                       const isSelected = activeVariant?.id === v.id
@@ -293,77 +272,166 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
               )}
 
               {/* BOTONES */}
-              <div className="flex flex-col sm:flex-row items-center gap-3 w-full mt-2">
-                {/* Qty selector */}
-                <div className="flex h-11 shrink-0 items-center rounded-lg border border-slate-300 bg-white">
-                  <button
-                    onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    disabled={qty <= 1}
-                    className="flex h-full w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
-                    aria-label="Disminuir cantidad"
-                  >
-                    <Icon icon="lucide:minus" className="h-4 w-4" />
-                  </button>
-                  <span className="w-8 text-center font-mono text-sm font-bold text-slate-900 tabular-nums">{qty}</span>
-                  <button
-                    onClick={() => setQty((q) => Math.max(activeStock || 99, q + 1))}
-                    disabled={isOutOfStock}
-                    className="flex h-full w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
-                    aria-label="Aumentar cantidad"
-                  >
-                    <Icon icon="lucide:plus" className="h-4 w-4" />
-                  </button>
+              <div className="flex flex-col gap-2 w-full mt-2">
+                <div className="flex flex-col sm:flex-row items-end gap-3 w-full">
+                  {/* Qty selector */}
+                  <div className="flex flex-col gap-1.5 shrink-0 w-full sm:w-auto">
+                    <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest text-left">Cantidad</p>
+                    <div className="flex h-11 w-full sm:w-auto shrink-0 items-center rounded-lg border border-slate-300 bg-white">
+                      <button
+                        onClick={() => setQty((q) => Math.max(1, q - 1))}
+                        disabled={qty <= 1}
+                        className="flex h-full w-12 sm:w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
+                        aria-label="Disminuir cantidad"
+                      >
+                        <Icon icon="lucide:minus" className="h-4 w-4" />
+                      </button>
+                      <span className="flex-1 sm:w-8 text-center font-mono text-sm font-bold text-slate-900 tabular-nums">{qty}</span>
+                      <button
+                        onClick={() => setQty((q) => Math.max(activeStock || 99, q + 1))}
+                        disabled={isOutOfStock}
+                        className="flex h-full w-12 sm:w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
+                        aria-label="Aumentar cantidad"
+                      >
+                        <Icon icon="lucide:plus" className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row items-center gap-3 flex-1 w-full h-11 mt-1.5 sm:mt-0">
+                    {/* Add to cart */}
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={isOutOfStock || (hasVariants && !activeVariant)}
+                      title="Agregar al carrito"
+                      aria-label="Agregar al carrito"
+                      className={cn(
+                        "group flex h-full flex-1 items-center justify-center gap-2 rounded-lg transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 px-4 font-bold",
+                        addedFeedback
+                          ? "bg-green-600 text-white"
+                          : "bg-[#1959D7] text-white hover:bg-[#1959D7]/90"
+                      )}
+                    >
+                      <Icon
+                        icon={addedFeedback ? "lucide:check" : "lucide:shopping-cart"}
+                        className={cn("h-4 w-4 transition-transform duration-300", !addedFeedback && "group-hover:-rotate-12")}
+                      />
+                      <span className="text-sm">{addedFeedback ? "Agregado" : "Agregar al carrito"}</span>
+                    </button>
+                    <div className="h-full">
+                      <WompiCheckoutButton
+                        amountCOP={activePrice * qty}
+                        productName={product.title}
+                        label="Pagar"
+                        onSuccess={(data) => console.log('Wompi success', data)}
+                        onError={(err) => console.error('Wompi error', err)}
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex flex-row items-center gap-3 flex-1 w-full">
-                  {/* Add to cart */}
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={isOutOfStock || (hasVariants && !activeVariant)}
-                    title="Agregar al Carrito"
-                    aria-label="Agregar al Carrito"
-                    className={cn(
-                      "group flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
-                      addedFeedback
-                        ? "bg-green-600 text-white"
-                        : "bg-[#1959D7] text-white hover:bg-[#1959D7]/90"
-                    )}
-                  >
-                    <Icon
-                      icon={addedFeedback ? "lucide:check" : "lucide:shopping-cart"}
-                      className={cn("h-5 w-5 transition-transform duration-300", !addedFeedback && "group-hover:-rotate-12")}
-                    />
-                  </button>
-                  <WompiCheckoutButton
-                    amountCOP={activePrice * qty}
-                    productName={product.title}
-                    label="Pagar"
-                    onSuccess={(data) => console.log('Wompi success', data)}
-                    onError={(err) => console.error('Wompi error', err)}
-                  />
+
+                
+                <div className="mt-2 flex items-center justify-center gap-2 border-t border-slate-100 pt-3">
+                  <p className="text-center text-[11px] font-semibold text-slate-600">
+                    Agua bacteriostática incluida <span className="mx-1 text-slate-300">·</span> Envío gratis a toda Colombia
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Shipping Info Block */}
-            <div className="mt-4 flex gap-2 text-slate-700">
-              <Icon icon="lucide:truck" className="h-4 w-4 shrink-0 text-slate-900" />
-              <div className="flex flex-col gap-0.5">
-                <p className="text-[13px] font-bold text-slate-900">Envío gratuito a toda Colombia</p>
-                <p className="text-xs font-semibold text-[#1959D7]">Despacho en 1 día hábil</p>
-                <ul className="mt-1.5 list-disc pl-3.5 space-y-1 text-[11px] leading-relaxed text-slate-600">
-                  <li>Los pedidos se envían en empaque sellado y sobrio.</li>
-                  <li>Entrega al siguiente día hábil en principales ciudades y de 2 a 3 días hábiles en el resto del país.</li>
-                  <li>Al despachar el pedido recibes el número de guía para hacer seguimiento.</li>
-                </ul>
-              </div>
+            {/* Included Info Block */}
+            <div className="mt-4 flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Icon icon="lucide:package-check" className="h-4 w-4 text-[#1959D7]" />
+                Incluido con tu compra
+              </h2>
+              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-700">
+                <li>Agua bacteriostática.</li>
+                <li>Toallitas con alcohol.</li>
+                <li><a href="#guia-manejo" className="text-[#1959D7] font-semibold hover:underline">Información práctica en línea.</a></li>
+                <li>Envío gratis a toda Colombia, en empaque discreto.</li>
+              </ul>
             </div>
 
 
 
-            {/* COA MOBILE */}
-            <div className="block md:hidden">
-              {coaBlockElement}
+            {/* COA MOBILE ELIMINADO (Ahora es una sección completa abajo) */}
+          </div>
+        </div>
+
+        {/* COA SECTION */}
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className={cn("hidden sm:flex rounded-full p-3 shrink-0", displayCOA === 'available' ? "bg-green-100" : "bg-slate-100")}>
+              <Icon icon={displayCOA === 'available' ? "lucide:file-check" : "lucide:clock"} className={cn("h-6 w-6", displayCOA === 'available' ? "text-green-600" : "text-slate-500")} />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
+                Certificado de análisis (COA)
+              </h2>
+              <p className="text-sm md:text-base text-slate-600 mb-6">
+                Consulta los resultados del análisis de laboratorio y revisa a qué presentación y lote corresponden.
+              </p>
+
+              {displayCOA === 'available' ? (
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 md:p-5">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                    <div className="flex flex-col gap-1 text-sm">
+                      <span className="font-semibold text-slate-900">
+                        {isRT10
+                          ? 'Retatrutide 10 mg · Lote 317558'
+                          : `${product.title} ${activeVariant ? `· ${activeVariant.name}` : ''} · Lote ${product.lot}`
+                        }
+                      </span>
+                      <span className="text-slate-500">
+                        {isRT10
+                          ? 'Análisis por Janoshik (Informe 223529)'
+                          : `Pureza: ${product.purity}`
+                        }
+                      </span>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <a 
+                        href={isRT10 ? '/certificados/RT10_Janoshik_223529_Certificado.png' : '#certificado'} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1959D7] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#1959D7]/90"
+                      >
+                        <Icon icon="lucide:external-link" className="h-4 w-4" />
+                        Abrir certificado
+                      </a>
+                      {isRT10 && (
+                        <a 
+                          href="/certificados/RT10_Janoshik_223529_Informe.pdf" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-50"
+                        >
+                          <Icon icon="lucide:file-text" className="h-4 w-4" />
+                          Ver cromatograma (PDF)
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {isRT10 && (
+                    <div className="mt-4 rounded-lg bg-white p-4 border border-slate-200">
+                      <p className="text-xs leading-relaxed text-slate-500">
+                        Este informe corresponde a una muestra de Retatrutide 10 mg, lote 317558, analizada por Janoshik. Reporta 10,74 mg y una pureza de 99,191 %. Los resultados corresponden a la muestra analizada; no significan que se haya examinado cada vial del lote.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-slate-500">
+                  <Icon icon="lucide:clock" className="h-5 w-5 shrink-0" />
+                  <p className="text-sm font-medium">
+                    Certificado pendiente
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

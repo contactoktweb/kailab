@@ -1,12 +1,13 @@
 import { KailabLanding } from '@/components/kailab/kailab-landing'
-import { getHomePage, getSiteSettings, getProducts } from '@/lib/sanity-queries'
+import { getHomePage, getSiteSettings } from '@/lib/sanity-queries'
+import { products as localProducts } from '@/components/kailab/data'
 
 export default async function Page() {
-  const [homeData, siteSettings, products] = await Promise.all([
+  const [homeData, siteSettings] = await Promise.all([
     getHomePage(),
-    getSiteSettings(),
-    getProducts()
+    getSiteSettings()
   ])
 
-  return <KailabLanding homeData={homeData} siteSettings={siteSettings} products={products} />
+  // Usamos localProducts temporalmente para desarrollo (solo Retatrutida es público)
+  return <KailabLanding homeData={homeData} siteSettings={siteSettings} products={localProducts as any} />
 }
