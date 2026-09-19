@@ -436,15 +436,72 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
           </div>
         </div>
 
-        {/* Info Accordions */}
-        {product.infoAccordions && product.infoAccordions.length > 0 && (
+        {/* Custom Retatrutide Content vs Default Accordions */}
+        {isRetatrutide ? (
           <div className="mt-8 md:mt-12 pt-8 border-t border-slate-200/80">
-            <div className="grid gap-4 md:grid-cols-2 items-start">
-              {product.infoAccordions.map((acc, i) => (
-                <AccordionItem key={i} title={acc.title} contentHtml={acc.contentHtml} />
-              ))}
+            {/* Nav / TOC */}
+            <div className="mb-10 flex flex-wrap items-center gap-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mr-2">En esta página:</span>
+              <a href="#reconstitucion" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Reconstitución</a>
+              <a href="#consejos" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Consejos prácticos</a>
+              <a href="#preguntas-frecuentes" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Preguntas frecuentes</a>
+              <a href="#estudios" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Estudios</a>
+            </div>
+
+            {/* Content blocks */}
+            <div className="grid gap-8 md:grid-cols-2 max-w-4xl bg-white rounded-2xl p-6 md:p-10 shadow-sm border border-slate-200">
+              <section>
+                <h2 className="text-xl font-bold text-slate-900 mb-3">¿Qué es la retatrutida?</h2>
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  La retatrutida es un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-bold text-slate-900 mb-3">¿Para qué se investiga?</h2>
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  Se estudia por sus efectos sobre el peso corporal y el control de la glucosa en sangre. Los ensayos clínicos evalúan su eficacia y seguridad en personas con obesidad, sobrepeso o diabetes tipo 2.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-bold text-slate-900 mb-3">¿Cómo funciona?</h2>
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  Los receptores reciben señales que activan respuestas en las células. La retatrutida activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple.
+                </p>
+              </section>
+
+              <section id="reconstitucion" className="scroll-mt-28">
+                <h2 className="text-xl font-bold text-slate-900 mb-3">Reconstitución</h2>
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  Reconstituir significa disolver el polvo del vial con un líquido adecuado para obtener una solución.
+                </p>
+              </section>
+
+              {/* Contenedor de información práctica */}
+              <div id="informacion-practica" className="scroll-mt-28 col-span-full">
+                {/* NOTA K&T: Conservar cantidades, materiales y pasos como borradores editables, ocultos al público */}
+                <div className="hidden">
+                  {/* <h3>Cantidades</h3> */}
+                  {/* <p>Contenido editable aquí</p> */}
+                  {/* <h3>Materiales</h3> */}
+                  {/* <p>Contenido editable aquí</p> */}
+                  {/* <h3>Pasos</h3> */}
+                  {/* <p>Contenido editable aquí</p> */}
+                </div>
+              </div>
             </div>
           </div>
+        ) : (
+          product.infoAccordions && product.infoAccordions.length > 0 && (
+            <div className="mt-8 md:mt-12 pt-8 border-t border-slate-200/80">
+              <div className="grid gap-4 md:grid-cols-2 items-start">
+                {product.infoAccordions.map((acc, i) => (
+                  <AccordionItem key={i} title={acc.title} contentHtml={acc.contentHtml} />
+                ))}
+              </div>
+            </div>
+          )
         )}
       </main>
 
