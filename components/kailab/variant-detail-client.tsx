@@ -179,10 +179,10 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
           {titleAndCategoryElement}
         </div>
 
-        <div id="compra" className="grid gap-6 md:grid-cols-[1.1fr_1fr] lg:gap-8 scroll-mt-28">
+        <div id="compra" className="grid gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-8 scroll-mt-28 items-stretch">
 
-          {/* LEFT: Image + COA (desktop) */}
-          <div className="flex flex-col gap-4 h-full">
+          {/* LEFT: Image + COA */}
+          <div className="flex flex-col gap-4">
             <div style={{ perspective: 2000 }}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -217,45 +217,117 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                 </motion.div>
               </motion.div>
             </div>
-            <div className="hidden md:flex flex-col flex-1">
-              {/* Espacio reservado si se necesita algo debajo de la imagen en desktop */}
+            {/* COA SECTION MOVED HERE */}
+            <div id="certificado" className="hidden md:flex flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm scroll-mt-28">
+              <div className="flex items-start gap-3">
+                <div className={cn("rounded-full p-2 shrink-0", displayCOA === 'available' ? "bg-green-100" : "bg-slate-100")}>
+                  <Icon icon={displayCOA === 'available' ? "lucide:file-check" : "lucide:clock"} className={cn("h-4 w-4", displayCOA === 'available' ? "text-green-600" : "text-slate-500")} />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-base font-bold text-slate-900 mb-1">
+                    Certificado de análisis (COA)
+                  </h2>
+                  <p className="text-[11px] text-slate-600 mb-3 leading-relaxed">
+                    Consulta los resultados del análisis de laboratorio y revisa a qué presentación y lote corresponden.
+                  </p>
+
+                  {displayCOA === 'available' ? (
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                      <div className="flex flex-col gap-3 mb-2">
+                        <div className="flex flex-col gap-0.5 text-[11px]">
+                          <span className="font-semibold text-slate-900">
+                            {isRT10
+                              ? 'Retatrutide 10 mg · Lote 317558'
+                              : `${product.title} ${activeVariant ? `· ${activeVariant.name}` : ''} · Lote ${product.lot}`
+                            }
+                          </span>
+                          <span className="text-slate-500">
+                            {isRT10
+                              ? 'Análisis por Janoshik (Informe 223529)'
+                              : `Pureza: ${product.purity}`
+                            }
+                          </span>
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-2">
+                          <a 
+                            href={isRT10 ? '/certificados/RT10_Janoshik_223529_Certificado.png' : '#certificado'} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#1959D7] px-3 py-1.5 text-[10px] font-bold text-white transition-colors hover:bg-[#1959D7]/90"
+                          >
+                            <Icon icon="lucide:external-link" className="h-3 w-3" />
+                            Abrir
+                          </a>
+                          {isRT10 && (
+                            <a 
+                              href="/certificados/RT10_Janoshik_223529_Informe.pdf" 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
+                            >
+                              <Icon icon="lucide:file-text" className="h-3 w-3" />
+                              PDF
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {isRT10 && (
+                        <div className="mt-2 rounded-lg bg-white p-2.5 border border-slate-200">
+                          <p className="text-[9px] leading-relaxed text-slate-500">
+                            Muestra analizada por Janoshik. Reporta 10,74 mg y pureza de 99,191 %.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-3 text-slate-500">
+                      <Icon icon="lucide:clock" className="h-3.5 w-3.5 shrink-0" />
+                      <p className="text-[11px] font-medium">
+                        Certificado pendiente
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* RIGHT: Commerce details */}
-          <div className="relative flex flex-col rounded-xl bg-white p-5 lg:p-6 shadow-2xl justify-between">
+          <div className="relative flex flex-col rounded-xl bg-white p-4 lg:p-5 shadow-2xl justify-between h-full">
 
             {/* DESKTOP: Breadcrumb + Title */}
-            <div className="hidden md:flex flex-col gap-2 mb-2">
+            <div className="hidden md:flex flex-col gap-2 mb-1.5">
               {breadcrumbElement}
               {titleAndCategoryElement}
             </div>
 
             {product.description ? (
-              <p className="text-[12px] leading-snug text-slate-700 mb-3">
+              <p className="text-[11px] leading-snug text-slate-700 mb-2.5">
                 {product.description}
               </p>
             ) : (
-              <p className="text-sm leading-relaxed text-slate-600 mb-4">
-                Fórmula: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
+              <p className="text-[11px] leading-relaxed text-slate-600 mb-2.5">
+                Fórmula: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded text-[10px]">{product.formula}</span>. Compuesto liofilizado de alta pureza, sintetizado para investigación y análisis de laboratorio (RUO). No apto para uso humano o veterinario.
               </p>
             )}
 
-            <div className="mb-3">
+            <div className="mb-2.5">
               {/* FEATURES */}
               {product.features && product.features.length > 0 && (
                 <div className="grid gap-y-1.5 gap-x-3 w-full grid-cols-2">
                   {product.features.map((feat, idx) => (
                     <div key={idx} className="flex items-center gap-1.5">
-                      <Icon icon="lucide:check" className="h-3.5 w-3.5 text-slate-900 shrink-0" />
-                      <span className="text-[11px] text-slate-700 leading-tight">{feat}</span>
+                      <Icon icon="lucide:check" className="h-3 w-3 text-slate-900 shrink-0" />
+                      <span className="text-[10px] text-slate-700 leading-tight">{feat}</span>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="mt-0 border-y border-slate-200 py-3 flex flex-row flex-wrap items-end justify-between gap-x-4 gap-y-3">
+            <div className="mt-0 border-y border-slate-200 py-2.5 flex flex-row flex-wrap items-end justify-between gap-x-4 gap-y-3">
               
               {/* PRECIO Y DISPONIBILIDAD */}
               <div className="flex flex-col gap-1.5 items-start shrink-0">
@@ -309,14 +381,14 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                   {/* Qty selector */}
                   <div className="flex flex-col gap-1.5 shrink-0 w-full sm:w-auto">
                     <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest text-left">Cantidad</p>
-                    <div className="flex h-11 w-full sm:w-auto shrink-0 items-center rounded-lg border border-slate-300 bg-white">
+                    <div className="flex h-9 w-full sm:w-auto shrink-0 items-center rounded-lg border border-slate-300 bg-white">
                       <button
                         onClick={() => setQty((q) => Math.max(1, q - 1))}
                         disabled={qty <= 1}
                         className="flex h-full w-12 sm:w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
                         aria-label="Disminuir cantidad"
                       >
-                        <Icon icon="lucide:minus" className="h-4 w-4" />
+                        <Icon icon="lucide:minus" className="h-3.5 w-3.5" />
                       </button>
                       <span className="flex-1 sm:w-8 text-center font-mono text-sm font-bold text-slate-900 tabular-nums">{qty}</span>
                       <button
@@ -325,12 +397,12 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                         className="flex h-full w-12 sm:w-10 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-30"
                         aria-label="Aumentar cantidad"
                       >
-                        <Icon icon="lucide:plus" className="h-4 w-4" />
+                        <Icon icon="lucide:plus" className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   </div>
 
-                  <div className="flex flex-row items-center gap-3 flex-1 w-full h-11 mt-1.5 sm:mt-0">
+                  <div className="flex flex-row items-center gap-2 flex-1 w-full h-9 mt-1.5 sm:mt-0">
                     {/* Add to cart */}
                     <button
                       onClick={cartState === 'success' ? toggleCart : handleAddToCart}
@@ -350,7 +422,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                         icon={cartState === 'success' ? "lucide:check" : isOutOfStock ? "lucide:x" : "lucide:shopping-cart"}
                         className={cn("h-4 w-4 shrink-0 transition-transform duration-300", cartState === 'idle' && !isOutOfStock && "group-hover:-rotate-12")}
                       />
-                      <span className="text-xs sm:text-sm leading-tight">
+                      <span className="text-xs leading-tight">
                         {isOutOfStock ? "Agotado" : 
                          cartState === 'adding' ? "Agregando…" : 
                          cartState === 'success' ? "Agregado al carrito." : 
@@ -373,8 +445,8 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
 
 
                 
-                <div className="mt-2 flex items-center justify-center gap-2 border-t border-slate-100 pt-3">
-                  <p className="text-center text-[11px] font-semibold text-slate-600">
+                <div className="mt-1 flex items-center justify-center gap-2 border-t border-slate-100 pt-1.5">
+                  <p className="text-center text-[10px] font-semibold text-slate-600">
                     Agua bacteriostática incluida <span className="mx-1 text-slate-300">·</span> Envío gratis a toda Colombia
                   </p>
                 </div>
@@ -382,12 +454,12 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
             </div>
 
             {/* Included Info Block */}
-            <div className="mt-4 flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
-              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <Icon icon="lucide:package-check" className="h-4 w-4 text-[#1959D7]" />
+            <div className="mt-2.5 flex flex-col gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-2.5">
+              <h2 className="text-[12px] font-bold text-slate-900 flex items-center gap-1.5">
+                <Icon icon="lucide:package-check" className="h-3 w-3 text-[#1959D7]" />
                 Incluido con tu compra
               </h2>
-              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-700">
+              <ul className="list-disc pl-4 space-y-0.5 text-[10px] text-slate-700">
                 <li>Agua bacteriostática.</li>
                 <li>Toallitas con alcohol.</li>
                 <li><a href="#informacion-practica" className="text-[#1959D7] font-semibold hover:underline">Información práctica en línea.</a></li>
@@ -401,24 +473,24 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
           </div>
         </div>
 
-        {/* COA SECTION */}
-        <div id="certificado" className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm scroll-mt-28">
-          <div className="flex items-start gap-4">
-            <div className={cn("hidden sm:flex rounded-full p-3 shrink-0", displayCOA === 'available' ? "bg-green-100" : "bg-slate-100")}>
-              <Icon icon={displayCOA === 'available' ? "lucide:file-check" : "lucide:clock"} className={cn("h-6 w-6", displayCOA === 'available' ? "text-green-600" : "text-slate-500")} />
+        {/* COA MOBILE */}
+        <div id="certificado-mobile" className="md:hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm scroll-mt-28">
+          <div className="flex items-start gap-3">
+            <div className={cn("rounded-full p-2.5 shrink-0", displayCOA === 'available' ? "bg-green-100" : "bg-slate-100")}>
+              <Icon icon={displayCOA === 'available' ? "lucide:file-check" : "lucide:clock"} className={cn("h-5 w-5", displayCOA === 'available' ? "text-green-600" : "text-slate-500")} />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
+              <h2 className="text-lg font-bold text-slate-900 mb-1.5">
                 Certificado de análisis (COA)
               </h2>
-              <p className="text-sm md:text-base text-slate-600 mb-6">
+              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
                 Consulta los resultados del análisis de laboratorio y revisa a qué presentación y lote corresponden.
               </p>
 
               {displayCOA === 'available' ? (
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 md:p-5">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                    <div className="flex flex-col gap-1 text-sm">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5">
+                  <div className="flex flex-col gap-4 mb-3">
+                    <div className="flex flex-col gap-0.5 text-xs">
                       <span className="font-semibold text-slate-900">
                         {isRT10
                           ? 'Retatrutide 10 mg · Lote 317558'
@@ -433,12 +505,12 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                       </span>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex flex-col gap-2">
                       <a 
                         href={isRT10 ? '/certificados/RT10_Janoshik_223529_Certificado.png' : '#certificado'} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1959D7] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#1959D7]/90"
+                        className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#1959D7] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#1959D7]/90"
                       >
                         <Icon icon="lucide:external-link" className="h-4 w-4" />
                         Abrir certificado
@@ -448,7 +520,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                           href="/certificados/RT10_Janoshik_223529_Informe.pdf" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
+                          className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
                         >
                           <Icon icon="lucide:file-text" className="h-4 w-4" />
                           Ver cromatograma (PDF)
@@ -458,17 +530,17 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                   </div>
                   
                   {isRT10 && (
-                    <div className="mt-4 rounded-lg bg-white p-4 border border-slate-200">
-                      <p className="text-xs leading-relaxed text-slate-500">
-                        Este informe corresponde a una muestra de Retatrutide 10 mg, lote 317558, analizada por Janoshik. Reporta 10,74 mg y una pureza de 99,191 %. Los resultados corresponden a la muestra analizada; no significan que se haya examinado cada vial del lote.
+                    <div className="mt-3 rounded-lg bg-white p-3 border border-slate-200">
+                      <p className="text-[10px] leading-relaxed text-slate-500">
+                        Muestra analizada por Janoshik. Reporta 10,74 mg y pureza de 99,191 %. Los resultados no significan que se haya examinado cada vial del lote.
                       </p>
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-slate-500">
-                  <Icon icon="lucide:clock" className="h-5 w-5 shrink-0" />
-                  <p className="text-sm font-medium">
+                <div className="flex items-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-slate-500">
+                  <Icon icon="lucide:clock" className="h-4 w-4 shrink-0" />
+                  <p className="text-xs font-medium">
                     Certificado pendiente
                   </p>
                 </div>
@@ -478,388 +550,294 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
         </div>
 
         {/* Custom Retatrutide Content vs Default Accordions */}
-        {isRetatrutide ? (
-          <div className="mt-8 md:mt-12 pt-8 border-t border-slate-200/80">
-            {/* Nav / TOC */}
-            <div className="mb-10 flex flex-wrap items-center gap-3">
-              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mr-2">En esta página:</span>
-              <a href="#reconstitucion" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Reconstitución</a>
-              <a href="#consejos" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Consejos prácticos</a>
-              <a href="#preguntas-frecuentes" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Preguntas frecuentes</a>
-              <a href="#estudios" className="inline-flex items-center rounded-full bg-secondary/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground">Estudios</a>
+        {isRetatrutide && (
+          <div className="mt-8 md:mt-12 pt-8 relative">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+            {/* Nav / TOC (Frontend System Style) */}
+            <div className="mb-10 flex flex-wrap items-center gap-3 border-y border-border/50 bg-background/50 py-4">
+              <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-primary/80 ml-2 mr-2">Navegar:</span>
+              <a href="#reconstitucion" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Reconstitución</a>
+              <a href="#consejos" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Consejos prácticos</a>
+              <a href="#preguntas-frecuentes" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Preguntas frecuentes</a>
+              <a href="#estudios" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Estudios</a>
             </div>
 
-            {/* Content blocks */}
-            <div className="grid gap-8 md:grid-cols-2 max-w-4xl bg-white rounded-2xl p-6 md:p-10 shadow-sm border border-slate-200">
-              <section>
-                <h2 className="text-xl font-bold text-slate-900 mb-3">¿Qué es la retatrutida?</h2>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  La retatrutida es un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943.
-                </p>
-              </section>
-
-              <section>
-                <h2 className="text-xl font-bold text-slate-900 mb-3">¿Para qué se investiga?</h2>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  Se estudia por sus efectos sobre el peso corporal y el control de la glucosa en sangre. Los ensayos clínicos evalúan su eficacia y seguridad en personas con obesidad, sobrepeso o diabetes tipo 2.
-                </p>
-              </section>
-
-              <section>
-                <h2 className="text-xl font-bold text-slate-900 mb-3">¿Cómo funciona?</h2>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  Los receptores reciben señales que activan respuestas en las células. La retatrutida activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple.
-                </p>
-              </section>
-
-              <section id="reconstitucion" className="scroll-mt-28">
-                <h2 className="text-xl font-bold text-slate-900 mb-3">Reconstitución</h2>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  Reconstituir significa disolver el polvo del vial con un líquido adecuado para obtener una solución.
-                </p>
-              </section>
-
-              {/* Contenedor de información práctica */}
-              <div id="informacion-practica" className="scroll-mt-28 col-span-full mt-4">
+            {/* Content blocks (Frontend System Layout) */}
+            <div className="max-w-7xl mx-auto space-y-12 mb-24">
+              
+              {/* INTRO Y RECONSTITUCIÓN (DISEÑO LISTA DESCRIPTIVA) */}
+              <section id="informacion" className="scroll-mt-28 mb-24">
+                <div className="mb-10">
+                  <div className="mb-4 flex items-center gap-2 text-primary">
+                    <Icon icon="lucide:flask-conical" className="h-5 w-5" />
+                    <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Ficha Técnica</span>
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl leading-tight">Introducción al péptido</h2>
+                </div>
                 
-                <h3 className="text-lg font-bold text-slate-900 mb-3">Cómo leer las cantidades</h3>
-                <ul className="list-disc pl-4 space-y-1.5 text-sm text-slate-700 mb-6">
-                  <li><strong>mg:</strong> cantidad de péptido.</li>
-                  <li><strong>mL:</strong> volumen de líquido.</li>
-                  <li><strong>mg/mL:</strong> cantidad de péptido en cada mililitro de solución.</li>
-                </ul>
-
-                {/* NOTA K&T: Conservar como borradores editables ocultos al público */}
-                <div className="hidden">
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">Cantidad de agua</h3>
-                  <div>
-                    <p>Presentación: [Editable]</p>
-                    <p>Agua para reconstituir: [Editable]</p>
-                    <p>Concentración resultante: [Editable]</p>
+                <dl className="divide-y divide-border/50 border-y border-border/50 bg-background">
+                  <div className="grid sm:grid-cols-3 gap-4 py-8">
+                    <dt className="text-lg font-bold text-foreground">¿Qué es?</dt>
+                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
+                      Un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943.
+                    </dd>
+                  </div>
+                  <div className="grid sm:grid-cols-3 gap-4 py-8">
+                    <dt className="text-lg font-bold text-foreground">¿Para qué se investiga?</dt>
+                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
+                      Por sus efectos sobre el peso corporal y la glucosa en sangre. Se evalúa en personas con obesidad, sobrepeso o diabetes tipo 2.
+                    </dd>
+                  </div>
+                  <div className="grid sm:grid-cols-3 gap-4 py-8">
+                    <dt className="text-lg font-bold text-foreground">¿Cómo funciona?</dt>
+                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
+                      Activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple.
+                    </dd>
+                  </div>
+                  <div className="grid sm:grid-cols-3 gap-4 py-8" id="reconstitucion">
+                    <dt className="text-lg font-bold text-foreground">Reconstitución</dt>
+                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
+                      Significa disolver el polvo del vial con un líquido adecuado (como agua bacteriostática) para obtener una solución inyectable.
+                    </dd>
                   </div>
                   
-                  <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Antes de empezar</h3>
-                  <ul className="list-disc pl-4">
-                    <li>[Materiales - Editable]</li>
-                  </ul>
-                  
-                  <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Paso a paso</h3>
-                  <ol className="list-decimal pl-4">
-                    <li>[Paso 1 - Editable]</li>
-                  </ol>
-                  <p>[Frase final - Editable]</p>
-                </div>
-              </div>
-
-              {/* ALMACENAMIENTO (Borrador oculto) */}
-              <section id="almacenamiento" className="hidden scroll-mt-28 col-span-full">
-                <h2 className="text-xl font-bold text-slate-900 mb-3">Almacenamiento</h2>
-                <div>
-                  <p>Antes de reconstituir: [Editable]</p>
-                  <p>Después de reconstituir: [Editable]</p>
-                  <p>¿Cuánto tiempo se conserva?: [Editable]</p>
-                  <p>Si queda fuera de la nevera: [Editable]</p>
-                </div>
-              </section>
-
-              {/* DOSIS Y CALENDARIO (Revisión privada / oculto en público) */}
-              <section id="dosis" className="hidden scroll-mt-28 col-span-full">
-                <h2 className="text-xl font-bold text-slate-900 mb-3">Dosis y calendario</h2>
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 md:p-6">
-                  {/* Selector simple RT5 / RT10 para revisión */}
-                  <div className="flex gap-2 mb-6">
-                    <button type="button" className={cn("px-3 py-1 text-sm rounded-md font-bold transition-colors", isRT5 || (!isRT5 && !isRT10) ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT5</button>
-                    <button type="button" className={cn("px-3 py-1 text-sm rounded-md font-bold transition-colors", isRT10 ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT10</button>
-                  </div>
-                  
-                  { (isRT5 || (!isRT5 && !isRT10)) ? (
-                    <>
-                      <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 5 mg (RT5)</h3>
-                      <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
-                      
-                      <h4 className="text-base font-bold text-slate-900 mb-2">RT5</h4>
-                      <div className="overflow-x-auto border border-slate-200 rounded bg-white">
-                        <table className="w-full text-left text-sm text-slate-900">
-                          <thead className="bg-[#e2e8f0] font-bold">
-                            <tr>
-                              <th className="px-4 py-2 w-1/3">Semana</th>
-                              <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
-                              <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100">
-                            {Array.from({ length: 20 }).map((_, i) => (
-                              <tr key={i} className="hover:bg-slate-50">
-                                <td className="px-4 py-2">Semana {i + 1}</td>
-                                <td className="px-4 py-2"></td>
-                                <td className="px-4 py-2"></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                  {/* INFO PRÁCTICA */}
+                  <div className="grid sm:grid-cols-3 gap-4 py-8 bg-secondary/5">
+                    <dt className="text-lg font-bold text-foreground">Lectura de cantidades</dt>
+                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
+                      <div className="flex flex-wrap gap-4 text-sm font-mono">
+                        <div className="flex items-center gap-2"><span className="font-bold text-primary">mg</span><span className="text-muted-foreground">cantidad de péptido</span></div>
+                        <div className="flex items-center gap-2"><span className="font-bold text-primary">mL</span><span className="text-muted-foreground">volumen de líquido</span></div>
+                        <div className="flex items-center gap-2"><span className="font-bold text-primary">mg/mL</span><span className="text-muted-foreground">concentración resultante</span></div>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 10 mg (RT10)</h3>
-                      <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
-                      
-                      <h4 className="text-base font-bold text-slate-900 mb-2">RT10</h4>
-                      <div className="overflow-x-auto border border-slate-200 rounded bg-white">
-                        <table className="w-full text-left text-sm text-slate-900">
-                          <thead className="bg-[#e2e8f0] font-bold">
-                            <tr>
-                              <th className="px-4 py-2 w-1/3">Semana</th>
-                              <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
-                              <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100">
-                            {Array.from({ length: 20 }).map((_, i) => (
-                              <tr key={i} className="hover:bg-slate-50">
-                                <td className="px-4 py-2">Semana {i + 1}</td>
-                                <td className="px-4 py-2"></td>
-                                <td className="px-4 py-2"></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                    </dd>
+                  </div>
+
+                  {/* BORRADORES OCULTOS K&T */}
+                  <div className="hidden py-8">
+                    <h3 className="text-lg font-bold text-slate-900 mb-2">Cantidad de agua</h3>
+                    <div>
+                      <p>Presentación: [Editable]</p>
+                      <p>Agua para reconstituir: [Editable]</p>
+                      <p>Concentración resultante: [Editable]</p>
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Antes de empezar</h3>
+                    <ul className="list-disc pl-4"><li>[Materiales - Editable]</li></ul>
+                    <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Paso a paso</h3>
+                    <ol className="list-decimal pl-4"><li>[Paso 1 - Editable]</li></ol>
+                    <p>[Frase final - Editable]</p>
+                    
+                    <h2 className="text-xl font-bold text-slate-900 mt-8 mb-3">Almacenamiento</h2>
+                    <div>
+                      <p>Antes de reconstituir: [Editable]</p>
+                      <p>Después de reconstituir: [Editable]</p>
+                      <p>¿Cuánto tiempo se conserva?: [Editable]</p>
+                      <p>Si queda fuera de la nevera: [Editable]</p>
+                    </div>
+
+                    <h2 className="text-xl font-bold text-slate-900 mt-8 mb-3">Dosis y calendario</h2>
+                    <div className="bg-slate-50 border border-slate-200 p-4 md:p-6">
+                      <div className="flex gap-2 mb-6">
+                        <button type="button" className={cn("px-3 py-1 text-sm font-bold transition-colors", isRT5 || (!isRT5 && !isRT10) ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT5</button>
+                        <button type="button" className={cn("px-3 py-1 text-sm font-bold transition-colors", isRT10 ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT10</button>
                       </div>
-                    </>
-                  )}
-
-                  <div className="mt-6 rounded bg-slate-100 p-3">
-                    <p className="text-xs font-bold text-slate-900 leading-relaxed">
-                      PARA K&T · Mantener vacías las columnas de dosis y unidades. No escribir cero, calcular conversiones ni copiar cantidades de los estudios. Cada presentación conserva sus propios campos editables; la tabla y sus campos solo aparecen en la revisión privada.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              {/* CONSEJOS PRÁCTICOS */}
-              <section id="consejos" className="scroll-mt-28 col-span-full mt-4">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Consejos prácticos</h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Los aumentos no son una meta</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      TRIUMPH-1 incluyó grupos con dosis objetivo de 4, 9 y 12 mg. Llegar a 12 mg no fue el objetivo para todos los participantes. El calendario no establece una dosis adecuada para todas las personas.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Más no siempre es mejor</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      En los estudios, las dosis mayores produjeron más pérdida de peso en promedio, pero algunos efectos adversos también fueron más frecuentes. Una mayor cantidad no garantiza un mejor resultado individual.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">El progreso se observa con el tiempo</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      Que el peso no cambie durante unos días no demuestra, por sí solo, que una dosis sea insuficiente.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Qué molestias se han reportado</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed mb-2">
-                      Entre los efectos adversos frecuentes en los ensayos se encuentran:
-                    </p>
-                    <ul className="list-disc pl-4 space-y-1 text-sm text-slate-700 mb-2">
-                      <li>Náuseas.</li>
-                      <li>Diarrea.</li>
-                      <li>Estreñimiento.</li>
-                      <li>Vómitos.</li>
-                    </ul>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      La intensidad y la duración varían entre personas. No existe un plazo único en el que estas molestias deban desaparecer.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Comidas más pequeñas</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      Come despacio y sirve porciones pequeñas. Detente cuando te sientas satisfecho.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Si aparece náusea</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      Prueba comidas sencillas y poco grasosas. Evita acostarte justo después de comer.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Hidratación</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      Toma agua a lo largo del día. Si tienes náuseas, prueba con sorbos pequeños y frecuentes.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Si aparece estreñimiento</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      Aumenta la fibra de forma gradual, acompáñala con agua y mantén actividad física regular.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Lleva un registro sencillo</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      Anota las fechas, los cambios de apetito y las molestias que notes. Un registro breve ayuda a observar cómo cambian con el tiempo.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              {/* PREGUNTAS FRECUENTES */}
-              <section id="preguntas-frecuentes" className="scroll-mt-28 col-span-full mt-4">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Preguntas frecuentes</h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">¿En qué se diferencia de la tirzepatida?</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      La tirzepatida activa los receptores GIP y GLP-1. La retatrutida también activa el receptor de glucagón; por eso se describe como un agonista triple. Son moléculas diferentes, y esa diferencia no demuestra por sí sola que una sea mejor para todas las personas.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">¿Qué se sabe de su efecto sobre el hambre?</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      En <a href="#fuentes" className="font-bold text-[#1959D7] hover:underline">un análisis de un ensayo clínico de Lilly</a>, los participantes que recibieron retatrutida reportaron menos hambre y menor tendencia a comer en exceso, especialmente en los grupos con dosis más altas. Esto no significa que el apetito desaparezca por completo.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">¿Qué resultados de pérdida de peso se han observado?</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      En <a href="#fuentes" className="font-bold text-[#1959D7] hover:underline">TRIUMPH-1</a>, adultos con obesidad o sobrepeso, sin diabetes, perdieron en promedio entre 17,6 % y 25,0 % de su peso a las 80 semanas, según la dosis, frente a 3,9 % con placebo. Estos resultados corresponden al medicamento de investigación de Lilly, no a los viales de KAILAB.
-                    </p>
-                  </div>
-                  
-                  {/* NOTA K&T: Conservar esta pregunta y respuesta como borrador oculto; no mostrarlas hasta publicar las cantidades de reconstitución. */}
-                  <div className="hidden">
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">¿Debo agregar toda el agua bacteriostática incluida?</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      No necesariamente. Usa la cantidad indicada en Reconstitución para la presentación que elegiste. El contenido del frasco de agua no determina cuánto debes agregar al vial.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">¿Dónde puedo revisar los análisis antes de comprar?</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      En <a href="#certificado" className="font-bold text-[#1959D7] hover:underline">Certificado de análisis (COA)</a> puedes abrir el informe disponible para la presentación y el lote correspondientes. Si aún no hay un informe publicado, la página lo indica como «Certificado pendiente».
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">¿Qué viene incluido y cuánto cuesta el envío?</h3>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      Incluimos agua bacteriostática, toallitas con alcohol e <a href="#informacion-practica" className="font-bold text-[#1959D7] hover:underline">información práctica en línea</a>. El envío es gratis a toda Colombia y el empaque es discreto.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              {/* BOTÓN VOLVER A COMPRA */}
-              <div className="col-span-full mt-4 flex justify-center">
-                <a 
-                  href="#compra" 
-                  className="inline-flex h-11 items-center justify-center rounded-lg bg-[#1959D7] px-8 text-sm font-bold text-white transition-colors hover:bg-[#1959D7]/90 shadow-sm"
-                >
-                  Comprar ahora
-                </a>
-              </div>
-
-              {/* ESTUDIOS */}
-              <section id="estudios" className="scroll-mt-28 col-span-full mt-10 border-t border-slate-200/80 pt-8">
-                <h2 className="text-xl font-bold text-slate-900 mb-3">¿Qué dicen los estudios?</h2>
-                <p className="text-sm text-slate-700 leading-relaxed mb-6">
-                  Los ensayos clínicos han observado reducciones de peso y de glucosa en sangre. Los resultados varían según la dosis, la población y la duración del estudio.
-                </p>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Peso corporal</h3>
-                    <p className="text-sm font-semibold text-slate-700 mb-2">TRIUMPH-1 · 2026 · 2.339 adultos · 80 semanas.</p>
-                    <p className="text-sm text-slate-700 leading-relaxed mb-2">
-                      Se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo en adultos con obesidad o sobrepeso, sin diabetes.
-                    </p>
-                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                      La reducción promedio de peso fue de 17,6 % a 25,0 %, según la dosis, frente a 3,9 % con placebo. Este análisis considera las interrupciones del tratamiento.
-                    </p>
-                    <div className="flex flex-col gap-1">
-                      <a href="#" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1959D7] hover:underline">
-                        Ver resultados de TRIUMPH-1 <Icon icon="lucide:external-link" className="h-3.5 w-3.5" />
-                      </a>
-                      <span className="text-xs text-slate-500">Comunicado de Lilly · mayo de 2026</span>
+                      
+                      { (isRT5 || (!isRT5 && !isRT10)) ? (
+                        <>
+                          <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 5 mg (RT5)</h3>
+                          <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
+                          <h4 className="text-base font-bold text-slate-900 mb-2">RT5</h4>
+                          <div className="overflow-x-auto border border-slate-200 bg-white">
+                            <table className="w-full text-left text-sm text-slate-900">
+                              <thead className="bg-[#e2e8f0] font-bold">
+                                <tr>
+                                  <th className="px-4 py-2 w-1/3">Semana</th>
+                                  <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
+                                  <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100">
+                                {Array.from({ length: 20 }).map((_, i) => (
+                                  <tr key={i} className="hover:bg-slate-50">
+                                    <td className="px-4 py-2">Semana {i + 1}</td>
+                                    <td className="px-4 py-2"></td>
+                                    <td className="px-4 py-2"></td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 10 mg (RT10)</h3>
+                          <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
+                          <h4 className="text-base font-bold text-slate-900 mb-2">RT10</h4>
+                          <div className="overflow-x-auto border border-slate-200 bg-white">
+                            <table className="w-full text-left text-sm text-slate-900">
+                              <thead className="bg-[#e2e8f0] font-bold">
+                                <tr>
+                                  <th className="px-4 py-2 w-1/3">Semana</th>
+                                  <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
+                                  <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100">
+                                {Array.from({ length: 20 }).map((_, i) => (
+                                  <tr key={i} className="hover:bg-slate-50">
+                                    <td className="px-4 py-2">Semana {i + 1}</td>
+                                    <td className="px-4 py-2"></td>
+                                    <td className="px-4 py-2"></td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </>
+                      )}
+                      <div className="mt-6 bg-slate-100 p-3">
+                        <p className="text-xs font-bold text-slate-900 leading-relaxed">
+                          PARA K&T · Mantener vacías las columnas de dosis y unidades. No escribir cero, calcular conversiones ni copiar cantidades de los estudios.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Glucosa en sangre</h3>
-                    <p className="text-sm font-semibold text-slate-700 mb-2">TRANSCEND-T2D-1 · 2026 · 537 adultos · 40 semanas.</p>
-                    <p className="text-sm text-slate-700 leading-relaxed mb-2">
-                      En adultos con diabetes tipo 2, se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo.
-                    </p>
-                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                      La HbA1c, un indicador del nivel promedio de glucosa en sangre, disminuyó entre 1,7 y 1,9 puntos porcentuales, frente a 0,8 con placebo. Este análisis considera las interrupciones del tratamiento.
-                    </p>
-                    <div className="flex flex-col gap-1">
-                      <a href="#" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1959D7] hover:underline">
-                        Ver resultados de TRANSCEND-T2D-1 <Icon icon="lucide:external-link" className="h-3.5 w-3.5" />
-                      </a>
-                      <span className="text-xs text-slate-500">Comunicado de Lilly · marzo de 2026</span>
-                      <a href="#" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1959D7] hover:underline mt-1">
-                        Ver publicación en The Lancet <Icon icon="lucide:external-link" className="h-3.5 w-3.5" />
-                      </a>
-                      <span className="text-xs text-slate-500">junio de 2026</span>
+                </dl>
+              </section>
+
+              {/* CONSEJOS PRÁCTICOS (DISEÑO MACIZO GRID) */}
+              <section id="consejos" className="scroll-mt-28 mb-24">
+                <div className="border border-border/50 bg-background shadow-sm">
+                  <div className="p-6 sm:p-10 border-b border-border/50 bg-secondary/5">
+                    <div className="mb-4 flex items-center gap-2 text-primary">
+                      <Icon icon="lucide:lightbulb" className="h-5 w-5" />
+                      <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Experiencia de uso</span>
                     </div>
+                    <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl leading-tight">Consejos Prácticos</h2>
                   </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Cómo interpretar estos datos</h3>
-                    <ul className="list-disc pl-4 space-y-1.5 text-sm text-slate-700">
-                      <li>Son promedios de grupos; no predicen el resultado de una persona.</li>
-                      <li>También se reportaron náuseas, diarrea, vómitos y otros eventos adversos.</li>
-                      <li>Los ensayos evaluaron el medicamento de investigación de Lilly, no los viales de KAILAB.</li>
-                    </ul>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border/50">
+                    {[
+                      { title: "Los aumentos no son una meta", desc: "TRIUMPH-1 incluyó grupos con dosis objetivo de 4, 9 y 12 mg. Llegar a 12 mg no fue el objetivo para todos. El calendario no establece una dosis adecuada universal." },
+                      { title: "Más no siempre es mejor", desc: "En los estudios, las dosis mayores produjeron más pérdida de peso en promedio, pero algunos efectos adversos también fueron más frecuentes." },
+                      { title: "El progreso es gradual", desc: "Que el peso no cambie durante unos días no demuestra, por sí solo, que una dosis sea insuficiente." },
+                      { title: "Comidas e hidratación", desc: "Come despacio, sirve porciones pequeñas. Toma agua a lo largo del día. Si tienes náuseas, prueba con sorbos pequeños y comidas poco grasosas." },
+                      { title: "Molestias reportadas", desc: "En los ensayos se han reportado náuseas, vómitos, diarrea o estreñimiento. La intensidad varía entre personas." },
+                      { title: "Lleva un registro sencillo", desc: "Anota las fechas, los cambios de apetito y las molestias que notes. Ayuda a observar cómo cambian con el tiempo." }
+                    ].map((tip, i) => (
+                      <div key={i} className={cn("p-6 sm:p-8 hover:bg-secondary/5 transition-colors relative group", (i >= 2 && i < 3) ? "border-t-0" : (i >= 3 ? "border-t border-border/50" : ""))}>
+                        <div className="absolute left-0 top-0 h-0 w-full bg-primary/20 transition-all duration-300 group-hover:h-1"></div>
+                        <h3 className="text-base font-bold text-foreground mb-3">{tip.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{tip.desc}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </section>
 
-              {/* FUENTES CIENTÍFICAS */}
-              <section id="fuentes" className="scroll-mt-28 col-span-full mt-10 mb-4">
-                <h2 className="text-xl font-bold text-slate-900 mb-3">Fuentes científicas</h2>
-                <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                  Consulta las publicaciones sobre la investigación de la retatrutida.
-                </p>
-                <ul className="flex flex-col gap-3 text-sm">
-                  <li><a href="#" className="inline-flex items-center gap-1.5 font-bold text-[#1959D7] hover:underline">Retatrutida y obesidad — ensayo de fase 2 (NEJM, 2023) <Icon icon="lucide:external-link" className="h-3.5 w-3.5" /></a></li>
-                  <li><a href="#" className="inline-flex items-center gap-1.5 font-bold text-[#1959D7] hover:underline">Retatrutida y comportamiento alimentario (Diabetes, Obesity and Metabolism, 2025) <Icon icon="lucide:external-link" className="h-3.5 w-3.5" /></a></li>
-                  <li><a href="#" className="inline-flex items-center gap-1.5 font-bold text-[#1959D7] hover:underline">TRIUMPH-1: resultados de peso corporal (Lilly, 2026) <Icon icon="lucide:external-link" className="h-3.5 w-3.5" /></a></li>
-                  <li><a href="#" className="inline-flex items-center gap-1.5 font-bold text-[#1959D7] hover:underline">TRANSCEND-T2D-1: resultados en diabetes tipo 2 (Lilly, 2026) <Icon icon="lucide:external-link" className="h-3.5 w-3.5" /></a></li>
-                  <li><a href="#" className="inline-flex items-center gap-1.5 font-bold text-[#1959D7] hover:underline">TRANSCEND-T2D-1: publicación científica (The Lancet, 2026) <Icon icon="lucide:external-link" className="h-3.5 w-3.5" /></a></li>
-                  <li><a href="#" className="inline-flex items-center gap-1.5 font-bold text-[#1959D7] hover:underline">Retatrutida: mecanismo e investigación (Lilly) <Icon icon="lucide:external-link" className="h-3.5 w-3.5" /></a></li>
-                  <li><a href="#" className="inline-flex items-center gap-1.5 font-bold text-[#1959D7] hover:underline">Tirzepatida: información del medicamento (Lilly) <Icon icon="lucide:external-link" className="h-3.5 w-3.5" /></a></li>
-                </ul>
+              {/* PREGUNTAS FRECUENTES (DISEÑO CAJONES ACORDEON CLEAN) */}
+              <section id="preguntas-frecuentes" className="scroll-mt-28 mb-24 max-w-4xl">
+                 <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl mb-8 flex items-center gap-3">
+                   <Icon icon="lucide:help-circle" className="h-6 w-6 text-primary" />
+                   Preguntas frecuentes
+                 </h2>
+                 <div className="flex flex-col gap-3">
+                    {[
+                      { q: "¿En qué se diferencia de la tirzepatida?", a: "La tirzepatida activa los receptores GIP y GLP-1. La retatrutida también activa el receptor de glucagón; por eso se describe como un agonista triple. Son moléculas diferentes, y esa diferencia no demuestra por sí sola que una sea mejor para todas las personas." },
+                      { q: "¿Qué se sabe de su efecto sobre el hambre?", a: "En un análisis de un ensayo clínico de Lilly, los participantes que recibieron retatrutida reportaron menos hambre y menor tendencia a comer en exceso, especialmente en los grupos con dosis más altas. Esto no significa que el apetito desaparezca por completo." },
+                      { q: "¿Qué resultados de pérdida de peso se han observado?", a: "En TRIUMPH-1, adultos con obesidad o sobrepeso, sin diabetes, perdieron en promedio entre 17,6 % y 25,0 % de su peso a las 80 semanas, según la dosis, frente a 3,9 % con placebo. Estos resultados corresponden al medicamento de investigación de Lilly, no a los viales de KAILAB." },
+                      { q: "¿Dónde puedo revisar los análisis antes de comprar?", a: "En la pestaña 'Certificado de análisis (COA)' puedes abrir el informe disponible para la presentación y el lote correspondientes. Si aún no hay un informe publicado, la página lo indica como «Certificado pendiente»." },
+                      { q: "¿Qué viene incluido y cuánto cuesta el envío?", a: "Incluimos agua bacteriostática, toallitas con alcohol e información práctica en línea. El envío es gratis a toda Colombia y el empaque es discreto." }
+                    ].map((faq, i) => (
+                      <details key={i} className="group border border-border/50 bg-background open:bg-secondary/5 transition-colors duration-300">
+                        <summary className="cursor-pointer p-5 font-bold text-foreground flex items-center justify-between [&::-webkit-details-marker]:hidden">
+                           {faq.q}
+                           <Icon icon="lucide:chevron-down" className="h-4 w-4 transition-transform group-open:rotate-180" />
+                        </summary>
+                        <div className="px-5 pb-5 pt-0 text-sm text-muted-foreground leading-relaxed border-t border-border/50 mx-5 mt-2 pt-4">
+                           {faq.a}
+                        </div>
+                      </details>
+                    ))}
+                 </div>
               </section>
+
+              {/* ESTUDIOS Y FUENTES (DISEÑO PANELES LATERALES + FOOTER INVERTIDO) */}
+              <section id="estudios" className="scroll-mt-28 mb-16">
+                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 pb-6 mb-10 gap-4">
+                    <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Evidencia Clínica</h2>
+                    <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary/80 bg-primary/10 px-3 py-1">Estudios</span>
+                 </div>
+                 
+                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-8">
+                    {/* Estudio 1: Left */}
+                    <div className="relative border-l-4 border-primary pl-6 py-2">
+                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest block mb-2">Estudio de Peso Corporal</span>
+                       <h3 className="text-xl font-bold text-foreground mb-4">Ensayo TRIUMPH-1</h3>
+                       <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                         En 2.339 adultos con obesidad o sobrepeso a lo largo de 80 semanas, se compararon dosis de 4, 9 y 12 mg con placebo. La reducción promedio fue de 17,6 % a 25,0 %, frente a 3,9 % con placebo.
+                       </p>
+                       <a href="#" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-primary hover:text-primary/80 group">
+                         Leer comunicado <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                       </a>
+                    </div>
+                    {/* Estudio 2: Right */}
+                    <div className="relative border-l-4 border-emerald-600 pl-6 py-2">
+                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest block mb-2">Estudio de Glucosa</span>
+                       <h3 className="text-xl font-bold text-foreground mb-4">TRANSCEND-T2D-1</h3>
+                       <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                         En 537 adultos con diabetes tipo 2 a lo largo de 40 semanas. La HbA1c disminuyó entre 1,7 y 1,9 puntos porcentuales, frente a 0,8 con placebo.
+                       </p>
+                       <div className="flex gap-4">
+                         <a href="#" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-emerald-700 hover:text-emerald-800 group">
+                           Investigación <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                         </a>
+                       </div>
+                    </div>
+                 </div>
+
+                 {/* Disclaimer */}
+                 <div className="mt-8 bg-secondary/10 border-l-2 border-primary/50 p-6">
+                    <p className="text-sm text-foreground font-bold mb-1">Interpretación de los datos</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Son promedios de grupos; no predicen resultados individuales. También se reportaron náuseas, diarrea, vómitos y otros eventos. Los ensayos evaluaron el medicamento de investigación de Lilly, no los viales de KAILAB.
+                    </p>
+                 </div>
+                 
+                 {/* Bibliografía Footer */}
+                 <div className="mt-16 bg-foreground text-background p-8 sm:p-12">
+                   <h3 className="font-mono text-xs font-bold uppercase tracking-widest text-background/70 mb-8 flex items-center gap-2">
+                     <Icon icon="lucide:book-open" className="h-4 w-4" /> Bibliografía y Documentación
+                   </h3>
+                   <ul className="grid sm:grid-cols-2 gap-x-12 gap-y-4">
+                     {[
+                        "Retatrutida y obesidad (NEJM, 2023)",
+                        "Comportamiento alimentario (DOM, 2025)",
+                        "TRIUMPH-1 (Lilly, 2026)",
+                        "TRANSCEND-T2D-1 (Lilly, 2026)",
+                        "Mecanismo e investigación (Lilly)"
+                     ].map((fuente, i) => (
+                        <li key={i} className="flex items-center gap-3 border-b border-background/20 pb-3">
+                           <Icon icon="lucide:arrow-up-right" className="h-3 w-3 text-background/50" />
+                           <a href="#" className="text-sm font-medium hover:text-background/80 transition-colors">{fuente}</a>
+                        </li>
+                     ))}
+                   </ul>
+                 </div>
+              </section>
+
             </div>
           </div>
-        ) : (
-          product.infoAccordions && product.infoAccordions.length > 0 && (
-            <div className="mt-8 md:mt-12 pt-8 border-t border-slate-200/80">
-              <div className="grid gap-4 md:grid-cols-2 items-start">
-                {product.infoAccordions.map((acc, i) => (
-                  <AccordionItem key={i} title={acc.title} contentHtml={acc.contentHtml} />
-                ))}
-              </div>
+        )}
+
+        {!isRetatrutide && product.infoAccordions && product.infoAccordions.length > 0 && (
+          <div className="mt-8 md:mt-12 pt-8 relative">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+            <div className="grid gap-4 md:grid-cols-2 items-start">
+              {product.infoAccordions.map((acc, i) => (
+                <AccordionItem key={i} title={acc.title} contentHtml={acc.contentHtml} />
+              ))}
             </div>
-          )
+          </div>
         )}
       </main>
 

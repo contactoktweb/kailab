@@ -60,7 +60,8 @@ export function Footer({ siteSettings }: { siteSettings?: SiteSettings | null })
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-8">
+        <div className="mt-12 pt-8 relative">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent opacity-70"></div>
           <p className="text-xs leading-relaxed text-muted-foreground">
             {siteSettings?.footerNotice || 'Exclusivamente para investigación. No destinado a uso humano ni veterinario.'}
           </p>

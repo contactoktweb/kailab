@@ -87,7 +87,7 @@ export function WompiCheckoutButton({
       onClick={handleClick}
       className={
         className ||
-        "flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-[#1959D7] px-5 text-sm font-bold text-white transition-all duration-300 hover:bg-[#1959D7]/90 active:scale-[0.98]"
+        "flex h-full w-full items-center justify-center gap-2 rounded-lg bg-[#1959D7] px-5 text-sm font-bold text-white transition-all duration-300 hover:bg-[#1959D7]/90 active:scale-[0.98]"
       }
     >
       {label}

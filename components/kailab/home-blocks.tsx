@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import type { HomePageData, GuidesPageData, QualityPageData } from '@/lib/sanity-queries'
+import type { HomePageData, GuidesPageData, QualityPageData, HelpPageData } from '@/lib/sanity-queries'
 
 export function BenefitsStrip() {
   return (
@@ -30,6 +30,162 @@ export function BenefitsStrip() {
   )
 }
 
+export function CombinedIncludedQuality({ 
+  whatsIncludedData, 
+  qualityData 
+}: { 
+  whatsIncludedData?: HomePageData['whatsIncluded']
+  qualityData?: QualityPageData | null 
+}) {
+  const defaultItems = [
+    { name: 'Agua bacteriostática', desc: '', icon: 'lucide:droplets', link: undefined },
+    { name: 'Toallitas con alcohol', desc: '', icon: 'lucide:shield-plus', link: undefined },
+    { name: 'Acceso a la guía en línea', desc: '', icon: 'lucide:book-open', link: '#guia-manejo' },
+    { name: 'Envío gratis a toda Colombia, en empaque discreto', desc: '', icon: 'lucide:package-check', link: undefined }
+  ]
+
+  const items = whatsIncludedData?.items?.length ? whatsIncludedData.items.map((item, index) => ({
+    name: item.name || defaultItems[index]?.name || '',
+    desc: item.desc || defaultItems[index]?.desc || '',
+    icon: defaultItems[index]?.icon || 'lucide:check-circle',
+    link: defaultItems[index]?.link
+  })) : defaultItems
+
+  const statsList = qualityData?.statsList || [
+    { label: 'Método de Ensayo', value: 'Cromatografía HPLC' },
+    { label: 'Pureza Analizada', value: '≥ 99.1%' },
+    { label: 'Trazabilidad', value: 'Código QR en vial' },
+    { label: 'Firma Digital', value: '0x3F9A...B8C2' },
+  ]
+
+  return (
+    <motion.section 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
+      className="relative overflow-hidden border-b border-border bg-secondary/5 py-8 sm:py-10"
+    >
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+          
+          {/* WhatsIncluded Half */}
+          <div className="flex flex-col border border-border/50 bg-background shadow-sm h-full">
+            <div className="p-6 sm:p-8 border-b border-border/50">
+              <div className="mb-4 flex items-center gap-2 text-primary">
+                 <Icon icon="lucide:package-check" className="h-5 w-5" />
+                 <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+                   {whatsIncludedData?.tag || 'Dotación de Envíos'}
+                 </span>
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl leading-tight">
+                {whatsIncludedData?.title || 'Incluido con tu compra'}
+              </h2>
+              {whatsIncludedData?.description && (
+                <p className="mt-3 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                  {whatsIncludedData.description}
+                </p>
+              )}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 p-6 sm:p-8 gap-4 bg-secondary/5 flex-1">
+              {items.map((item, i) => {
+                const CardWrapper = item.link ? Link : 'div'
+                return (
+                  <CardWrapper 
+                    key={i} 
+                    href={item.link as any}
+                    className="group relative flex flex-col justify-center overflow-hidden bg-background p-5 transition-all duration-500 hover:-translate-y-1 border border-border/40 shadow-sm hover:shadow-md h-full cursor-pointer"
+                  >
+                    <div className="absolute left-0 top-0 h-full w-[3px] bg-border transition-colors duration-500 group-hover:bg-primary"></div>
+                    <div className="absolute left-0 top-0 h-[3px] w-10 bg-border transition-all duration-500 group-hover:w-full group-hover:bg-primary/50"></div>
+                    
+                    <div className="relative z-10 flex flex-col gap-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-primary/30 text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Icon icon={item.icon} className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold tracking-tight text-foreground transition-colors group-hover:text-primary leading-tight">
+                          {item.name}
+                        </h3>
+                        {item.desc && (
+                          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
+                        )}
+                      </div>
+                    </div>
+                  </CardWrapper>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* QualityCoa Half */}
+          <div className="flex flex-col border border-border/50 bg-background shadow-sm h-full">
+            <div className="p-6 sm:p-8 border-b border-border/50">
+              <div className="mb-4 flex items-center gap-2 text-primary">
+                 <Icon icon="lucide:microscope" className="h-5 w-5" />
+                 <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+                   {qualityData?.headerTag || 'Laboratorio Analítico'}
+                 </span>
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl leading-tight">
+                {qualityData?.title || 'Calidad que puedes consultar'}
+              </h2>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                {qualityData?.description || 'Un certificado de análisis (COA) muestra los resultados de una muestra evaluada por un laboratorio. Consulta los informes disponibles y revisa el producto, la presentación y el lote de cada uno.'}
+              </p>
+              
+              <div className="mt-6">
+                <Link
+                  href="/calidad"
+                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-sm bg-[#1959D7] px-5 py-2.5 font-mono text-[11px] font-bold tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-[#1959D7]/90 active:scale-95"
+                >
+                  Ver certificados
+                  <Icon icon="lucide:arrow-right" className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </div>
+            
+            <div className="p-6 sm:p-8 bg-secondary/5 flex-1 relative flex items-center justify-center">
+               <div className="absolute -left-2 -top-2 h-8 w-8 border-l-2 border-t-2 border-primary/50"></div>
+               <div className="absolute -bottom-2 -right-2 h-8 w-8 border-b-2 border-r-2 border-primary/50"></div>
+               
+               <div className="group relative overflow-hidden border border-border/40 bg-background/50 p-6 backdrop-blur-md shadow-sm w-full max-w-sm">
+                  <div className="absolute left-0 top-0 h-[1px] w-full bg-primary/50 opacity-0 transition-all duration-1000 group-hover:top-full group-hover:opacity-100"></div>
+                  
+                  <div className="mb-5 flex flex-wrap gap-2 items-center justify-between border-b border-border/40 pb-3">
+                    <div className="flex items-center gap-2">
+                      <Icon icon="lucide:shield-check" className="h-5 w-5 text-primary" />
+                      <span className="font-mono text-sm font-bold text-foreground">
+                        {qualityData?.reportName || 'REPORTE_HPLC-MS.pdf'}
+                      </span>
+                    </div>
+                    <span className="animate-pulse rounded-sm bg-primary/20 px-2 py-0.5 font-mono text-[10px] font-semibold text-primary">
+                      {qualityData?.status || 'VERIFICADO'}
+                    </span>
+                  </div>
+                  
+                  <div className="space-y-4 text-xs sm:text-sm">
+                    {statsList.map((stat, idx) => (
+                      <div key={idx} className={`group/row flex items-center justify-between ${idx === statsList.length - 1 ? 'mt-2 border-t border-border/40 pt-3' : ''}`}>
+                         <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">
+                           {stat.label}
+                         </span>
+                         <span className={idx === 1 ? 'text-base font-bold text-primary' : (idx === statsList.length - 1 ? 'max-w-[140px] truncate text-xs font-semibold text-primary/70' : 'font-semibold text-foreground')}>
+                           {stat.value}
+                         </span>
+                      </div>
+                    ))}
+                 </div>
+               </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </motion.section>
+  )
+}
+
 export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }) {
   const defaultItems = [
     { name: 'Agua bacteriostática', desc: '', icon: 'lucide:droplets', link: undefined },
@@ -51,20 +207,20 @@ export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-      className="relative overflow-hidden border-b border-border bg-secondary/5 py-8 sm:py-10"
+      className="relative overflow-hidden w-full py-6 sm:py-8"
     >
       
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-8 items-center">
           
           <div className="lg:col-span-4">
-            <div className="mb-4 flex items-center gap-2 text-primary">
-               <Icon icon="lucide:package-check" className="h-5 w-5" />
-               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+            <div className="mb-2 flex items-center gap-2 text-primary">
+               <Icon icon="lucide:package-check" className="h-4 w-4" />
+               <span className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-widest text-primary/80">
                  {data?.tag || 'Dotación de Envíos'}
                </span>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl leading-tight">
               {data?.title || 'Incluido con tu compra'}
             </h2>
             {data?.description && (
@@ -86,26 +242,26 @@ export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }
                   <CardWrapper 
                     key={i} 
                     href={item.link as any}
-                    className="group relative flex flex-col justify-center overflow-hidden bg-background p-7 sm:p-8 transition-all duration-500 hover:-translate-y-1 border border-border/40 shadow-sm hover:shadow-md h-full cursor-pointer"
+                    className="group relative flex flex-col justify-center overflow-hidden bg-white p-4 sm:p-5 transition-all duration-500 hover:-translate-y-1 border border-border/40 shadow-sm hover:shadow-md h-full cursor-pointer"
                   >
                     {/* Decorative asymmetric borders */}
-                    <div className="absolute left-0 top-0 h-full w-[3px] bg-border transition-colors duration-500 group-hover:bg-primary"></div>
-                    <div className="absolute left-0 top-0 h-[3px] w-10 bg-border transition-all duration-500 group-hover:w-full group-hover:bg-primary/50"></div>
+                    <div className="absolute left-0 top-0 h-full w-[3px] bg-primary transition-colors duration-500 group-hover:bg-border"></div>
+                    <div className="absolute left-0 top-0 h-[3px] w-full bg-primary/50 transition-all duration-500 group-hover:w-10 group-hover:bg-border"></div>
                     
-                    <div className="absolute -right-4 -top-4 opacity-[0.02] transition-all duration-500 group-hover:-rotate-12 group-hover:scale-150 group-hover:text-primary group-hover:opacity-[0.04]">
-                      <Icon icon={item.icon} className="h-36 w-36 [&_*]:!stroke-[0.25px]" />
+                    <div className="absolute -right-4 -top-4 opacity-[0.04] transition-all duration-500 group-hover:-rotate-12 group-hover:scale-150 group-hover:text-primary group-hover:opacity-[0.02]">
+                      <Icon icon={item.icon} className="h-24 w-24 [&_*]:!stroke-[0.25px]" />
                     </div>
                     
-                    <div className="relative z-10 flex items-center gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-primary/30 text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
-                        <Icon icon={item.icon} className="h-5 w-5" />
+                    <div className="relative z-10 flex items-center gap-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-primary bg-primary text-primary-foreground transition-all duration-500 group-hover:border-primary/30 group-hover:bg-transparent group-hover:text-primary">
+                        <Icon icon={item.icon} className="h-4 w-4" />
                       </div>
                       <div>
-                        <h3 className="text-base sm:text-lg font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
+                        <h3 className="text-sm sm:text-base font-bold tracking-tight text-primary transition-colors group-hover:text-slate-900">
                           {item.name}
                         </h3>
                         {item.desc && (
-                          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+                          <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{item.desc}</p>
                         )}
                       </div>
                     </div>
@@ -148,67 +304,103 @@ export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] })
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
-      className="relative overflow-hidden bg-[#fafcff] pt-6 pb-10 sm:pt-8 sm:pb-12"
+      className="relative overflow-hidden bg-[#fafcff] py-6 sm:py-8 w-full flex flex-col justify-center min-h-[calc(100vh-64px)]"
     >
       {/* Subtle background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#1959D7]/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto w-full max-w-[90rem] px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Top Section: Commitment */}
-          <div className="lg:col-span-12 mb-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-              <div>
-                <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">
+          <motion.div 
+            className="lg:col-span-12 mb-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.15 } }
+            }}
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+              <motion.div variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }}>
+                <h3 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl leading-tight">
                   {data?.title1 || 'Compromiso con la seriedad'}
                 </h3>
-              </div>
-              <div className="hidden sm:block h-px bg-gray-200/80 flex-1 ml-6"></div>
+              </motion.div>
+              <motion.div 
+                className="hidden sm:block h-px bg-gray-200/80 flex-1 ml-6 origin-left"
+                variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative overflow-hidden rounded-sm border border-gray-200/80 bg-white p-5 sm:p-6 flex items-center">
-                <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7]" />
-                <p className="text-[15px] leading-relaxed text-slate-600">
+              <motion.div 
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }}
+                className="group relative overflow-hidden rounded-sm border border-gray-200/80 bg-white p-4 sm:p-5 flex items-center transition-all duration-500 hover:shadow-md hover:border-gray-300"
+              >
+                <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7] transition-all duration-500 group-hover:w-1.5" />
+                <p className="text-sm leading-relaxed text-slate-600 transition-colors duration-500 group-hover:text-slate-800">
                   {data?.desc1 || 'En KaiLab trabajamos bajo un enfoque serio y ordenado, priorizando la selección cuidadosa de cada compuesto, una gestión responsable de los pedidos y una comunicación clara en cada etapa del proceso.'}
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="relative overflow-hidden rounded-sm border border-gray-200/80 bg-white p-5 sm:p-6 flex items-center">
-                <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7]" />
-                <p className="text-[15px] leading-relaxed text-slate-600">
+              <motion.div 
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }}
+                className="group relative overflow-hidden rounded-sm border border-gray-200/80 bg-white p-4 sm:p-5 flex items-center transition-all duration-500 hover:shadow-md hover:border-gray-300"
+              >
+                <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7] transition-all duration-500 group-hover:w-1.5" />
+                <p className="text-sm leading-relaxed text-slate-600 transition-colors duration-500 group-hover:text-slate-800">
                   {data?.desc2 || 'Nuestro objetivo es ofrecer una experiencia confiable y transparente para quienes entienden el valor de un manejo riguroso en productos de investigación.'}
                 </p>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Bottom Section: Shipping FAQ */}
-          <div className="lg:col-span-12 -mt-4 lg:-mt-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-t border-gray-200/80 pt-10">
+          <motion.div 
+            className="lg:col-span-12 -mt-2"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.1 } }
+            }}
+          >
+            <motion.div 
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-t border-gray-200/80 pt-6"
+              variants={{ hidden: { opacity: 0, scaleX: 0.9 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }}
+              style={{ transformOrigin: "left" }}
+            >
               <div className="text-left">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-tight">
+                <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl leading-tight">
                   Preguntas frecuentes
                 </h2>
               </div>
-            </div>
+            </motion.div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 items-start">
               {faqItems.map((item, i) => (
-                <div key={i} className="flex flex-col">
-                  <h3 className="text-lg font-bold tracking-tight text-slate-900">
+                <motion.div 
+                  key={i} 
+                  className="group flex flex-col transition-all duration-300"
+                  variants={{ hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } } }}
+                >
+                  <h3 className="text-base font-bold tracking-tight text-slate-900 transition-colors group-hover:text-[#1959D7]">
                     {item.q}
                   </h3>
-                  <div className="mt-3 text-[15px] leading-relaxed text-slate-600">
+                  <div className="mt-2 text-sm leading-relaxed text-slate-600 transition-colors group-hover:text-slate-800">
                     {item.a}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
-            <div className="mt-4 w-full flex flex-col lg:flex-row lg:items-center justify-between gap-4 rounded-sm bg-gradient-to-r from-blue-50/80 to-[#eef4ff] p-4 text-slate-800 border border-blue-100/50 shadow-sm">
+            <motion.div 
+              className="mt-6 w-full flex flex-col lg:flex-row lg:items-center justify-between gap-4 rounded-sm bg-gradient-to-r from-blue-50/80 to-[#eef4ff] p-4 text-slate-800 border border-blue-100/50 shadow-sm transition-all duration-500 hover:shadow-md"
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }}
+            >
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-white shadow-sm border border-blue-100/80">
                    <Icon icon="lucide:info" className="h-5 w-5 text-[#1959D7]" />
@@ -226,8 +418,8 @@ export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] })
                 Descubre cómo operamos
                 <Icon icon="lucide:arrow-right" className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
         </div>
 
@@ -250,20 +442,20 @@ export function QualityCoa({ data }: { data?: QualityPageData | null }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-      className="relative overflow-hidden border-b border-border bg-secondary/5 py-8 sm:py-10"
+      className="relative overflow-hidden w-full py-6 sm:py-8"
     >
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           
           <div>
-            <div className="mb-4 flex items-center gap-2 text-primary">
-               <Icon icon="lucide:microscope" className="h-5 w-5" />
-               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+            <div className="mb-2 flex items-center gap-2 text-primary">
+               <Icon icon="lucide:microscope" className="h-4 w-4" />
+               <span className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-widest text-primary/80">
                  {data?.headerTag || 'Laboratorio Analítico'}
                </span>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl leading-tight">
               {data?.title || 'Calidad que puedes consultar'}
             </h2>
             <p className="mt-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
@@ -288,29 +480,29 @@ export function QualityCoa({ data }: { data?: QualityPageData | null }) {
              <div className="absolute -left-2 -top-2 h-8 w-8 border-l-2 border-t-2 border-primary/50"></div>
              <div className="absolute -bottom-2 -right-2 h-8 w-8 border-b-2 border-r-2 border-primary/50"></div>
              
-             <div className="group relative overflow-hidden border border-border/40 bg-background/50 p-7 sm:p-9 backdrop-blur-md shadow-sm">
+             <div className="group relative overflow-hidden border border-border/40 bg-white p-5 sm:p-6 backdrop-blur-md shadow-sm">
                 {/* Scanline animation */}
                 <div className="absolute left-0 top-0 h-[1px] w-full bg-primary/50 opacity-0 transition-all duration-1000 group-hover:top-full group-hover:opacity-100"></div>
                 
-                <div className="mb-6 flex items-center justify-between border-b border-border/40 pb-4">
-                  <div className="flex items-center gap-3">
-                    <Icon icon="lucide:shield-check" className="h-7 w-7 text-primary" />
-                    <span className="font-mono text-base font-bold text-foreground">
+                <div className="mb-4 flex flex-wrap items-center justify-between border-b border-border/40 pb-3 gap-2">
+                  <div className="flex items-center gap-2">
+                    <Icon icon="lucide:shield-check" className="h-5 w-5 text-primary" />
+                    <span className="font-mono text-sm font-bold text-slate-900">
                       {data?.reportName || 'REPORTE_HPLC-MS.pdf'}
                     </span>
                   </div>
-                  <span className="animate-pulse rounded-sm bg-primary/20 px-2.5 py-1 font-mono text-xs font-semibold text-primary">
+                  <span className="animate-pulse rounded-sm bg-primary/20 px-2 py-0.5 font-mono text-[10px] font-semibold text-primary">
                     {data?.status || 'VERIFICADO'}
                   </span>
                 </div>
                 
-                <div className="space-y-5 text-sm sm:text-base">
+                <div className="space-y-3 text-xs sm:text-sm">
                   {statsList.map((stat, idx) => (
-                    <div key={idx} className={`group/row flex items-center justify-between ${idx === statsList.length - 1 ? 'mt-2 border-t border-border/40 pt-4' : ''}`}>
-                       <span className="text-muted-foreground transition-colors group-hover/row:text-foreground">
+                    <div key={idx} className={`group/row flex items-center justify-between ${idx === statsList.length - 1 ? 'mt-1.5 border-t border-border/40 pt-3' : ''}`}>
+                       <span className="text-slate-500 transition-colors group-hover/row:text-slate-700">
                          {stat.label}
                        </span>
-                       <span className={idx === 1 ? 'text-lg sm:text-xl font-bold text-primary' : (idx === statsList.length - 1 ? 'max-w-[160px] truncate text-xs sm:text-sm font-semibold text-primary/70' : 'font-semibold text-foreground')}>
+                       <span className={idx === 1 ? 'text-base sm:text-lg font-bold text-primary' : (idx === statsList.length - 1 ? 'max-w-[150px] truncate text-xs font-semibold text-primary/70' : 'font-semibold text-slate-900')}>
                          {stat.value}
                        </span>
                     </div>
@@ -370,7 +562,7 @@ export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
                   
                   <div className="flex items-center gap-6">
                     <div className="text-muted-foreground transition-colors duration-300 group-hover:text-primary">
-                      <Icon icon={guide.icon} className="h-7 w-7" />
+                      <Icon icon={(guide as any).icon || 'lucide:file-search'} className="h-7 w-7" />
                     </div>
                     <div>
                       <h3 className="text-base sm:text-lg font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
@@ -397,7 +589,6 @@ export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
 }
 
 type FaqItem = { q: string; a: string }
-type FaqCategory = { label: string; items: FaqItem[] }
 
 export type FaqCategory = {
   label: string

@@ -46,6 +46,12 @@ export function KailabLanding({ homeData, siteSettings, products }: KailabLandin
           heroData={homeData?.hero} 
         />
         <BenefitsStrip />
+        
+        <div className="flex flex-col justify-center min-h-[calc(100vh-64px)] bg-secondary/5 border-b border-border">
+          <WhatsIncluded data={homeData?.whatsIncluded} />
+          <QualityCoa data={homeData?.quality as any} />
+        </div>
+
         <ProductGrid 
           sanityProducts={publicProducts}
           onAdd={addToCart} 
@@ -54,8 +60,7 @@ export function KailabLanding({ homeData, siteSettings, products }: KailabLandin
           subtitle=""
           showViewAllLink={true}
         />
-        <WhatsIncluded data={homeData?.whatsIncluded} />
-        <QualityCoa data={homeData?.quality as any} />
+
         <GuidesBlock data={homeData?.guides as any} />
         <CommitmentBlock data={homeData?.commitment} />
       </main>
