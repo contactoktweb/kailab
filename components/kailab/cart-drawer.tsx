@@ -97,7 +97,11 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
               return (
                 <li key={`${product.id}-${variant?.id ?? 'no-variant'}`} className="flex gap-3 py-4">
                   {/* Thumbnail */}
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-border bg-white">
+                  <Link 
+                    href={`/tienda/${product.categorySlug}/${product.slug}${variant ? `/${variant.slug}` : ''}`} 
+                    onClick={onClose}
+                    className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-border bg-white transition-opacity hover:opacity-80"
+                  >
                     {itemImage ? (
                       <Image
                         src={itemImage}
@@ -111,12 +115,18 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
                         {product.title.slice(0, 2)}
                       </span>
                     )}
-                  </div>
+                  </Link>
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-medium">{itemName}</p>
+                        <Link 
+                          href={`/tienda/${product.categorySlug}/${product.slug}${variant ? `/${variant.slug}` : ''}`}
+                          onClick={onClose}
+                          className="block truncate text-sm font-medium transition-colors hover:text-primary"
+                        >
+                          {itemName}
+                        </Link>
                         <p className="truncate font-mono text-xs text-muted-foreground">
                           {product.lot}
                         </p>

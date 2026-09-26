@@ -18,12 +18,12 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
   // Manejo de variantes (si aplica)
   const hasVariants = product.variants && product.variants.length > 0
   const showSelector = hasVariants && product.variants!.length > 1
-  const initialVariant = (hasVariants && product.variants!.length === 1) ? product.variants![0] : null
+  const initialVariant = hasVariants ? product.variants![0] : null
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(initialVariant)
   
   // Datos activos
   const activeImage = selectedVariant?.image || product.image || "/placeholder.jpg"
-  const activePrice = selectedVariant?.priceCOP ?? product.priceCOP ?? (hasVariants ? Math.min(...product.variants!.map(v => v.priceCOP)) : 0)
+  const activePrice = selectedVariant?.priceCOP ?? product.priceCOP ?? 0
   const activeStock = selectedVariant?.stock ?? product.stock ?? 0
   
   const isOutOfStock = activeStock === 0
@@ -167,7 +167,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
           >
             <div className="flex flex-col">
               <span className="text-[10px] uppercase font-bold text-muted-foreground/80 mb-0.5">
-                {!selectedVariant && showSelector ? "Desde" : "Precio"}
+                Precio
               </span>
               <span className="font-mono text-lg sm:text-xl font-bold tabular-nums text-foreground tracking-tight drop-shadow-sm">
                 {formatCOP(activePrice)}

@@ -609,7 +609,7 @@ export const products: Product[] = [
         id: 'RT5',
         name: '5 mg',
         sku: 'RT-5MG-01',
-        priceCOP: 380000,
+        priceCOP: 100000,
         stock: 50,
         coaStatus: 'pending',
         image: '/kailab-images/RT5_Retatrutide_5mg_RENDER_WEB_UX_PREVIEW.png',
@@ -619,7 +619,7 @@ export const products: Product[] = [
         id: 'RT10',
         name: '10 mg',
         sku: 'RT-10MG-01',
-        priceCOP: 490000,
+        priceCOP: 100000,
         stock: 50,
         coaStatus: 'available',
         image: '/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png',
@@ -663,12 +663,12 @@ export type ShippingRow = {
 }
 
 export const shipping: ShippingRow[] = [
-  { city: 'Bogotá', time: '24–48 h', coverage: 'Cobertura total' },
-  { city: 'Medellín', time: '48–72 h', coverage: 'Área metropolitana' },
-  { city: 'Resto del país', time: '3–6 días', coverage: 'Transportadora nacional' },
+  { city: 'Ciudades principales', time: '1–2 días hábiles', coverage: 'Directa' },
+  { city: 'Ciudades intermedias', time: '2–3 días hábiles', coverage: 'Directa' },
+  { city: 'Municipios o trayectos especiales', time: '3–5 días hábiles', coverage: 'Cobertura extendida' },
 ]
 
-export const payments = ['Wompi', 'Nequi', 'Bancolombia', 'Contra entrega', 'USDT']
+export const payments = ['Wompi', 'Nequi', 'Bancolombia', 'Contra entrega', 'Criptomonedas']
 
 export const formatCOP = (value: number) =>
   new Intl.NumberFormat('es-CO', {

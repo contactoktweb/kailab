@@ -90,15 +90,12 @@ export function Footer({ siteSettings }: { siteSettings?: SiteSettings | null })
               </a>
             </div>
             <div className="flex gap-4">
-              <a href="#" className="transition-colors hover:text-foreground">
-                Términos
-              </a>
-              <a href="#" className="transition-colors hover:text-foreground">
-                Privacidad
-              </a>
-              <a href="#" className="transition-colors hover:text-foreground">
-                RUO
-              </a>
+              <Link href="/terminos-legales" className="transition-colors hover:text-foreground">
+                Términos legales
+              </Link>
+              <Link href="/privacidad-de-datos" className="transition-colors hover:text-foreground">
+                Privacidad de datos
+              </Link>
             </div>
           </div>
         </div>

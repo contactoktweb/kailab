@@ -183,7 +183,7 @@ export const initialSanityProducts: SanityProduct[] = [
 
 export const initialSanityPresentations: SanityPresentation[] = [
   { id: 'pres-1', productId: 'sanity-prod-1', productTitle: 'Retatrutida', name: '5 mg', sku: 'RT-5MG-01', priceCOP: 100000, stock: 50, status: 'Publicado' },
-  { id: 'pres-2', productId: 'sanity-prod-1', productTitle: 'Retatrutida', name: '10 mg', sku: 'RT-10MG-01', priceCOP: 160000, stock: 50, status: 'Publicado' },
+  { id: 'pres-2', productId: 'sanity-prod-1', productTitle: 'Retatrutida', name: '10 mg', sku: 'RT-10MG-01', priceCOP: 100000, stock: 50, status: 'Publicado' },
   { id: 'pres-3', productId: 'sanity-prod-2', productTitle: 'BPC-157', name: '5 mg', sku: 'BPC-5MG-01', priceCOP: 189000, stock: 34, status: 'Publicado' },
   { id: 'pres-4', productId: 'sanity-prod-3', productTitle: 'GHK-Cu', name: '50 mg', sku: 'GHK-50MG-01', priceCOP: 210000, stock: 25, status: 'Publicado' },
   { id: 'pres-5', productId: 'sanity-prod-4', productTitle: 'Tesamorelina', name: '10 mg', sku: 'TES-10MG-01', priceCOP: 275000, stock: 18, status: 'Publicado' },

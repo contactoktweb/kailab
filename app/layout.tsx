@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'KAILAB | Péptidos para investigación en Colombia',
     description: 'Explora péptidos de investigación, consulta sus presentaciones y los certificados de análisis disponibles. Envío gratis a toda Colombia.',
-    images: ['/03 — Banners y gráficos opcionales-20260918T175123Z-1-001/03 — Banners y gráficos opcionales/KAILAB_Product-Lineup_6-Vials_Banner_White.png'],
   },
   icons: {
     icon: '/KAILAB_Favicon_512.svg',

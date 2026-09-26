@@ -60,10 +60,10 @@ async function seedHomePage() {
         title: 'Equipamiento Incluido',
         description: 'Cada vial o kit de investigación se despacha con la dotación completa requerida para su reconstitución segura bajo estrictas normas de laboratorio.',
         items: [
-          { _key: 'item1', name: 'Solución Reconstituyente', desc: 'Agua bacteriostática grado USP (10ml o 30ml).', icon: 'lucide:droplets' },
-          { _key: 'item2', name: 'Instrumental Analítico', desc: 'Jeringas estériles U-100 para dosificación precisa.', icon: 'lucide:syringe' },
-          { _key: 'item3', name: 'Kit de Asepsia', desc: 'Almohadillas impregnadas en alcohol isopropílico (70%).', icon: 'lucide:shield-plus' },
-          { _key: 'item4', name: 'Cadena de Custodia', desc: 'Estuche térmico protector de poliestireno (según envío).', icon: 'lucide:box' }
+          { _key: 'item1', name: 'Agua bacteriostática', desc: '', icon: 'lucide:droplets' },
+          { _key: 'item2', name: 'Toallitas con alcohol', desc: '', icon: 'lucide:shield-plus' },
+          { _key: 'item3', name: 'Información práctica en línea', desc: '', icon: 'lucide:book-open' },
+          { _key: 'item4', name: 'Envío gratis a toda Colombia, en empaque discreto', desc: '', icon: 'lucide:package-check' }
         ]
       },
       commitment: {

@@ -76,46 +76,57 @@ function ResultContent() {
 
   const config: Record<
     Exclude<TransactionStatus, null>,
-    { icon: string; iconClass: string; ringClass: string; title: string; desc: string }
+    { icon: string; iconClass: string; ringClass: string; title: string; desc: string; buttonLabel: string; buttonAction: 'order' | 'checkout' }
   > = {
     APPROVED: {
       icon: 'lucide:check-circle-2',
       iconClass: 'text-emerald-400',
       ringClass: 'border-emerald-500/30 bg-emerald-500/10',
-      title: '¡Pago aprobado!',
-      desc: 'Tu pedido ha sido confirmado. Recibirás un correo con los detalles y el número de guía al despachar.',
+      title: 'Pago recibido.',
+      desc: 'Tu pedido quedó registrado. Puedes consultar su resumen y estado.',
+      buttonLabel: 'Ver mi pedido',
+      buttonAction: 'order'
     },
     PENDING: {
       icon: 'lucide:clock',
       iconClass: 'text-yellow-400',
       ringClass: 'border-yellow-500/30 bg-yellow-500/10',
-      title: 'Pago en proceso',
-      desc: 'Tu transacción está siendo procesada. Te notificaremos por correo cuando sea confirmada.',
+      title: 'Estamos esperando la confirmación del pago.',
+      desc: 'Puedes revisar el estado de tu pedido aquí.',
+      buttonLabel: 'Ver estado del pedido',
+      buttonAction: 'order'
     },
     DECLINED: {
       icon: 'lucide:x-circle',
       iconClass: 'text-rose-400',
       ringClass: 'border-rose-500/30 bg-rose-500/10',
-      title: 'Pago rechazado',
-      desc: 'Tu banco rechazó la transacción. Puedes intentarlo de nuevo con otro método de pago.',
+      title: 'El pago no fue aprobado.',
+      desc: 'Puedes revisar el medio elegido e intentarlo de nuevo.',
+      buttonLabel: 'Volver al pago',
+      buttonAction: 'checkout'
     },
     VOIDED: {
       icon: 'lucide:ban',
       iconClass: 'text-slate-400',
       ringClass: 'border-slate-500/30 bg-slate-500/10',
-      title: 'Transacción anulada',
-      desc: 'Esta transacción fue anulada. Si necesitas ayuda, contáctanos.',
+      title: 'El pago no fue aprobado.',
+      desc: 'Puedes revisar el medio elegido e intentarlo de nuevo.',
+      buttonLabel: 'Volver al pago',
+      buttonAction: 'checkout'
     },
     ERROR: {
       icon: 'lucide:alert-triangle',
       iconClass: 'text-orange-400',
       ringClass: 'border-orange-500/30 bg-orange-500/10',
-      title: 'No pudimos verificar el pago',
-      desc: 'Ocurrió un error al consultar el estado de tu transacción. Si realizaste el pago, contáctanos con tu referencia.',
+      title: 'No pudimos confirmar el resultado del pago.',
+      desc: 'Consulta el estado de tu pedido antes de volver a intentarlo.',
+      buttonLabel: 'Ver estado del pedido',
+      buttonAction: 'order'
     },
   }
 
   const c = config[tx.status ?? 'ERROR']
+  const orderUrl = tx.reference ? `/pedidos/${tx.reference}` : '/'
 
   return (
     <motion.div
@@ -157,29 +168,19 @@ function ResultContent() {
       )}
 
       <div className="flex gap-3 flex-wrap justify-center">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 rounded-sm border border-border bg-secondary px-5 py-2.5 text-sm font-mono font-semibold text-foreground transition-colors hover:bg-secondary/70"
-        >
-          <Icon icon="lucide:home" className="h-4 w-4" />
-          Inicio
-        </Link>
-        {(tx.status === 'DECLINED' || tx.status === 'ERROR') && (
+        {c.buttonAction === 'order' ? (
+          <Link
+            href={orderUrl}
+            className="inline-flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-transparent hover:text-primary"
+          >
+            {c.buttonLabel}
+          </Link>
+        ) : (
           <Link
             href="/checkout"
-            className="inline-flex items-center gap-2 rounded-sm border-2 border-[#7B2FBE] bg-[#7B2FBE] px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-[#6b25aa]"
+            className="inline-flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-transparent hover:text-primary"
           >
-            <Icon icon="lucide:refresh-cw" className="h-4 w-4" />
-            Intentar de nuevo
-          </Link>
-        )}
-        {tx.status === 'APPROVED' && (
-          <Link
-            href="/tienda"
-            className="inline-flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-transparent hover:text-primary"
-          >
-            <Icon icon="lucide:store" className="h-4 w-4" />
-            Seguir comprando
+            {c.buttonLabel}
           </Link>
         )}
       </div>

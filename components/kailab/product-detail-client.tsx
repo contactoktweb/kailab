@@ -338,11 +338,11 @@ export function ProductDetailClient({ product, siteSettings }: ProductDetailClie
               <Icon icon="lucide:truck" className="h-4 w-4 shrink-0 text-slate-900" />
               <div className="flex flex-col gap-0.5">
                 <p className="text-[13px] font-bold text-slate-900">Envío gratuito a toda Colombia</p>
-                <p className="text-xs font-semibold text-[#1959D7]">Despacho en 1 día hábil</p>
+                <p className="text-xs font-semibold text-[#1959D7]">Despacho rápido</p>
                 <ul className="mt-1.5 list-disc pl-3.5 space-y-1 text-[11px] leading-relaxed text-slate-600">
                   <li>Los pedidos se envían en empaque sellado y sobrio.</li>
-                  <li>Entrega al siguiente día hábil en principales ciudades y de 2 a 3 días hábiles en el resto del país.</li>
-                  <li>Al despachar el pedido recibes el número de guía para hacer seguimiento.</li>
+                  <li>Entregas en 1–2 días hábiles en ciudades principales, 2–3 en intermedias y 3–5 en cobertura extendida.</li>
+                  <li>Si la confirmación del pago tarda, la entrega también puede tomar más tiempo.</li>
                 </ul>
               </div>
             </motion.div>
