@@ -551,171 +551,173 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
 
         {/* Custom Retatrutide Content vs Default Accordions */}
         {isRetatrutide && (
-          <div className="mt-8 md:mt-12 pt-8 relative">
+          <div className="mt-6 pt-6 relative">
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
             {/* Nav / TOC (Frontend System Style) */}
-            <div className="mb-10 flex flex-wrap items-center gap-3 border-y border-border/50 bg-background/50 py-4">
-              <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-primary/80 ml-2 mr-2">Navegar:</span>
-              <a href="#reconstitucion" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Reconstitución</a>
-              <a href="#consejos" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Consejos prácticos</a>
-              <a href="#preguntas-frecuentes" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Preguntas frecuentes</a>
-              <a href="#estudios" className="inline-flex items-center rounded-sm bg-secondary/10 px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-secondary/20 hover:text-primary border border-border/40">Estudios</a>
+            <div className="mb-6 flex flex-wrap items-center gap-3 border-y border-slate-200 bg-white py-4 shadow-sm px-4">
+              <span className="font-mono text-[11px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 ml-2 mr-2 border border-primary/20">Navegar:</span>
+              <a href="#reconstitucion" className="inline-flex items-center rounded-none bg-slate-100 px-4 py-2 text-xs font-bold text-slate-900 transition-colors hover:bg-slate-200 hover:text-primary border border-slate-200">Reconstitución</a>
+              <a href="#consejos" className="inline-flex items-center rounded-none bg-slate-100 px-4 py-2 text-xs font-bold text-slate-900 transition-colors hover:bg-slate-200 hover:text-primary border border-slate-200">Consejos prácticos</a>
+              <a href="#preguntas-frecuentes" className="inline-flex items-center rounded-none bg-slate-100 px-4 py-2 text-xs font-bold text-slate-900 transition-colors hover:bg-slate-200 hover:text-primary border border-slate-200">Preguntas frecuentes</a>
+              <a href="#estudios" className="inline-flex items-center rounded-none bg-slate-100 px-4 py-2 text-xs font-bold text-slate-900 transition-colors hover:bg-slate-200 hover:text-primary border border-slate-200">Estudios</a>
             </div>
 
             {/* Content blocks (Frontend System Layout) */}
-            <div className="max-w-7xl mx-auto space-y-12 mb-24">
+            <div className="flex flex-col mb-0 w-[100vw] relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
               
-              {/* INTRO Y RECONSTITUCIÓN (DISEÑO LISTA DESCRIPTIVA) */}
-              <section id="informacion" className="scroll-mt-28 mb-24">
-                <div className="mb-10">
-                  <div className="mb-4 flex items-center gap-2 text-primary">
-                    <Icon icon="lucide:flask-conical" className="h-5 w-5" />
-                    <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Ficha Técnica</span>
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl leading-tight">Introducción al péptido</h2>
-                </div>
-                
-                <dl className="divide-y divide-border/50 border-y border-border/50 bg-background">
-                  <div className="grid sm:grid-cols-3 gap-4 py-8">
-                    <dt className="text-lg font-bold text-foreground">¿Qué es?</dt>
-                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
-                      Un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943.
-                    </dd>
-                  </div>
-                  <div className="grid sm:grid-cols-3 gap-4 py-8">
-                    <dt className="text-lg font-bold text-foreground">¿Para qué se investiga?</dt>
-                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
-                      Por sus efectos sobre el peso corporal y la glucosa en sangre. Se evalúa en personas con obesidad, sobrepeso o diabetes tipo 2.
-                    </dd>
-                  </div>
-                  <div className="grid sm:grid-cols-3 gap-4 py-8">
-                    <dt className="text-lg font-bold text-foreground">¿Cómo funciona?</dt>
-                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
-                      Activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple.
-                    </dd>
-                  </div>
-                  <div className="grid sm:grid-cols-3 gap-4 py-8" id="reconstitucion">
-                    <dt className="text-lg font-bold text-foreground">Reconstitución</dt>
-                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
-                      Significa disolver el polvo del vial con un líquido adecuado (como agua bacteriostática) para obtener una solución inyectable.
-                    </dd>
-                  </div>
+              {/* INTRO Y RECONSTITUCIÓN (BLANCO) */}
+              <section id="informacion" className="scroll-mt-28 relative z-30 bg-white pt-12 pb-16 rounded-b-[3rem] sm:rounded-b-[4rem] shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
+                <div className="max-w-5xl mx-auto px-4 lg:px-8">
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-10">
+                    <div className="mb-4 flex items-center gap-2 text-primary">
+                      <Icon icon="lucide:flask-conical" className="h-5 w-5" />
+                      <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Ficha Técnica</span>
+                    </div>
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">Introducción al péptido</h2>
+                  </motion.div>
                   
-                  {/* INFO PRÁCTICA */}
-                  <div className="grid sm:grid-cols-3 gap-4 py-8 bg-secondary/5">
-                    <dt className="text-lg font-bold text-foreground">Lectura de cantidades</dt>
-                    <dd className="sm:col-span-2 text-sm text-muted-foreground leading-relaxed">
-                      <div className="flex flex-wrap gap-4 text-sm font-mono">
-                        <div className="flex items-center gap-2"><span className="font-bold text-primary">mg</span><span className="text-muted-foreground">cantidad de péptido</span></div>
-                        <div className="flex items-center gap-2"><span className="font-bold text-primary">mL</span><span className="text-muted-foreground">volumen de líquido</span></div>
-                        <div className="flex items-center gap-2"><span className="font-bold text-primary">mg/mL</span><span className="text-muted-foreground">concentración resultante</span></div>
-                      </div>
-                    </dd>
-                  </div>
-
-                  {/* BORRADORES OCULTOS K&T */}
-                  <div className="hidden py-8">
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Cantidad de agua</h3>
-                    <div>
-                      <p>Presentación: [Editable]</p>
-                      <p>Agua para reconstituir: [Editable]</p>
-                      <p>Concentración resultante: [Editable]</p>
+                  <motion.dl initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="divide-y divide-slate-200 border-y border-slate-200">
+                    <div className="grid sm:grid-cols-3 gap-4 py-8">
+                      <dt className="text-lg font-bold text-slate-900">¿Qué es?</dt>
+                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
+                        Un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943.
+                      </dd>
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Antes de empezar</h3>
-                    <ul className="list-disc pl-4"><li>[Materiales - Editable]</li></ul>
-                    <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Paso a paso</h3>
-                    <ol className="list-decimal pl-4"><li>[Paso 1 - Editable]</li></ol>
-                    <p>[Frase final - Editable]</p>
+                    <div className="grid sm:grid-cols-3 gap-4 py-8">
+                      <dt className="text-lg font-bold text-slate-900">¿Para qué se investiga?</dt>
+                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
+                        Por sus efectos sobre el peso corporal y la glucosa en sangre. Se evalúa en personas con obesidad, sobrepeso o diabetes tipo 2.
+                      </dd>
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-4 py-8">
+                      <dt className="text-lg font-bold text-slate-900">¿Cómo funciona?</dt>
+                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
+                        Activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple.
+                      </dd>
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-4 py-8" id="reconstitucion">
+                      <dt className="text-lg font-bold text-slate-900">Reconstitución</dt>
+                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
+                        Significa disolver el polvo del vial con un líquido adecuado (como agua bacteriostática) para obtener una solución inyectable.
+                      </dd>
+                    </div>
                     
-                    <h2 className="text-xl font-bold text-slate-900 mt-8 mb-3">Almacenamiento</h2>
-                    <div>
-                      <p>Antes de reconstituir: [Editable]</p>
-                      <p>Después de reconstituir: [Editable]</p>
-                      <p>¿Cuánto tiempo se conserva?: [Editable]</p>
-                      <p>Si queda fuera de la nevera: [Editable]</p>
+                    {/* INFO PRÁCTICA */}
+                    <div className="grid sm:grid-cols-3 gap-4 py-8 bg-slate-50/50">
+                      <dt className="text-lg font-bold text-slate-900">Lectura de cantidades</dt>
+                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
+                        <div className="flex flex-wrap gap-4 text-sm font-mono">
+                          <div className="flex items-center gap-2"><span className="font-bold text-primary">mg</span><span className="text-slate-500">cantidad de péptido</span></div>
+                          <div className="flex items-center gap-2"><span className="font-bold text-primary">mL</span><span className="text-slate-500">volumen de líquido</span></div>
+                          <div className="flex items-center gap-2"><span className="font-bold text-primary">mg/mL</span><span className="text-slate-500">concentración resultante</span></div>
+                        </div>
+                      </dd>
                     </div>
 
-                    <h2 className="text-xl font-bold text-slate-900 mt-8 mb-3">Dosis y calendario</h2>
-                    <div className="bg-slate-50 border border-slate-200 p-4 md:p-6">
-                      <div className="flex gap-2 mb-6">
-                        <button type="button" className={cn("px-3 py-1 text-sm font-bold transition-colors", isRT5 || (!isRT5 && !isRT10) ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT5</button>
-                        <button type="button" className={cn("px-3 py-1 text-sm font-bold transition-colors", isRT10 ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT10</button>
+                    {/* BORRADORES OCULTOS K&T */}
+                    <div className="hidden py-8">
+                      <h3 className="text-lg font-bold text-slate-900 mb-2">Cantidad de agua</h3>
+                      <div>
+                        <p>Presentación: [Editable]</p>
+                        <p>Agua para reconstituir: [Editable]</p>
+                        <p>Concentración resultante: [Editable]</p>
                       </div>
+                      <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Antes de empezar</h3>
+                      <ul className="list-disc pl-4"><li>[Materiales - Editable]</li></ul>
+                      <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">Paso a paso</h3>
+                      <ol className="list-decimal pl-4"><li>[Paso 1 - Editable]</li></ol>
+                      <p>[Frase final - Editable]</p>
                       
-                      { (isRT5 || (!isRT5 && !isRT10)) ? (
-                        <>
-                          <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 5 mg (RT5)</h3>
-                          <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
-                          <h4 className="text-base font-bold text-slate-900 mb-2">RT5</h4>
-                          <div className="overflow-x-auto border border-slate-200 bg-white">
-                            <table className="w-full text-left text-sm text-slate-900">
-                              <thead className="bg-[#e2e8f0] font-bold">
-                                <tr>
-                                  <th className="px-4 py-2 w-1/3">Semana</th>
-                                  <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
-                                  <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-slate-100">
-                                {Array.from({ length: 20 }).map((_, i) => (
-                                  <tr key={i} className="hover:bg-slate-50">
-                                    <td className="px-4 py-2">Semana {i + 1}</td>
-                                    <td className="px-4 py-2"></td>
-                                    <td className="px-4 py-2"></td>
+                      <h2 className="text-xl font-bold text-slate-900 mt-8 mb-3">Almacenamiento</h2>
+                      <div>
+                        <p>Antes de reconstituir: [Editable]</p>
+                        <p>Después de reconstituir: [Editable]</p>
+                        <p>¿Cuánto tiempo se conserva?: [Editable]</p>
+                        <p>Si queda fuera de la nevera: [Editable]</p>
+                      </div>
+
+                      <h2 className="text-xl font-bold text-slate-900 mt-8 mb-3">Dosis y calendario</h2>
+                      <div className="bg-slate-50 border border-slate-200 p-4 md:p-6">
+                        <div className="flex gap-2 mb-6">
+                          <button type="button" className={cn("px-3 py-1 text-sm font-bold transition-colors", isRT5 || (!isRT5 && !isRT10) ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT5</button>
+                          <button type="button" className={cn("px-3 py-1 text-sm font-bold transition-colors", isRT10 ? "bg-[#1959D7] text-white" : "bg-slate-200 text-slate-600")}>RT10</button>
+                        </div>
+                        
+                        { (isRT5 || (!isRT5 && !isRT10)) ? (
+                          <>
+                            <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 5 mg (RT5)</h3>
+                            <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
+                            <h4 className="text-base font-bold text-slate-900 mb-2">RT5</h4>
+                            <div className="overflow-x-auto border border-slate-200 bg-white">
+                              <table className="w-full text-left text-sm text-slate-900">
+                                <thead className="bg-[#e2e8f0] font-bold">
+                                  <tr>
+                                    <th className="px-4 py-2 w-1/3">Semana</th>
+                                    <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
+                                    <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 10 mg (RT10)</h3>
-                          <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
-                          <h4 className="text-base font-bold text-slate-900 mb-2">RT10</h4>
-                          <div className="overflow-x-auto border border-slate-200 bg-white">
-                            <table className="w-full text-left text-sm text-slate-900">
-                              <thead className="bg-[#e2e8f0] font-bold">
-                                <tr>
-                                  <th className="px-4 py-2 w-1/3">Semana</th>
-                                  <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
-                                  <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-slate-100">
-                                {Array.from({ length: 20 }).map((_, i) => (
-                                  <tr key={i} className="hover:bg-slate-50">
-                                    <td className="px-4 py-2">Semana {i + 1}</td>
-                                    <td className="px-4 py-2"></td>
-                                    <td className="px-4 py-2"></td>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                  {Array.from({ length: 20 }).map((_, i) => (
+                                    <tr key={i} className="hover:bg-slate-50">
+                                      <td className="px-4 py-2">Semana {i + 1}</td>
+                                      <td className="px-4 py-2"></td>
+                                      <td className="px-4 py-2"></td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <h3 className="text-lg font-bold text-slate-900 mb-1">Retatrutida 10 mg (RT10)</h3>
+                            <p className="text-xs text-slate-700 uppercase tracking-widest mb-4">REVISIÓN PRIVADA · Concentración preparada y escala de la jeringa: campos vacíos.</p>
+                            <h4 className="text-base font-bold text-slate-900 mb-2">RT10</h4>
+                            <div className="overflow-x-auto border border-slate-200 bg-white">
+                              <table className="w-full text-left text-sm text-slate-900">
+                                <thead className="bg-[#e2e8f0] font-bold">
+                                  <tr>
+                                    <th className="px-4 py-2 w-1/3">Semana</th>
+                                    <th className="px-4 py-2 w-1/3">Dosis (mg)</th>
+                                    <th className="px-4 py-2 w-1/3">Unidades de la jeringa</th>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </>
-                      )}
-                      <div className="mt-6 bg-slate-100 p-3">
-                        <p className="text-xs font-bold text-slate-900 leading-relaxed">
-                          PARA K&T · Mantener vacías las columnas de dosis y unidades. No escribir cero, calcular conversiones ni copiar cantidades de los estudios.
-                        </p>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                  {Array.from({ length: 20 }).map((_, i) => (
+                                    <tr key={i} className="hover:bg-slate-50">
+                                      <td className="px-4 py-2">Semana {i + 1}</td>
+                                      <td className="px-4 py-2"></td>
+                                      <td className="px-4 py-2"></td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </>
+                        )}
+                        <div className="mt-6 bg-slate-100 p-3">
+                          <p className="text-xs font-bold text-slate-900 leading-relaxed">
+                            PARA K&T · Mantener vacías las columnas de dosis y unidades. No escribir cero, calcular conversiones ni copiar cantidades de los estudios.
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </dl>
+                  </motion.dl>
+                </div>
               </section>
 
-              {/* CONSEJOS PRÁCTICOS (DISEÑO MACIZO GRID) */}
-              <section id="consejos" className="scroll-mt-28 mb-24">
-                <div className="border border-border/50 bg-background shadow-sm">
-                  <div className="p-6 sm:p-10 border-b border-border/50 bg-secondary/5">
-                    <div className="mb-4 flex items-center gap-2 text-primary">
+              {/* CONSEJOS PRÁCTICOS (AZUL OSCURO) */}
+              <section id="consejos" className="scroll-mt-48 relative z-20 bg-[#0A1128] pt-20 pb-16 -mt-8 rounded-b-[3rem] sm:rounded-b-[4rem] shadow-[0_15px_50px_rgba(0,0,0,0.15)]">
+                <div className="max-w-5xl mx-auto px-4 lg:px-8">
+                  <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-12">
+                    <div className="mb-4 flex items-center gap-2 text-blue-400">
                       <Icon icon="lucide:lightbulb" className="h-5 w-5" />
-                      <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Experiencia de uso</span>
+                      <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-blue-400/80">Experiencia de uso</span>
                     </div>
-                    <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl leading-tight">Consejos Prácticos</h2>
-                  </div>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border/50">
+                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl leading-tight">Consejos Prácticos</h2>
+                  </motion.div>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
                       { title: "Los aumentos no son una meta", desc: "TRIUMPH-1 incluyó grupos con dosis objetivo de 4, 9 y 12 mg. Llegar a 12 mg no fue el objetivo para todos. El calendario no establece una dosis adecuada universal." },
                       { title: "Más no siempre es mejor", desc: "En los estudios, las dosis mayores produjeron más pérdida de peso en promedio, pero algunos efectos adversos también fueron más frecuentes." },
@@ -724,107 +726,158 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                       { title: "Molestias reportadas", desc: "En los ensayos se han reportado náuseas, vómitos, diarrea o estreñimiento. La intensidad varía entre personas." },
                       { title: "Lleva un registro sencillo", desc: "Anota las fechas, los cambios de apetito y las molestias que notes. Ayuda a observar cómo cambian con el tiempo." }
                     ].map((tip, i) => (
-                      <div key={i} className={cn("p-6 sm:p-8 hover:bg-secondary/5 transition-colors relative group", (i >= 2 && i < 3) ? "border-t-0" : (i >= 3 ? "border-t border-border/50" : ""))}>
-                        <div className="absolute left-0 top-0 h-0 w-full bg-primary/20 transition-all duration-300 group-hover:h-1"></div>
-                        <h3 className="text-base font-bold text-foreground mb-3">{tip.title}</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{tip.desc}</p>
-                      </div>
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20 }} 
+                        whileInView={{ opacity: 1, y: 0 }} 
+                        viewport={{ once: true }} 
+                        transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+                        key={i} 
+                        className="group relative flex flex-col justify-start overflow-hidden bg-[#0D1528] p-6 sm:p-8 transition-all duration-500 hover:-translate-y-1 border border-[#1959D7]/20 hover:border-white/10 shadow-sm h-full"
+                      >
+                        {/* Decorative asymmetric borders (clinical style for dark mode) */}
+                        <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7] transition-colors duration-500 group-hover:bg-white/30"></div>
+                        <div className="absolute left-0 top-0 h-[3px] w-full bg-[#1959D7]/50 transition-all duration-500 group-hover:w-16 group-hover:bg-white/30"></div>
+                        
+                        <div className="absolute -right-4 -top-4 opacity-[0.05] text-[#1959D7] transition-all duration-500 group-hover:-rotate-12 group-hover:scale-125 group-hover:text-white group-hover:opacity-[0.03]">
+                           <Icon icon="lucide:lightbulb" className="h-32 w-32 [&_*]:!stroke-[0.25px]" />
+                        </div>
+                        
+                        <div className="relative z-10 flex items-start gap-4">
+                           <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-[#1959D7]/30 bg-[#1959D7]/10 text-[#1959D7] transition-all duration-500 group-hover:border-white/20 group-hover:bg-white/5 group-hover:text-white">
+                             <span className="font-mono text-sm font-bold">{i + 1}</span>
+                           </div>
+                           <div>
+                             <h3 className="text-base font-bold text-white mb-2 transition-colors">{tip.title}</h3>
+                             <p className="text-sm text-slate-400 leading-relaxed">{tip.desc}</p>
+                           </div>
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
               </section>
 
-              {/* PREGUNTAS FRECUENTES (DISEÑO CAJONES ACORDEON CLEAN) */}
-              <section id="preguntas-frecuentes" className="scroll-mt-28 mb-24 max-w-4xl">
-                 <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl mb-8 flex items-center gap-3">
-                   <Icon icon="lucide:help-circle" className="h-6 w-6 text-primary" />
-                   Preguntas frecuentes
-                 </h2>
-                 <div className="flex flex-col gap-3">
-                    {[
-                      { q: "¿En qué se diferencia de la tirzepatida?", a: "La tirzepatida activa los receptores GIP y GLP-1. La retatrutida también activa el receptor de glucagón; por eso se describe como un agonista triple. Son moléculas diferentes, y esa diferencia no demuestra por sí sola que una sea mejor para todas las personas." },
-                      { q: "¿Qué se sabe de su efecto sobre el hambre?", a: "En un análisis de un ensayo clínico de Lilly, los participantes que recibieron retatrutida reportaron menos hambre y menor tendencia a comer en exceso, especialmente en los grupos con dosis más altas. Esto no significa que el apetito desaparezca por completo." },
-                      { q: "¿Qué resultados de pérdida de peso se han observado?", a: "En TRIUMPH-1, adultos con obesidad o sobrepeso, sin diabetes, perdieron en promedio entre 17,6 % y 25,0 % de su peso a las 80 semanas, según la dosis, frente a 3,9 % con placebo. Estos resultados corresponden al medicamento de investigación de Lilly, no a los viales de KAILAB." },
-                      { q: "¿Dónde puedo revisar los análisis antes de comprar?", a: "En la pestaña 'Certificado de análisis (COA)' puedes abrir el informe disponible para la presentación y el lote correspondientes. Si aún no hay un informe publicado, la página lo indica como «Certificado pendiente»." },
-                      { q: "¿Qué viene incluido y cuánto cuesta el envío?", a: "Incluimos agua bacteriostática, toallitas con alcohol e información práctica en línea. El envío es gratis a toda Colombia y el empaque es discreto." }
-                    ].map((faq, i) => (
-                      <details key={i} className="group border border-border/50 bg-background open:bg-secondary/5 transition-colors duration-300">
-                        <summary className="cursor-pointer p-5 font-bold text-foreground flex items-center justify-between [&::-webkit-details-marker]:hidden">
-                           {faq.q}
-                           <Icon icon="lucide:chevron-down" className="h-4 w-4 transition-transform group-open:rotate-180" />
-                        </summary>
-                        <div className="px-5 pb-5 pt-0 text-sm text-muted-foreground leading-relaxed border-t border-border/50 mx-5 mt-2 pt-4">
-                           {faq.a}
-                        </div>
-                      </details>
-                    ))}
+              {/* PREGUNTAS FRECUENTES (BLANCO) */}
+              <section id="preguntas-frecuentes" className="scroll-mt-48 relative z-10 bg-white pt-20 pb-16 -mt-8 rounded-b-[3rem] sm:rounded-b-[4rem] shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
+                 <div className="max-w-6xl mx-auto px-4 lg:px-8">
+                   <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-12">
+                     <div className="mb-4 flex items-center gap-2 text-primary">
+                       <Icon icon="lucide:help-circle" className="h-5 w-5" />
+                       <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Resolución de dudas</span>
+                     </div>
+                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">Preguntas Frecuentes</h2>
+                   </motion.div>
+                   
+                   <div className="grid md:grid-cols-2 gap-x-8 border-t border-slate-200">
+                      {[
+                        { q: "¿En qué se diferencia de la tirzepatida?", a: "La tirzepatida activa los receptores GIP y GLP-1. La retatrutida también activa el receptor de glucagón; por eso se describe como un agonista triple. Son moléculas diferentes, y esa diferencia no demuestra por sí sola que una sea mejor para todas las personas." },
+                        { q: "¿Qué se sabe de su efecto sobre el hambre?", a: "En un análisis de un ensayo clínico de Lilly, los participantes que recibieron retatrutida reportaron menos hambre y menor tendencia a comer en exceso, especialmente en los grupos con dosis más altas. Esto no significa que el apetito desaparezca por completo." },
+                        { q: "¿Qué resultados de pérdida de peso se han observado?", a: "En TRIUMPH-1, adultos con obesidad o sobrepeso, sin diabetes, perdieron en promedio entre 17,6 % y 25,0 % de su peso a las 80 semanas, según la dosis, frente a 3,9 % con placebo. Estos resultados corresponden al medicamento de investigación de Lilly, no a los viales de KAILAB." },
+                        { q: "¿Dónde puedo revisar los análisis antes de comprar?", a: "En la pestaña 'Certificado de análisis (COA)' puedes abrir el informe disponible para la presentación y el lote correspondientes. Si aún no hay un informe publicado, la página lo indica como «Certificado pendiente»." },
+                        { q: "¿Qué viene incluido y cuánto cuesta el envío?", a: "Incluimos agua bacteriostática, toallitas con alcohol e información práctica en línea. El envío es gratis a toda Colombia y el empaque es discreto." }
+                      ].map((faq, i) => {
+                        const isLast = i === 4;
+                        return (
+                        <motion.details 
+                          initial={{ opacity: 0, y: 15 }} 
+                          whileInView={{ opacity: 1, y: 0 }} 
+                          viewport={{ once: true }} 
+                          transition={{ duration: 0.4, delay: i * 0.1 }}
+                          key={i} 
+                          className={cn(
+                            "group border-b border-slate-200 bg-white open:bg-slate-50 transition-colors duration-300 relative overflow-hidden",
+                            isLast ? "md:col-span-2 md:w-[calc(50%-1rem)] mx-auto w-full" : ""
+                          )}
+                        >
+                          {/* Left highlight border when open */}
+                          <div className="absolute left-0 top-0 h-full w-[3px] bg-primary opacity-0 transition-opacity duration-300 group-open:opacity-100"></div>
+                          
+                          <summary className="cursor-pointer p-6 sm:px-8 font-bold text-slate-900 flex items-center justify-between [&::-webkit-details-marker]:hidden hover:text-primary transition-colors">
+                             <div className="flex items-center gap-4">
+                               <span className="font-mono text-xs text-slate-400 group-open:text-primary transition-colors">0{i+1}</span>
+                               <span className="text-base">{faq.q}</span>
+                             </div>
+                             <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-slate-200 group-open:border-primary/30 group-open:bg-primary/10 transition-colors">
+                               <Icon icon="lucide:plus" className="h-4 w-4 text-slate-400 transition-transform duration-500 group-open:rotate-45 group-hover:text-primary group-open:text-primary" />
+                             </div>
+                          </summary>
+                          <div className="px-6 sm:px-8 pb-8 pt-0 ml-8 text-sm text-slate-600 leading-relaxed max-w-3xl">
+                             {faq.a}
+                          </div>
+                        </motion.details>
+                      )})}
+                   </div>
                  </div>
               </section>
 
-              {/* ESTUDIOS Y FUENTES (DISEÑO PANELES LATERALES + FOOTER INVERTIDO) */}
-              <section id="estudios" className="scroll-mt-28 mb-16">
-                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 pb-6 mb-10 gap-4">
-                    <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Evidencia Clínica</h2>
-                    <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary/80 bg-primary/10 px-3 py-1">Estudios</span>
-                 </div>
-                 
-                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-8">
-                    {/* Estudio 1: Left */}
-                    <div className="relative border-l-4 border-primary pl-6 py-2">
-                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest block mb-2">Estudio de Peso Corporal</span>
-                       <h3 className="text-xl font-bold text-foreground mb-4">Ensayo TRIUMPH-1</h3>
-                       <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                         En 2.339 adultos con obesidad o sobrepeso a lo largo de 80 semanas, se compararon dosis de 4, 9 y 12 mg con placebo. La reducción promedio fue de 17,6 % a 25,0 %, frente a 3,9 % con placebo.
-                       </p>
-                       <a href="#" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-primary hover:text-primary/80 group">
-                         Leer comunicado <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                       </a>
-                    </div>
-                    {/* Estudio 2: Right */}
-                    <div className="relative border-l-4 border-emerald-600 pl-6 py-2">
-                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest block mb-2">Estudio de Glucosa</span>
-                       <h3 className="text-xl font-bold text-foreground mb-4">TRANSCEND-T2D-1</h3>
-                       <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                         En 537 adultos con diabetes tipo 2 a lo largo de 40 semanas. La HbA1c disminuyó entre 1,7 y 1,9 puntos porcentuales, frente a 0,8 con placebo.
-                       </p>
-                       <div className="flex gap-4">
-                         <a href="#" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-emerald-700 hover:text-emerald-800 group">
-                           Investigación <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {/* ESTUDIOS Y FUENTES (INTEGRADO EN EL FLUJO FINAL) */}
+              <section id="estudios" className="scroll-mt-28 relative z-0 bg-slate-50 pt-20 pb-16 px-4 lg:px-8 -mt-8">
+                 <div className="max-w-5xl mx-auto">
+                   <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-12 border-b border-slate-200 pb-6">
+                     <div className="mb-4 flex items-center gap-2 text-primary">
+                       <Icon icon="lucide:microscope" className="h-5 w-5" />
+                       <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Evidencia Clínica</span>
+                     </div>
+                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">Estudios y Referencias</h2>
+                   </motion.div>
+                   
+                   <div className="grid lg:grid-cols-2 gap-12 lg:gap-10">
+                      {/* Estudio 1: Left */}
+                      <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative border-l-4 border-primary pl-6 py-2">
+                         <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-2">Estudio de Peso Corporal</span>
+                         <h3 className="text-xl font-bold text-slate-900 mb-4">Ensayo TRIUMPH-1</h3>
+                         <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                           En 2.339 adultos con obesidad o sobrepeso a lo largo de 80 semanas, se compararon dosis de 4, 9 y 12 mg con placebo. La reducción promedio fue de 17,6 % a 25,0 %, frente a 3,9 % con placebo.
+                         </p>
+                         <a href="#" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-primary hover:text-primary/80 group">
+                           Leer comunicado <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                          </a>
-                       </div>
-                    </div>
-                 </div>
+                      </motion.div>
+                      {/* Estudio 2: Right */}
+                      <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="relative border-l-4 border-emerald-500 pl-6 py-2">
+                         <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-2">Estudio de Glucosa</span>
+                         <h3 className="text-xl font-bold text-slate-900 mb-4">TRANSCEND-T2D-1</h3>
+                         <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                           En 537 adultos con diabetes tipo 2 a lo largo de 40 semanas. La HbA1c disminuyó entre 1,7 y 1,9 puntos porcentuales, frente a 0,8 con placebo.
+                         </p>
+                         <div className="flex gap-4">
+                           <a href="#" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 group">
+                             Investigación <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                           </a>
+                         </div>
+                      </motion.div>
+                   </div>
 
-                 {/* Disclaimer */}
-                 <div className="mt-8 bg-secondary/10 border-l-2 border-primary/50 p-6">
-                    <p className="text-sm text-foreground font-bold mb-1">Interpretación de los datos</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      Son promedios de grupos; no predicen resultados individuales. También se reportaron náuseas, diarrea, vómitos y otros eventos. Los ensayos evaluaron el medicamento de investigación de Lilly, no los viales de KAILAB.
-                    </p>
-                 </div>
-                 
-                 {/* Bibliografía Footer */}
-                 <div className="mt-16 bg-foreground text-background p-8 sm:p-12">
-                   <h3 className="font-mono text-xs font-bold uppercase tracking-widest text-background/70 mb-8 flex items-center gap-2">
-                     <Icon icon="lucide:book-open" className="h-4 w-4" /> Bibliografía y Documentación
-                   </h3>
-                   <ul className="grid sm:grid-cols-2 gap-x-12 gap-y-4">
-                     {[
-                        "Retatrutida y obesidad (NEJM, 2023)",
-                        "Comportamiento alimentario (DOM, 2025)",
-                        "TRIUMPH-1 (Lilly, 2026)",
-                        "TRANSCEND-T2D-1 (Lilly, 2026)",
-                        "Mecanismo e investigación (Lilly)"
-                     ].map((fuente, i) => (
-                        <li key={i} className="flex items-center gap-3 border-b border-background/20 pb-3">
-                           <Icon icon="lucide:arrow-up-right" className="h-3 w-3 text-background/50" />
-                           <a href="#" className="text-sm font-medium hover:text-background/80 transition-colors">{fuente}</a>
-                        </li>
-                     ))}
-                   </ul>
+                   {/* Disclaimer */}
+                   <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-12 bg-slate-200/50 border-l-2 border-primary/40 p-6 rounded-r-2xl">
+                      <p className="text-sm text-slate-900 font-bold mb-1">Interpretación de los datos</p>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Son promedios de grupos; no predicen resultados individuales. También se reportaron náuseas, diarrea, vómitos y otros eventos. Los ensayos evaluaron el medicamento de investigación de Lilly, no los viales de KAILAB.
+                      </p>
+                   </motion.div>
+                   
+                   {/* Bibliografía Footer */}
+                   <div className="mt-20 bg-slate-900 text-white p-8 sm:p-12 rounded-3xl shadow-2xl">
+                     <h3 className="font-mono text-xs font-bold uppercase tracking-widest text-white/50 mb-8 flex items-center gap-2">
+                       <Icon icon="lucide:book-open" className="h-4 w-4" /> Bibliografía y Documentación
+                     </h3>
+                     <ul className="grid sm:grid-cols-2 gap-x-12 gap-y-4">
+                       {[
+                          "Retatrutida y obesidad (NEJM, 2023)",
+                          "Comportamiento alimentario (DOM, 2025)",
+                          "TRIUMPH-1 (Lilly, 2026)",
+                          "TRANSCEND-T2D-1 (Lilly, 2026)",
+                          "Mecanismo e investigación (Lilly)"
+                       ].map((fuente, i) => (
+                          <li key={i} className="flex items-center gap-3 border-b border-white/10 pb-3">
+                             <Icon icon="lucide:arrow-up-right" className="h-3 w-3 text-white/30" />
+                             <a href="#" className="text-sm font-medium hover:text-white/80 transition-colors">{fuente}</a>
+                          </li>
+                       ))}
+                     </ul>
+                   </div>
                  </div>
               </section>
-
             </div>
           </div>
         )}
