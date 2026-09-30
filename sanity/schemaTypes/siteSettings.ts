@@ -67,6 +67,13 @@ export const siteSettingsType = defineType({
       },
     }),
     defineField({
+      name: 'description',
+      title: 'Descripción de la Marca',
+      description: 'Texto corto descriptivo que aparecerá debajo del logo en el footer',
+      type: 'text',
+      rows: 2,
+    }),
+    defineField({
       name: 'email',
       title: 'Correo Electrónico de Contacto',
       description: 'Email de atención a clientes y solicitudes técnicas (Ej: contacto@kailab.co)',

@@ -29,139 +29,224 @@ export default async function GuiasPage() {
       <TopBar />
       <Navbar siteSettings={siteSettings} />
       
-      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <div className="mb-12">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl mb-4">
-            Guías prácticas
-          </h1>
-          <p className="text-lg text-slate-600">
-            Explicaciones claras para entender la información de los productos y consultar su documentación.
-          </p>
-        </div>
-
-        <article className="prose prose-slate prose-a:text-[#1959D7] hover:prose-a:text-[#1959D7]/80 prose-headings:font-bold prose-h2:text-2xl sm:prose-h2:text-3xl max-w-none">
-          <section id="leer-certificado" className="scroll-mt-28">
-            <h2>Cómo leer un certificado de análisis</h2>
-            <p className="text-base text-slate-700">
-              Empieza por el producto y el lote. Después revisa quién realizó el análisis, cuándo se hizo y qué resultados aparecen. La cantidad en miligramos y el porcentaje de pureza son datos distintos.
-            </p>
-
-            <h3>Un ejemplo real</h3>
-            <p>
-              Usaremos el informe n.º 223529 de Janoshik, correspondiente a una muestra identificada en el documento como Retatrutide 10 mg, lote 317558. Este ejemplo explica cómo leer ese informe; sus resultados corresponden a la muestra analizada.
-            </p>
-
-            <h3>1. Identifica la muestra y el lote</h3>
-            <p>
-              Busca el nombre, la presentación declarada y el número de lote. Estos datos identifican qué muestra se envió al laboratorio. El nombre escrito en el informe no sustituye la lectura de las pruebas realizadas.
-            </p>
-
-            <h3>2. Revisa el laboratorio y la fecha</h3>
-            <p>
-              Comprueba quién emitió el informe y cuándo se realizó el análisis. La fecha del análisis no es una fecha de vencimiento.
-            </p>
-
-            <h3>3. Distingue cantidad y pureza</h3>
-            <div className="overflow-x-auto my-6 border border-slate-200 rounded-lg">
-              <table className="w-full text-left text-sm m-0">
-                <thead className="bg-slate-100 border-b border-slate-200">
-                  <tr>
-                    <th className="px-4 py-3 font-bold text-slate-900">Dato del informe</th>
-                    <th className="px-4 py-3 font-bold text-slate-900">Resultado</th>
-                    <th className="px-4 py-3 font-bold text-slate-900">Cómo leerlo</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="px-4 py-3 font-medium text-slate-900">Presentación declarada</td>
-                    <td className="px-4 py-3 text-slate-700">10 mg</td>
-                    <td className="px-4 py-3 text-slate-700">Identifica la presentación de la muestra.</td>
-                  </tr>
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="px-4 py-3 font-medium text-slate-900">Cantidad medida</td>
-                    <td className="px-4 py-3 text-slate-700">10,74 mg</td>
-                    <td className="px-4 py-3 text-slate-700">Es la cantidad reportada por el análisis.</td>
-                  </tr>
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="px-4 py-3 font-medium text-slate-900">Pureza por HPLC</td>
-                    <td className="px-4 py-3 text-slate-700">99,191 %</td>
-                    <td className="px-4 py-3 text-slate-700">Es un porcentaje de área; no indica los miligramos del vial.</td>
-                  </tr>
-                </tbody>
-              </table>
+      <main className="flex-1 bg-slate-50 pb-10">
+        {/* HERO SECTION */}
+        <section className="relative bg-[#17294F] pt-10 pb-32 shadow-lg z-0 overflow-hidden">
+          {/* Decoración de fondo */}
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[60%] rounded-full bg-blue-500/10 blur-[80px]"></div>
+            <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-500/10 blur-[80px]"></div>
+          </div>
+          
+          <div className="relative z-10 max-w-4xl mx-auto px-4 lg:px-8 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-blue-300 font-mono text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+              <Icon icon="lucide:book-open" className="h-4 w-4" />
+              Recursos
             </div>
-            <p>
-              Cada resultado responde una pregunta diferente. Un porcentaje alto de pureza no reemplaza la medición de cantidad ni otros análisis.
+            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6">
+              Guías Prácticas
+            </h1>
+            <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              Explicaciones claras para entender la información de los productos y aprender a consultar su documentación y certificados de análisis.
             </p>
+          </div>
+        </section>
 
-            <h3>4. Reconoce la gráfica</h3>
-            <p>
-              En el cromatograma disponible abajo verás señales registradas durante la separación de la muestra. El eje de tiempo indica cuándo aparecen y los picos muestran las señales detectadas. El porcentaje de pureza por área se calcula comparando las áreas de los picos, no solo su altura.
-            </p>
-
-            <h3>5. Abre el informe completo</h3>
-            <p>
-              Abre el certificado y el cromatograma. Revisa el número de informe, la muestra, el lote y los resultados. El análisis de una muestra no significa que se haya examinado cada vial del lote.
-            </p>
-
-            <div className="not-prose flex flex-col sm:flex-row gap-3 mt-6 mb-8">
-              <a 
-                href="/certificados/RT10_Janoshik_223529_Certificado.png" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1959D7] px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#1959D7]/90"
-              >
-                <Icon icon="lucide:external-link" className="h-4 w-4" />
-                Abrir certificado
-              </a>
-              <a 
-                href="/certificados/RT10_Janoshik_223529_Informe.pdf" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-slate-200 bg-white px-6 py-2.5 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
-              >
-                <Icon icon="lucide:file-text" className="h-4 w-4" />
-                Ver cromatograma (PDF)
-              </a>
+        {/* CONTENT SECTION */}
+        <section className="relative z-10 max-w-4xl mx-auto px-4 lg:px-8 -mt-20">
+          
+          <div className="bg-white rounded-none p-6 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100">
+            <div className="mb-6 border-b border-blue-400 pb-6">
+              <h2 className="text-2xl font-bold text-slate-900 mb-3">Cómo leer un certificado de análisis</h2>
+              <p className="text-base text-slate-600 leading-relaxed">
+                Empieza por el producto y el lote. Después revisa quién realizó el análisis, cuándo se hizo y qué resultados aparecen. La cantidad en miligramos y el porcentaje de pureza son datos distintos.
+              </p>
             </div>
 
-            <p>
-              En Calidad encontrarás una explicación de las técnicas utilizadas y de lo que puede decirte cada resultado.
-            </p>
+            <div className="mb-6 p-5 bg-blue-50/50 rounded-none border border-blue-100/50">
+              <h3 className="text-lg font-bold text-blue-900 mb-2 flex items-center gap-2">
+                <Icon icon="lucide:search" className="h-5 w-5 text-blue-600" />
+                Un ejemplo real
+              </h3>
+              <p className="text-sm text-slate-700 leading-relaxed">
+                Usaremos el informe n.º 223529 de Janoshik, correspondiente a una muestra identificada en el documento como <strong>Retatrutide 10 mg, lote 317558</strong>. Este ejemplo explica cómo leer ese informe; sus resultados corresponden a la muestra analizada.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {/* Paso 1 */}
+              <div className="flex gap-4 sm:gap-6">
+                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">1</div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Identifica la muestra y el lote</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Busca el nombre, la presentación declarada y el número de lote. Estos datos identifican qué muestra se envió al laboratorio. El nombre escrito en el informe no sustituye la lectura de las pruebas realizadas.
+                  </p>
+                </div>
+              </div>
+
+              {/* Paso 2 */}
+              <div className="flex gap-4 sm:gap-6">
+                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">2</div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Revisa el laboratorio y la fecha</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Comprueba quién emitió el informe y cuándo se realizó el análisis. La fecha del análisis no es una fecha de vencimiento.
+                  </p>
+                </div>
+              </div>
+
+              {/* Paso 3 */}
+              <div className="flex gap-4 sm:gap-6">
+                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">3</div>
+                <div className="w-full">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Distingue cantidad y pureza</h3>
+                  
+                  <div className="overflow-hidden my-4 border border-slate-200 rounded-xl shadow-sm">
+                    <table className="w-full text-left text-sm">
+                      <thead className="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                          <th className="px-5 py-4 font-bold text-slate-900 w-1/3">Dato del informe</th>
+                          <th className="px-5 py-4 font-bold text-slate-900 w-1/4">Resultado</th>
+                          <th className="px-5 py-4 font-bold text-slate-900 w-auto">Cómo leerlo</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 bg-white">
+                        <tr className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-5 py-4 font-medium text-slate-900">Presentación declarada</td>
+                          <td className="px-5 py-4 text-slate-700 font-mono text-xs">10 mg</td>
+                          <td className="px-5 py-4 text-slate-600">Identifica la presentación de la muestra.</td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-5 py-4 font-medium text-slate-900">Cantidad medida</td>
+                          <td className="px-5 py-4 text-slate-700 font-mono text-xs">10,74 mg</td>
+                          <td className="px-5 py-4 text-slate-600">Es la cantidad reportada por el análisis.</td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-5 py-4 font-medium text-slate-900">Pureza por HPLC</td>
+                          <td className="px-5 py-4 text-slate-700 font-mono text-xs">99,191 %</td>
+                          <td className="px-5 py-4 text-slate-600">Es un porcentaje de área; no indica los miligramos del vial.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-sm text-slate-500 italic">
+                    Cada resultado responde una pregunta diferente. Un porcentaje alto de pureza no reemplaza la medición de cantidad ni otros análisis.
+                  </p>
+                </div>
+              </div>
+
+              {/* Paso 4 */}
+              <div className="flex gap-4 sm:gap-6">
+                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">4</div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Reconoce la gráfica</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    En el cromatograma disponible abajo verás señales registradas durante la separación de la muestra. El eje de tiempo indica cuándo aparecen y los picos muestran las señales detectadas. El porcentaje de pureza por área se calcula comparando las áreas de los picos, no solo su altura.
+                  </p>
+                </div>
+              </div>
+
+              {/* Paso 5 */}
+              <div className="flex gap-4 sm:gap-6">
+                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">5</div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Abre el informe completo</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                    Abre el certificado y el cromatograma. Revisa el número de informe, la muestra, el lote y los resultados. El análisis de una muestra no significa que se haya examinado cada vial del lote.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-3 mb-0">
+                    <a 
+                      href="/certificados/RT10_Janoshik_223529_Certificado.png" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="group relative inline-flex flex-1 items-center justify-center gap-2 overflow-hidden bg-primary px-4 py-2.5 font-mono text-[11px] font-bold tracking-widest text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
+                    >
+                      {/* L-Shape Border Left */}
+                      <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+                      {/* L-Shape Border Top */}
+                      <div className="absolute left-0 top-0 h-[2px] w-6 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+                      
+                      Abrir certificado
+                      <Icon icon="lucide:external-link" className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+                    </a>
+                    <a 
+                      href="/certificados/RT10_Janoshik_223529_Informe.pdf" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-none border-2 border-slate-200 bg-white px-4 py-2.5 text-[11px] font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900"
+                    >
+                      <Icon icon="lucide:file-text" className="h-3 w-3" />
+                      Ver cromatograma (PDF)
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-            <div className="not-prose mt-4">
+            <div className="mt-4 p-6 bg-blue-50/50 rounded-none flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-blue-100/50">
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-blue-100 text-primary">
+                  <Icon icon="lucide:info" className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-blue-900 mb-1">¿Quieres saber más?</h4>
+                  <p className="text-sm text-slate-700">En Calidad encontrarás una explicación de las técnicas utilizadas y de lo que puede decirte cada resultado.</p>
+                </div>
+              </div>
               <Link
                 href="/calidad"
-                className="inline-flex items-center gap-2 text-sm font-bold text-[#1959D7] hover:underline"
+                className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-6 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95 whitespace-nowrap shrink-0"
               >
-                Calidad
-                <Icon icon="lucide:arrow-right" className="h-4 w-4" />
+                {/* L-Shape Border Left */}
+                <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+                {/* L-Shape Border Top */}
+                <div className="absolute left-0 top-0 h-[2px] w-12 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+                
+                Ver Calidad
+                <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
-
-          </section>
-        </article>
-
-        {/* ENLACES DE REGRESO */}
-        <div className="mt-16 border-t border-slate-200 pt-8">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link 
-              href="/tienda"
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-100 px-6 py-4 text-sm font-bold text-slate-900 transition-colors hover:bg-slate-200"
-            >
-              Ver productos
-              <Icon icon="lucide:arrow-right" className="h-4 w-4" />
-            </Link>
-            <Link 
-              href="/ayuda"
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-100 px-6 py-4 text-sm font-bold text-slate-900 transition-colors hover:bg-slate-200"
-            >
-              Ayuda
-              <Icon icon="lucide:help-circle" className="h-4 w-4" />
-            </Link>
           </div>
-        </div>
+          
+          {/* ENLACES DE REGRESO */}
+          <div className="mt-5 mb-0">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Link 
+                href="/tienda"
+                className="group flex items-center justify-between p-6 rounded-none bg-[#17294F] shadow-sm border border-white/10 transition-all hover:shadow-md hover:border-white/30"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-none bg-white/10 text-slate-300 group-hover:bg-white/20 group-hover:text-white transition-colors">
+                    <Icon icon="lucide:shopping-bag" className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <span className="block text-sm font-bold text-white">Tienda</span>
+                    <span className="block text-xs text-slate-400">Ver nuestros productos</span>
+                  </div>
+                </div>
+                <Icon icon="lucide:chevron-right" className="h-5 w-5 text-slate-400 group-hover:text-white transition-colors" />
+              </Link>
+              <Link 
+                href="/ayuda"
+                className="group flex items-center justify-between p-6 rounded-none bg-[#17294F] shadow-sm border border-white/10 transition-all hover:shadow-md hover:border-white/30"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-none bg-white/10 text-slate-300 group-hover:bg-white/20 group-hover:text-white transition-colors">
+                    <Icon icon="lucide:help-circle" className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <span className="block text-sm font-bold text-white">Ayuda</span>
+                    <span className="block text-xs text-slate-400">Preguntas y contacto</span>
+                  </div>
+                </div>
+                <Icon icon="lucide:chevron-right" className="h-5 w-5 text-slate-400 group-hover:text-white transition-colors" />
+              </Link>
+            </div>
+          </div>
 
+        </section>
       </main>
       
       <Footer siteSettings={siteSettings} />

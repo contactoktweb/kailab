@@ -87,10 +87,15 @@ export function WompiCheckoutButton({
       onClick={handleClick}
       className={
         className ||
-        "flex h-full w-full items-center justify-center gap-2 rounded-lg bg-[#1959D7] px-5 text-sm font-bold text-white transition-all duration-300 hover:bg-[#1959D7]/90 active:scale-[0.98]"
+        "group relative inline-flex h-full w-full items-center justify-center gap-2 overflow-hidden bg-primary px-5 font-mono text-[10px] sm:text-xs font-bold tracking-widest text-white backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
       }
     >
-      {label}
+      {/* L-Shape Border Left */}
+      <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+      {/* L-Shape Border Top */}
+      <div className="absolute left-0 top-0 h-[2px] w-8 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+      
+      <span className="leading-tight uppercase tracking-widest">{label}</span>
     </button>
   );
 }

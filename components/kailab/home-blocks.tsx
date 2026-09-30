@@ -134,13 +134,18 @@ export function CombinedIncludedQuality({
                 {qualityData?.description || 'Un certificado de análisis (COA) muestra los resultados de una muestra evaluada por un laboratorio. Consulta los informes disponibles y revisa el producto, la presentación y el lote de cada uno.'}
               </p>
               
-              <div className="mt-6">
+              <div className="mt-8">
                 <Link
                   href="/calidad"
-                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-sm bg-[#1959D7] px-5 py-2.5 font-mono text-[11px] font-bold tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-[#1959D7]/90 active:scale-95"
+                  className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-8 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
                 >
+                  {/* L-Shape Border Left */}
+                  <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+                  {/* L-Shape Border Top */}
+                  <div className="absolute left-0 top-0 h-[2px] w-12 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+                  
                   Ver certificados
-                  <Icon icon="lucide:arrow-right" className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>
@@ -465,8 +470,13 @@ export function QualityCoa({ data }: { data?: QualityPageData | null }) {
             <div className="mt-8">
               <Link
                 href="/calidad"
-                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-sm bg-[#1959D7] px-6 py-3 font-mono text-xs font-bold tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-[#1959D7]/90 active:scale-95"
+                className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-8 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
               >
+                {/* L-Shape Border Left */}
+                <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
+                {/* L-Shape Border Top */}
+                <div className="absolute left-0 top-0 h-[2px] w-12 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
+                
                 Ver certificados
                 <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>

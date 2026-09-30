@@ -89,12 +89,12 @@ export default async function AyudaPage() {
           </ul>
           
           <h3>¿Desde cuándo se cuentan estos tiempos?</h3>
-          <p>Desde el día en que realizas el pago, si lo haces antes de las 4 p. m. de lunes a viernes o antes de las 12 del mediodía del sábado.</p>
-          <p>Después de esos horarios, o en domingos y festivos, se cuentan desde el siguiente día hábil. Los tiempos son estimados y dependen del destino.</p>
-          <p>Si la confirmación del pago tarda, la entrega también puede tomar más tiempo.</p>
+          <p>Desde el despacho, cuando entregamos tu pedido a la transportadora.</p>
+          <p>Son tiempos aproximados según el destino, no fechas de llegada garantizadas.</p>
+          <p>Al despachar te enviaremos la guía para consultar el avance del envío.</p>
           
           <h3>¿Cuándo despachan mi pedido?</h3>
-          <p>Los pagos confirmados antes de las 4 p. m. de lunes a viernes o antes de las 12 del mediodía del sábado se despachan ese mismo día. Después de esos horarios, o en domingos y festivos, el despacho pasa al siguiente día hábil.</p>
+          <p>Los pedidos con pago confirmado antes de las 4 p. m. de lunes a viernes o antes de las 12 del mediodía del sábado se despachan ese mismo día. Desde esas horas, o en domingos y festivos de Colombia, se despachan el siguiente día hábil. Horarios de Bogotá.</p>
           
           <h3>¿Cómo consulto el estado de mi envío?</h3>
           <p>Cuando despachemos tu pedido, recibirás la información de seguimiento. Si necesitas ayuda para encontrarla, escríbenos con tu número de pedido.</p>

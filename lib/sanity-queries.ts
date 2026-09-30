@@ -10,6 +10,7 @@ export interface SiteSettings {
   workingHours?: string
   footerNotice?: string
   logo?: any
+  description?: string
   socialLinks?: Array<{
     _key: string
     platform: string
@@ -27,6 +28,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       workingHours,
       footerNotice,
       logo,
+      description,
       socialLinks
     }`
     const settings = await sanityClient.fetch(query)
