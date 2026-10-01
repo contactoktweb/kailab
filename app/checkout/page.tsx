@@ -126,7 +126,11 @@ export default function CheckoutPage() {
   const { items, cartTotal } = useCart()
 
   const [form, setForm] = useState<CheckoutFormData>(INITIAL_FORM)
-  const [errors, setErrors] = useState<F  const [step, setStep] = useState<'shipping' | 'payment'>('shipping')
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [step, setStep] = useState<'shipping' | 'payment'>('shipping')
+  const [paymentError, setPaymentError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const set = (key: keyof CheckoutFormData) => (value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -564,6 +568,7 @@ export default function CheckoutPage() {
       </footer>
     </div>
   )
+}
 
 function WompiButton({ loading, total, error }: { loading: boolean; total: number; error?: string | null }) {
   return (
