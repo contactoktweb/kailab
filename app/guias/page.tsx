@@ -34,12 +34,12 @@ export default async function GuiasPage() {
         <section className="relative bg-[#17294F] pt-10 pb-32 shadow-lg z-0 overflow-hidden">
           {/* Decoración de fondo */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-            <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[60%] rounded-full bg-blue-500/10 blur-[80px]"></div>
+            <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[60%] rounded-full bg-primary/10 blur-[80px]"></div>
             <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-500/10 blur-[80px]"></div>
           </div>
           
           <div className="relative z-10 max-w-4xl mx-auto px-4 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-blue-300 font-mono text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary font-mono text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
               <Icon icon="lucide:book-open" className="h-4 w-4" />
               Recursos
             </div>
@@ -56,16 +56,16 @@ export default async function GuiasPage() {
         <section className="relative z-10 max-w-4xl mx-auto px-4 lg:px-8 -mt-20">
           
           <div className="bg-white rounded-none p-6 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100">
-            <div className="mb-6 border-b border-blue-400 pb-6">
+            <div className="mb-6 border-b border-primary/40 pb-6">
               <h2 className="text-2xl font-bold text-slate-900 mb-3">Cómo leer un certificado de análisis</h2>
               <p className="text-base text-slate-600 leading-relaxed">
                 Empieza por el producto y el lote. Después revisa quién realizó el análisis, cuándo se hizo y qué resultados aparecen. La cantidad en miligramos y el porcentaje de pureza son datos distintos.
               </p>
             </div>
 
-            <div className="mb-6 p-5 bg-blue-50/50 rounded-none border border-blue-100/50">
-              <h3 className="text-lg font-bold text-blue-900 mb-2 flex items-center gap-2">
-                <Icon icon="lucide:search" className="h-5 w-5 text-blue-600" />
+            <div className="mb-6 p-5 bg-primary/5 rounded-none border border-primary/20">
+              <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                <Icon icon="lucide:search" className="h-5 w-5 text-primary" />
                 Un ejemplo real
               </h3>
               <p className="text-sm text-slate-700 leading-relaxed">
@@ -76,7 +76,7 @@ export default async function GuiasPage() {
             <div className="space-y-6">
               {/* Paso 1 */}
               <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">1</div>
+                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">1</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Identifica la muestra y el lote</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -87,7 +87,7 @@ export default async function GuiasPage() {
 
               {/* Paso 2 */}
               <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">2</div>
+                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">2</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Revisa el laboratorio y la fecha</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -98,7 +98,7 @@ export default async function GuiasPage() {
 
               {/* Paso 3 */}
               <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">3</div>
+                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">3</div>
                 <div className="w-full">
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Distingue cantidad y pureza</h3>
                   
@@ -138,7 +138,7 @@ export default async function GuiasPage() {
 
               {/* Paso 4 */}
               <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">4</div>
+                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">4</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Reconoce la gráfica</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -149,7 +149,7 @@ export default async function GuiasPage() {
 
               {/* Paso 5 */}
               <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-sm sm:text-base shadow-[2px_2px_0px_#1959D7]">5</div>
+                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">5</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Abre el informe completo</h3>
                   <p className="text-sm text-slate-600 leading-relaxed mb-6">
@@ -175,9 +175,14 @@ export default async function GuiasPage() {
                       href="/certificados/RT10_Janoshik_223529_Informe.pdf" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-none border-2 border-slate-200 bg-white px-4 py-2.5 text-[11px] font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900"
+                      className="group relative inline-flex flex-1 items-center justify-center gap-2 overflow-hidden bg-white border border-slate-200 px-4 py-2.5 font-mono text-[11px] font-bold tracking-widest text-slate-800 transition-all duration-500 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 active:scale-95"
                     >
-                      <Icon icon="lucide:file-text" className="h-3 w-3" />
+                      {/* L-Shape Border Left */}
+                      <div className="absolute left-0 top-0 h-full w-[2px] bg-primary/40 transition-colors duration-500 group-hover:bg-primary"></div>
+                      {/* L-Shape Border Top */}
+                      <div className="absolute left-0 top-0 h-[2px] w-6 bg-primary/40 transition-all duration-500 group-hover:w-full group-hover:bg-primary"></div>
+
+                      <Icon icon="lucide:file-text" className="h-3 w-3 text-slate-600 transition-transform duration-300 group-hover:translate-x-0.5" />
                       Ver cromatograma (PDF)
                     </a>
                   </div>
@@ -185,13 +190,13 @@ export default async function GuiasPage() {
               </div>
             </div>
             
-            <div className="mt-4 p-6 bg-blue-50/50 rounded-none flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-blue-100/50">
+            <div className="mt-4 p-6 bg-primary/5 rounded-none flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-primary/20">
               <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-blue-100 text-primary">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-primary/10 text-primary">
                   <Icon icon="lucide:info" className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-blue-900 mb-1">¿Quieres saber más?</h4>
+                  <h4 className="font-bold text-slate-900 mb-1">¿Quieres saber más?</h4>
                   <p className="text-sm text-slate-700">En Calidad encontrarás una explicación de las técnicas utilizadas y de lo que puede decirte cada resultado.</p>
                 </div>
               </div>
@@ -211,7 +216,7 @@ export default async function GuiasPage() {
           </div>
           
           {/* ENLACES DE REGRESO */}
-          <div className="mt-5 mb-0">
+          <div className="mt-12 mb-0">
             <div className="grid sm:grid-cols-2 gap-4">
               <Link 
                 href="/tienda"
