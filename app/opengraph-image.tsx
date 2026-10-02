@@ -8,9 +8,9 @@ export const contentType = 'image/png'
 
 export default function Image() {
   try {
-    const svgBuffer = readFileSync(join(process.cwd(), 'public', 'KAILAB_Logo_Navy-Blue.svg'))
-    const base64 = svgBuffer.toString('base64')
-    const src = `data:image/svg+xml;base64,${base64}`
+    const logoBuffer = readFileSync(join(process.cwd(), 'public', 'KAILAB_Logo_Navy-Blue.png'))
+    const base64 = logoBuffer.toString('base64')
+    const src = `data:image/png;base64,${base64}`
 
     return new ImageResponse(
       (
@@ -53,3 +53,4 @@ export default function Image() {
     )
   }
 }
+
