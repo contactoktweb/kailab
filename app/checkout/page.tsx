@@ -7,18 +7,6 @@ import { Icon } from '@iconify/react'
 import { useCart } from '@/components/kailab/cart-context'
 import { formatCOP, type CheckoutFormData } from '@/components/kailab/data'
 
-const COUNTRIES = [
-  'Colombia',
-  'México',
-  'Chile',
-  'Perú',
-  'Argentina',
-  'Ecuador',
-  'Panamá',
-  'Costa Rica',
-  'Otro país',
-]
-
 const INITIAL_FORM: CheckoutFormData = {
   email: '',
   country: 'Colombia',
@@ -57,10 +45,6 @@ function validate(form: CheckoutFormData): FormErrors {
     errors.email = 'Revisa el correo electrónico.'
   }
 
-  // Si hay algún campo de la dirección faltante, podríamos asignar el mensaje "Completa los datos de envío para continuar."
-  // Pero el cliente pide "Falta un campo obligatorio: Completa este campo", así que mantendremos el error por campo para los individuales.
-  // Podríamos usar el error general de dirección si es necesario.
-
   if (form.phone && form.phone.trim() && !/^[0-9+\s\-()]{7,15}$/.test(form.phone)) {
     errors.phone = 'Número de teléfono inválido.'
   }
@@ -72,9 +56,9 @@ function validate(form: CheckoutFormData): FormErrors {
 
 function FieldLabel({ htmlFor, children, required }: { htmlFor?: string; children: React.ReactNode; required?: boolean }) {
   return (
-    <label htmlFor={htmlFor} className="block font-mono text-xs font-semibold text-foreground mb-0.5">
+    <label htmlFor={htmlFor} className="block font-mono text-[11px] font-semibold text-slate-700 mb-0.5">
       {children}
-      {required && <span className="ml-1 text-rose-400">*</span>}
+      {required && <span className="ml-1 text-rose-500">*</span>}
     </label>
   )
 }
@@ -82,7 +66,7 @@ function FieldLabel({ htmlFor, children, required }: { htmlFor?: string; childre
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
   return (
-    <p className="mt-1 font-mono text-[11px] text-rose-400 flex items-center gap-1">
+    <p className="mt-0.5 font-mono text-[10px] text-rose-500 flex items-center gap-1">
       <Icon icon="lucide:alert-circle" className="h-3 w-3 shrink-0" />
       {message}
     </p>
@@ -112,10 +96,10 @@ function InputField({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full rounded-md border bg-secondary/40 px-4 py-[7px] font-mono text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-colors ${
+        className={`w-full rounded-md border bg-slate-50 px-3 py-1.5 font-mono text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none transition-colors ${
           error
-            ? 'border-rose-500/60 focus:border-rose-500'
-            : 'border-border focus:border-primary'
+            ? 'border-rose-500 focus:border-rose-600'
+            : 'border-slate-300 focus:border-[#17294F]'
         }`}
       />
     </div>
@@ -130,7 +114,6 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<'shipping' | 'payment'>('shipping')
   const [paymentError, setPaymentError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
 
   const set = (key: keyof CheckoutFormData) => (value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -164,7 +147,6 @@ export default function CheckoutPage() {
       const redirectUrl = `${window.location.origin}/pago/resultado`
       const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY!
 
-      // Obtener firma de integridad del servidor
       const res = await fetch('/api/wompi/signature', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -173,7 +155,6 @@ export default function CheckoutPage() {
       if (!res.ok) throw new Error('Error generando firma')
       const { signature } = await res.json()
 
-      // Crear el form de Wompi programáticamente
       const existingForm = document.getElementById('wompi-hidden-form')
       if (existingForm) existingForm.remove()
 
@@ -225,29 +206,25 @@ export default function CheckoutPage() {
   const handleCriptoPayment = async () => {
     setLoading(true)
     setPaymentError(null)
-    // Aquí iría la integración real de cripto. Por ahora solo simulamos la carga o mostramos un mensaje.
-    // Como dice el requerimiento: "Mostrar solo opciones habilitadas y probadas", si no hay integración, 
-    // lo ideal sería no mostrarlo, pero como se pide la opción "Criptomonedas / USDT red TRC-20", 
-    // podemos mostrarlo y si falla, poner un error o si funciona redirigir.
     setTimeout(() => {
-      alert("Flujo de Criptomonedas en desarrollo")
+      alert('Flujo de Criptomonedas en desarrollo')
       setLoading(false)
     }, 1000)
   }
 
-  if (items.length === 0 && !submitted) {
+  if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6 px-4 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full border border-border bg-secondary">
-          <Icon icon="lucide:shopping-cart" className="h-8 w-8 text-muted-foreground" />
+      <div className="min-h-screen bg-white text-slate-900 flex flex-col items-center justify-center gap-5 px-4 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-slate-50">
+          <Icon icon="lucide:shopping-cart" className="h-7 w-7 text-slate-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold font-mono text-foreground">Tu carrito está vacío</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Agrega productos antes de continuar al checkout.</p>
+          <h1 className="text-xl font-bold font-mono text-slate-900">Tu carrito está vacío</h1>
+          <p className="mt-1 text-xs text-slate-500">Agrega productos antes de continuar al checkout.</p>
         </div>
         <Link
           href="/tienda"
-          className="inline-flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-transparent hover:text-primary"
+          className="inline-flex items-center gap-2 rounded-md bg-[#17294F] px-4 py-2 text-xs font-bold text-white transition-all hover:bg-[#101d38]"
         >
           <Icon icon="lucide:store" className="h-4 w-4" />
           Ir a la tienda
@@ -256,99 +233,74 @@ export default function CheckoutPage() {
     )
   }
 
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6 px-4 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10">
-          <Icon icon="lucide:check-circle-2" className="h-9 w-9 text-emerald-400" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold font-mono text-foreground">¡Información de envío guardada!</h1>
-          <p className="mt-2 text-sm text-muted-foreground max-w-sm">
-            Hemos registrado tus datos de contacto y envío correctamente.
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-sm border border-border bg-secondary px-5 py-2.5 text-sm font-mono font-semibold text-foreground transition-colors hover:bg-secondary/70"
-          >
-            <Icon icon="lucide:home" className="h-4 w-4" />
-            Inicio
-          </Link>
-          <Link
-            href="/tienda"
-            className="inline-flex items-center gap-2 rounded-sm border-2 border-primary bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-transparent hover:text-primary"
-          >
-            <Icon icon="lucide:store" className="h-4 w-4" />
-            Seguir comprando
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
   const subtotal = cartTotal
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col">
+      {/* Header Compacto */}
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm shadow-xs">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 h-12 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2" aria-label="Volver al inicio KAILAB">
-            <Image src="/kailab-logo.png" alt="KAILAB" width={110} height={32} className="h-7 w-auto" />
+            <Image src="/KAILAB_Logo_Navy-Blue.png" alt="KAILAB" width={100} height={28} className="h-6 w-auto object-contain" />
           </Link>
 
-          <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-muted-foreground">
-            <span className={step === 'shipping' ? "text-foreground font-bold" : ""}>Información de envío</span>
-            <Icon icon="lucide:chevron-right" className="h-3 w-3" />
-            <span className={step === 'payment' ? "text-foreground font-bold" : ""}>Pago</span>
+          <div className="hidden sm:flex items-center gap-2 font-mono text-[11px] text-slate-500">
+            <span className={step === 'shipping' ? 'text-slate-900 font-bold' : ''}>Información de envío</span>
+            <Icon icon="lucide:chevron-right" className="h-3 w-3 text-slate-400" />
+            <span className={step === 'payment' ? 'text-slate-900 font-bold' : ''}>Pago</span>
           </div>
 
           <Link
             href="/carrito"
-            className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-slate-600 hover:text-[#17294F] transition-colors"
           >
-            <Icon icon="lucide:arrow-left" className="h-4 w-4" />
+            <Icon icon="lucide:arrow-left" className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Volver al carrito</span>
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-8 lg:pt-7 lg:pb-12">
+      {/* Main content Compacto */}
+      <main className="mx-auto max-w-5xl w-full px-4 sm:px-6 py-4 flex-1">
         {step === 'shipping' ? (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-2">Información de envío</h1>
-            <p className="text-muted-foreground mb-8">Completa tus datos y revisa el resumen antes de continuar al pago.</p>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start flex-col-reverse lg:flex-row">
-              <section className="lg:col-span-7 xl:col-span-8 order-2 lg:order-1" aria-labelledby="checkout-form-heading">
+          <div className="animate-in fade-in duration-300">
+            <div className="mb-4">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-0.5">Información de envío</h1>
+              <p className="text-xs text-slate-500">Completa tus datos y revisa el resumen para continuar.</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+              {/* Left Column: Form */}
+              <section className="lg:col-span-7 xl:col-span-7" aria-labelledby="checkout-form-heading">
                 <h2 id="checkout-form-heading" className="sr-only">Proceso de Envío KAILAB</h2>
-                <form id="checkout-form" onSubmit={handleContinueToPayment} noValidate className="space-y-8">
+                <form id="checkout-form" onSubmit={handleContinueToPayment} noValidate className="space-y-4">
                   
-                  <div className="space-y-4">
-                    <h2 className="text-xl font-bold font-mono tracking-tight text-foreground border-b border-border/50 pb-2">
+                  {/* Contact Info */}
+                  <div className="space-y-2.5 bg-slate-50/80 border border-slate-200 rounded-lg p-3.5 sm:p-4">
+                    <h2 className="text-xs font-bold font-mono tracking-tight text-slate-900 uppercase border-b border-slate-200 pb-1.5">
                       Información de contacto
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-0.5">
                       <div>
                         <FieldLabel htmlFor="email" required>Correo electrónico</FieldLabel>
-                        <InputField id="email" type="email" placeholder="Correo electrónico" value={form.email} onChange={set('email')} error={errors.email} />
+                        <InputField id="email" type="email" placeholder="tudireccion@correo.com" value={form.email} onChange={set('email')} error={errors.email} />
                         <FieldError message={errors.email} />
                       </div>
                       <div>
-                        <FieldLabel htmlFor="phone" required>Teléfono</FieldLabel>
-                        <InputField id="phone" type="tel" placeholder="Teléfono" value={form.phone || ''} onChange={set('phone')} error={errors.phone} />
+                        <FieldLabel htmlFor="phone" required>Teléfono / Celular</FieldLabel>
+                        <InputField id="phone" type="tel" placeholder="300 000 0000" value={form.phone || ''} onChange={set('phone')} error={errors.phone} />
                         <FieldError message={errors.phone} />
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <h2 className="text-xl font-bold font-mono tracking-tight text-foreground border-b border-border/50 pb-2">
+                  {/* Address Info */}
+                  <div className="space-y-2.5 bg-slate-50/80 border border-slate-200 rounded-lg p-3.5 sm:p-4">
+                    <h2 className="text-xs font-bold font-mono tracking-tight text-slate-900 uppercase border-b border-slate-200 pb-1.5">
                       Dirección de envío
                     </h2>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-0.5">
                       <div>
                         <FieldLabel htmlFor="firstName" required>Nombre</FieldLabel>
                         <InputField id="firstName" placeholder="Nombre" value={form.firstName} onChange={set('firstName')} error={errors.firstName} />
@@ -363,57 +315,56 @@ export default function CheckoutPage() {
 
                     <div>
                       <FieldLabel htmlFor="country" required>País</FieldLabel>
-                      <div className="relative">
-                        <select id="country" disabled value="Colombia" className="w-full rounded-md border border-border bg-secondary/40 px-4 py-[7px] font-mono text-sm text-foreground opacity-70">
-                          <option value="Colombia">Colombia</option>
-                        </select>
-                      </div>
+                      <select id="country" disabled value="Colombia" className="w-full rounded-md border border-slate-300 bg-slate-100 px-3 py-1.5 font-mono text-xs text-slate-700 opacity-90 cursor-not-allowed">
+                        <option value="Colombia">Colombia</option>
+                      </select>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       <div>
                         <FieldLabel htmlFor="state" required>Departamento</FieldLabel>
-                        <InputField id="state" placeholder="Departamento" value={form.state} onChange={set('state')} error={errors.state} />
+                        <InputField id="state" placeholder="Ej. Cundinamarca" value={form.state} onChange={set('state')} error={errors.state} />
                         <FieldError message={errors.state} />
                       </div>
                       <div>
                         <FieldLabel htmlFor="city" required>Ciudad o municipio</FieldLabel>
-                        <InputField id="city" placeholder="Ciudad o municipio" value={form.city} onChange={set('city')} error={errors.city} />
+                        <InputField id="city" placeholder="Ej. Bogotá" value={form.city} onChange={set('city')} error={errors.city} />
                         <FieldError message={errors.city} />
                       </div>
                     </div>
 
                     <div>
-                      <FieldLabel htmlFor="address" required>Dirección</FieldLabel>
-                      <InputField id="address" placeholder="Dirección" value={form.address} onChange={set('address')} error={errors.address} />
+                      <FieldLabel htmlFor="address" required>Dirección completa</FieldLabel>
+                      <InputField id="address" placeholder="Calle / Carrera / Avenida # - " value={form.address} onChange={set('address')} error={errors.address} />
                       <FieldError message={errors.address} />
                     </div>
 
                     <div>
-                      <FieldLabel htmlFor="addressExtra">Apartamento, habitación, etc. (opcional)</FieldLabel>
-                      <InputField id="addressExtra" placeholder="Apartamento, habitación, etc." value={form.addressExtra || ''} onChange={set('addressExtra')} />
+                      <FieldLabel htmlFor="addressExtra">Apartamento, torre, habitación, etc. (opcional)</FieldLabel>
+                      <InputField id="addressExtra" placeholder="Apto 101, Torre 2" value={form.addressExtra || ''} onChange={set('addressExtra')} />
                     </div>
                   </div>
 
                   {paymentError && (
-                    <div className="rounded-md border border-rose-500/30 bg-rose-500/10 p-3 text-center mb-4">
-                      <p className="font-mono text-[11px] text-rose-500 flex items-center justify-center gap-1.5">
+                    <div className="rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-center">
+                      <p className="font-mono text-xs text-rose-600 flex items-center justify-center gap-1.5 font-semibold">
                         <Icon icon="lucide:alert-circle" className="h-3.5 w-3.5 shrink-0" />
                         {paymentError}
                       </p>
                     </div>
                   )}
 
-                  <div className="flex flex-col sm:flex-row-reverse gap-3 pt-4">
+                  <div className="flex flex-col sm:flex-row-reverse gap-2.5 pt-1">
                     <button
                       type="submit"
-                      className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 rounded-sm border-2 border-primary bg-primary px-6 py-3.5 text-sm font-bold text-white transition-all hover:bg-transparent hover:text-primary"
+                      className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 rounded-lg bg-[#17294F] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-[#101d38] active:scale-[0.99]"
                     >
-                      Continuar al pago
+                      <span>Continuar al pago</span>
+                      <Icon icon="lucide:arrow-right" className="h-3.5 w-3.5" />
                     </button>
                     <Link
                       href="/carrito"
-                      className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-sm border border-border bg-transparent px-6 py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50"
                     >
                       Editar carrito
                     </Link>
@@ -421,69 +372,77 @@ export default function CheckoutPage() {
                 </form>
               </section>
 
-              <aside className="lg:col-span-5 xl:col-span-4 order-1 lg:order-2">
-                <div className="rounded-xl border border-border/60 bg-card/50 p-6 backdrop-blur-sm space-y-5 lg:sticky lg:top-24">
-                  <h2 className="font-mono text-base font-bold text-foreground">Resumen del pedido</h2>
-                  <div className="hidden sm:grid grid-cols-12 gap-2 text-[10px] uppercase tracking-wider text-muted-foreground border-b border-border/50 pb-2">
+              {/* Right Column: Entire column is STICKY as a single unit so Card 2 never overlaps Card 1 */}
+              <aside className="lg:col-span-5 xl:col-span-5 lg:sticky lg:top-16 space-y-3">
+                {/* Card 1: Resumen del pedido */}
+                <div className="rounded-xl border border-slate-800 bg-[#17294F] p-4 text-white shadow-md space-y-3">
+                  <h2 className="font-mono text-xs font-bold text-white flex items-center justify-between border-b border-slate-700/70 pb-2 uppercase tracking-wide">
+                    <span>Resumen del pedido</span>
+                    <span className="text-[11px] font-normal text-slate-300 normal-case">{items.length} {items.length === 1 ? 'producto' : 'productos'}</span>
+                  </h2>
+
+                  <div className="hidden sm:grid grid-cols-12 gap-2 text-[9px] uppercase tracking-wider text-slate-300 font-mono border-b border-slate-700/50 pb-1.5">
                     <div className="col-span-7">Presentación</div>
                     <div className="col-span-2 text-center">Cant.</div>
                     <div className="col-span-3 text-right">Precio</div>
                   </div>
-                  <ul className="divide-y divide-border/50">
+
+                  <ul className="divide-y divide-slate-700/50 max-h-[220px] overflow-y-auto pr-1">
                     {items.map(({ product, variant, qty }) => {
                       const itemImage = variant?.image || product.image
                       const itemPrice = variant?.priceCOP ?? product.priceCOP ?? 0
                       const itemName = variant ? `${product.title} · ${variant.name}` : product.title
                       return (
-                        <li key={`${product.id}-${variant?.id ?? 'nv'}`} className="py-3 sm:grid sm:grid-cols-12 sm:gap-2 sm:items-center flex flex-col gap-2">
-                          <div className="sm:col-span-7 flex items-center gap-3">
-                            <div className="relative h-12 w-12 shrink-0 rounded-md border border-border bg-white overflow-hidden">
-                              {itemImage && <Image src={itemImage} alt={product.title} fill sizes="48px" className="object-contain p-1" />}
+                        <li key={`${product.id}-${variant?.id ?? 'nv'}`} className="py-2 sm:grid sm:grid-cols-12 sm:gap-2 sm:items-center flex flex-col gap-1.5">
+                          <div className="sm:col-span-7 flex items-center gap-2.5">
+                            <div className="relative h-9 w-9 shrink-0 rounded-md border border-slate-700 bg-white overflow-hidden">
+                              {itemImage && <Image src={itemImage} alt={product.title} fill sizes="36px" className="object-contain p-0.5" />}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="text-xs font-semibold leading-tight">{itemName}</p>
+                              <p className="text-[11px] font-semibold leading-tight text-white">{itemName}</p>
                             </div>
                           </div>
-                          <div className="sm:col-span-2 text-left sm:text-center font-mono text-xs text-muted-foreground">
+                          <div className="sm:col-span-2 text-left sm:text-center font-mono text-[11px] text-slate-300">
                             x{qty}
                           </div>
-                          <div className="sm:col-span-3 text-left sm:text-right font-mono text-xs font-bold tabular-nums">
+                          <div className="sm:col-span-3 text-left sm:text-right font-mono text-[11px] font-bold tabular-nums text-white">
                             {formatCOP(itemPrice * qty)}
                           </div>
                         </li>
                       )
                     })}
                   </ul>
-                  <div className="border-t border-border/50 pt-4 space-y-2">
-                    <div className="flex justify-between text-sm text-muted-foreground">
+
+                  <div className="border-t border-slate-700/70 pt-2.5 space-y-1.5 font-mono">
+                    <div className="flex justify-between text-[11px] text-slate-300">
                       <span>Subtotal</span>
-                      <span className="font-mono tabular-nums">{formatCOP(subtotal)}</span>
+                      <span className="tabular-nums text-white font-semibold">{formatCOP(subtotal)}</span>
                     </div>
-                    <div className="flex justify-between text-sm text-muted-foreground">
+                    <div className="flex justify-between text-[11px] text-slate-300">
                       <span>Envío</span>
-                      <span className="font-mono text-emerald-500 uppercase text-xs font-bold tabular-nums">Gratis</span>
+                      <span className="text-emerald-400 uppercase text-[11px] font-bold tabular-nums">Gratis</span>
                     </div>
-                    <div className="flex justify-between items-baseline pt-2 border-t border-border/50">
-                      <span className="font-bold text-foreground">Total</span>
-                      <span className="font-mono text-xl font-bold tabular-nums text-foreground">
+                    <div className="flex justify-between items-baseline pt-2 border-t border-slate-700/70">
+                      <span className="font-bold text-white text-xs font-sans">Total</span>
+                      <span className="text-lg font-bold tabular-nums text-white">
                         {formatCOP(subtotal)}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Shipping info block */}
-                <div className="rounded-xl border border-border/60 bg-card/30 p-5 space-y-3">
-                  <h3 className="font-mono text-sm font-bold text-foreground flex items-center gap-2">
-                    <Icon icon="lucide:truck" className="h-4 w-4 text-primary" />
+                {/* Card 2: Tiempos de envío */}
+                <div className="rounded-xl border border-slate-800 bg-[#17294F] p-4 text-white shadow-md space-y-2">
+                  <h3 className="font-mono text-xs font-bold text-white flex items-center gap-1.5 uppercase tracking-wide">
+                    <Icon icon="lucide:truck" className="h-3.5 w-3.5 text-emerald-400" />
                     Tiempos de envío
                   </h3>
-                  <div className="text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Bogotá:</strong> Al día hábil siguiente.</p>
-                    <p><strong className="text-foreground">Nacional:</strong> De 2 a 3 días hábiles en ciudades principales y secundarias; o hasta 5 días hábiles en poblaciones lejanas.</p>
-                    <p className="pt-2 border-t border-border/50">
+                  <div className="text-[11px] text-slate-300 space-y-1.5 leading-relaxed">
+                    <p><strong className="text-white">Bogotá:</strong> Al día hábil siguiente.</p>
+                    <p><strong className="text-white">Nacional:</strong> De 2 a 3 días hábiles en ciudades principales y secundarias; o hasta 5 días hábiles en poblaciones lejanas.</p>
+                    <p className="pt-1.5 border-t border-slate-700/60 text-[10px] text-slate-400">
                       El cierre de despachos es a las 4 p. m. (L-V) y 12 m. (Sábados). 
-                      Los pedidos confirmados después de esa hora, domingos o festivos, se entregan a la transportadora al día hábil siguiente.
+                      Pedidos confirmados después de esa hora se entregan al día hábil siguiente.
                     </p>
                   </div>
                 </div>
@@ -491,60 +450,61 @@ export default function CheckoutPage() {
             </div>
           </div>
         ) : (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500 max-w-2xl mx-auto">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-2 text-center">Elige cómo pagar</h1>
-            <p className="text-muted-foreground mb-10 text-center">Revisa el total y selecciona uno de los medios disponibles.</p>
+          /* Payment Step Compacto */
+          <div className="animate-in fade-in duration-300 max-w-md mx-auto py-2">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 mb-0.5 text-center">Elige cómo pagar</h1>
+            <p className="text-xs text-slate-500 mb-4 text-center">Revisa el total y selecciona uno de los medios disponibles.</p>
             
-            <div className="mb-8 rounded-xl border border-border/60 bg-card/50 p-6 flex flex-col items-center justify-center space-y-2">
-              <span className="text-sm font-mono text-muted-foreground uppercase tracking-widest">Total a pagar</span>
-              <span className="font-mono text-4xl font-bold tabular-nums text-primary">{formatCOP(subtotal)}</span>
+            <div className="mb-4 rounded-xl border border-slate-800 bg-[#17294F] p-4 text-white text-center shadow-md space-y-0.5">
+              <span className="text-[10px] font-mono text-slate-300 uppercase tracking-widest block">Total a pagar</span>
+              <span className="font-mono text-2xl font-bold tabular-nums text-white block">{formatCOP(subtotal)}</span>
             </div>
 
             {paymentError && (
-              <div className="rounded-md border border-rose-500/30 bg-rose-500/10 p-4 text-center mb-8">
-                <p className="font-mono text-sm text-rose-500 flex items-center justify-center gap-2">
-                  <Icon icon="lucide:alert-circle" className="h-5 w-5 shrink-0" />
+              <div className="rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-center mb-4">
+                <p className="font-mono text-xs text-rose-600 flex items-center justify-center gap-1.5 font-semibold">
+                  <Icon icon="lucide:alert-circle" className="h-3.5 w-3.5 shrink-0" />
                   {paymentError}
                 </p>
               </div>
             )}
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <button
                 onClick={handleWompiPayment}
                 disabled={loading}
-                className="w-full relative overflow-hidden group flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-border bg-card p-6 transition-all hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full relative overflow-hidden group flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-slate-200 bg-slate-50 p-4 transition-all hover:border-[#17294F] hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#17294F]/30 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
               >
                 {loading ? (
-                  <Icon icon="lucide:loader-2" className="h-8 w-8 animate-spin text-muted-foreground mb-2" />
+                  <Icon icon="lucide:loader-2" className="h-6 w-6 animate-spin text-[#17294F] mb-0.5" />
                 ) : (
-                  <Icon icon="lucide:credit-card" className="h-8 w-8 text-foreground mb-2 group-hover:text-primary transition-colors" />
+                  <Icon icon="lucide:credit-card" className="h-6 w-6 text-[#17294F] mb-0.5 group-hover:scale-105 transition-transform" />
                 )}
-                <span className="font-bold text-lg text-foreground">Tarjetas, PSE y billeteras</span>
-                <span className="font-mono text-xs text-muted-foreground">Pago procesado por Wompi</span>
+                <span className="font-bold text-sm text-slate-900">Tarjetas, PSE y billeteras</span>
+                <span className="font-mono text-[11px] text-slate-500">Pago seguro procesado por Wompi</span>
               </button>
 
               <button
                 onClick={handleCriptoPayment}
                 disabled={loading}
-                className="w-full relative overflow-hidden group flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-border bg-card p-6 transition-all hover:border-[#F3BA2F] focus:outline-none focus:ring-2 focus:ring-[#F3BA2F]/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full relative overflow-hidden group flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-slate-200 bg-slate-50 p-4 transition-all hover:border-[#F3BA2F] hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#F3BA2F]/30 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
               >
-                <Icon icon="lucide:bitcoin" className="h-8 w-8 text-foreground mb-2 group-hover:text-[#F3BA2F] transition-colors" />
-                <span className="font-bold text-lg text-foreground">Criptomonedas</span>
-                <span className="font-mono text-xs text-muted-foreground">USDT · red TRC-20</span>
+                <Icon icon="lucide:bitcoin" className="h-6 w-6 text-[#F3BA2F] mb-0.5 group-hover:scale-105 transition-transform" />
+                <span className="font-bold text-sm text-slate-900">Criptomonedas</span>
+                <span className="font-mono text-[11px] text-slate-500">USDT · red TRC-20</span>
               </button>
             </div>
 
-            <div className="mt-8 text-center">
+            <div className="mt-4 text-center">
               <button 
                 onClick={() => {
                   setStep('shipping')
                   setPaymentError(null)
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-slate-600 hover:text-[#17294F] transition-colors"
               >
-                <Icon icon="lucide:arrow-left" className="h-4 w-4" />
+                <Icon icon="lucide:arrow-left" className="h-3.5 w-3.5" />
                 Volver a la información de envío
               </button>
             </div>
@@ -552,63 +512,10 @@ export default function CheckoutPage() {
         )}
       </main>
 
-      <footer className="border-t border-border mt-12 py-6 text-center font-mono text-xs text-muted-foreground space-y-1">
+      {/* Footer Compacto */}
+      <footer className="border-t border-slate-200 bg-white py-3 text-center font-mono text-[11px] text-slate-500">
         <p>© {new Date().getFullYear()} KAILAB · Uso Exclusivo para Investigación (RUO)</p>
-        <a
-          href="https://www.kytcode.lat"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
-        >
-          Desarrollado por K&T
-          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-          </svg>
-        </a>
       </footer>
-    </div>
-  )
-}
-
-function WompiButton({ loading, total, error }: { loading: boolean; total: number; error?: string | null }) {
-  return (
-    <div className="flex flex-col gap-3">
-      {error && (
-        <div className="rounded-md border border-rose-500/30 bg-rose-500/10 p-3 text-center">
-          <p className="font-mono text-[11px] text-rose-500 flex items-center justify-center gap-1.5">
-            <Icon icon="lucide:alert-circle" className="h-3.5 w-3.5 shrink-0" />
-            {error}
-          </p>
-        </div>
-      )}
-      <button
-        type="submit"
-        form="checkout-form"
-        disabled={loading}
-        className="w-full flex items-center justify-center gap-3 rounded-lg border-2 border-[#7B2FBE] bg-[#7B2FBE] py-3.5 font-mono text-sm font-bold text-white shadow-lg shadow-[#7B2FBE]/20 transition-all duration-300 hover:bg-[#6b25aa] hover:shadow-[#7B2FBE]/30 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
-        aria-label="Continuar al pago con Wompi"
-      >
-        {loading ? (
-          <>
-            <Icon icon="lucide:loader-2" className="h-5 w-5 animate-spin" />
-            <span>Procesando...</span>
-          </>
-        ) : (
-          <>
-            <Icon icon="lucide:lock" className="h-5 w-5" />
-            <span>Ir a pagar</span>
-            <span className="ml-1 rounded bg-white/15 px-2 py-0.5 text-[11px] font-bold">
-              {formatCOP(total)}
-            </span>
-          </>
-        )}
-      </button>
-      <p className="text-center text-xs text-muted-foreground">
-        Al hacer clic, aceptas nuestros{' '}
-        <Link href="/terminos-legales" className="underline hover:text-foreground">Términos legales</Link>{' '}
-        y la{' '}
-        <Link href="/privacidad-de-datos" className="underline hover:text-foreground">Privacidad de datos</Link>.
-      </p>
     </div>
   )
 }

@@ -75,8 +75,8 @@ export default async function GuiasPage() {
 
             <div className="space-y-6">
               {/* Paso 1 */}
-              <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">1</div>
+              <div className="flex gap-3 sm:gap-4">
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-xs sm:text-sm shadow-[1.5px_1.5px_0px_#1959D7]">1</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Identifica la muestra y el lote</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -86,8 +86,8 @@ export default async function GuiasPage() {
               </div>
 
               {/* Paso 2 */}
-              <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">2</div>
+              <div className="flex gap-3 sm:gap-4">
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-xs sm:text-sm shadow-[1.5px_1.5px_0px_#1959D7]">2</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Revisa el laboratorio y la fecha</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -97,8 +97,8 @@ export default async function GuiasPage() {
               </div>
 
               {/* Paso 3 */}
-              <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">3</div>
+              <div className="flex gap-3 sm:gap-4">
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-xs sm:text-sm shadow-[1.5px_1.5px_0px_#1959D7]">3</div>
                 <div className="w-full">
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Distingue cantidad y pureza</h3>
                   
@@ -137,8 +137,8 @@ export default async function GuiasPage() {
               </div>
 
               {/* Paso 4 */}
-              <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">4</div>
+              <div className="flex gap-3 sm:gap-4">
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-xs sm:text-sm shadow-[1.5px_1.5px_0px_#1959D7]">4</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Reconoce la gráfica</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -148,8 +148,8 @@ export default async function GuiasPage() {
               </div>
 
               {/* Paso 5 */}
-              <div className="flex gap-4 sm:gap-6">
-                <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-base sm:text-lg shadow-[2px_2px_0px_#1959D7]">5</div>
+              <div className="flex gap-3 sm:gap-4">
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-none bg-slate-900 text-white font-mono font-bold text-xs sm:text-sm shadow-[1.5px_1.5px_0px_#1959D7]">5</div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Abre el informe completo</h3>
                   <p className="text-sm text-slate-600 leading-relaxed mb-6">

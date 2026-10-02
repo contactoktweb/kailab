@@ -95,15 +95,6 @@ export function Navbar({ siteSettings }: NavbarProps) {
             </span>
           </button>
 
-          <Link
-            href="/login"
-            className="hidden sm:flex group relative items-center justify-center border border-border bg-secondary/40 p-2.5 font-mono text-xs font-bold text-foreground transition-all duration-300 hover:bg-secondary hover:text-primary active:scale-95"
-            aria-label="Acceso Admin / Login"
-            title="Acceso Admin / Login"
-          >
-            <Icon icon="lucide:user" className="h-4 w-4" aria-hidden="true" />
-          </Link>
-
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="flex md:hidden items-center justify-center p-2 text-foreground transition-colors hover:text-primary"
@@ -137,16 +128,6 @@ export function Navbar({ siteSettings }: NavbarProps) {
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 border-t border-border pt-4">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary"
-                >
-                  <Icon icon="lucide:user" className="h-4 w-4" />
-                  Acceso Admin / Login
-                </Link>
-              </div>
             </nav>
           </motion.div>
         )}
