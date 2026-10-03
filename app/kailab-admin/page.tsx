@@ -130,11 +130,11 @@ export default function AdminDashboardPage() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 h-14 border-b border-gray-800 shrink-0">
           <Image
-            src="/kailab-logo.png"
+            src="/KAILAB_Logo_White.png"
             alt="KAILAB Admin"
             width={110}
             height={32}
-            className="h-7 w-auto brightness-0 invert"
+            className="h-7 w-auto"
           />
           <span className="rounded border border-gray-700 bg-gray-800 px-1.5 py-0.5 text-[10px] font-bold text-gray-400 tracking-widest">
             ADMIN
@@ -263,7 +263,7 @@ export default function AdminDashboardPage() {
 
             {/* Mobile: logo */}
             <Image
-              src="/kailab-logo.png"
+              src="/KAILAB_Logo_Navy-Blue.png"
               alt="KAILAB"
               width={90}
               height={26}
