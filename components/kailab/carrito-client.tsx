@@ -4,7 +4,7 @@ import { useCart } from './cart-context'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
-import { formatCOP } from './data'
+import { formatCOP, shipping, shippingRules } from './data'
 
 export function CarritoClient() {
   const { items, removeFromCart, updateQty, cartTotal } = useCart()
@@ -46,7 +46,7 @@ export function CarritoClient() {
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-        <div className="lg:col-span-8">
+        <div className="lg:col-span-5">
           <div className="hidden sm:grid grid-cols-12 gap-4 border-b border-border pb-4 mb-4 text-xs font-mono text-muted-foreground">
             <div className="col-span-6">Presentación</div>
             <div className="col-span-3 text-center">Cantidad</div>
@@ -122,25 +122,27 @@ export function CarritoClient() {
           </ul>
         </div>
 
-        <div className="lg:col-span-4">
-          <div className="rounded-xl border border-border bg-card/30 p-6 space-y-4">
-            <h2 className="font-mono text-base font-bold text-foreground mb-4">Resumen de compra</h2>
-            
-            <div className="flex justify-between text-muted-foreground text-sm">
-              <span>Subtotal</span>
-              <span className="font-mono tabular-nums">{formatCOP(subtotal)}</span>
-            </div>
-            
-            <div className="flex justify-between text-muted-foreground text-sm">
-              <span>Envío</span>
-              <span className="font-mono tabular-nums uppercase text-xs font-bold text-emerald-500">Gratis</span>
-            </div>
-            
-            <div className="border-t border-border pt-4 mt-4 flex justify-between items-baseline">
-              <span className="font-mono font-bold text-foreground">Total</span>
-              <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
-                {formatCOP(total)}
-              </span>
+        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="rounded-xl border border-border bg-card/30 p-6 shadow-sm flex flex-col justify-between h-full">
+            <div className="space-y-4">
+              <h2 className="font-mono text-base font-bold text-foreground">Resumen de compra</h2>
+              
+              <div className="flex justify-between text-muted-foreground text-sm">
+                <span>Subtotal</span>
+                <span className="font-mono tabular-nums">{formatCOP(subtotal)}</span>
+              </div>
+              
+              <div className="flex justify-between text-muted-foreground text-sm">
+                <span>Envío</span>
+                <span className="font-mono tabular-nums uppercase text-xs font-bold text-emerald-500">Gratis</span>
+              </div>
+              
+              <div className="border-t border-border pt-4 flex justify-between items-baseline">
+                <span className="font-mono font-bold text-foreground">Total</span>
+                <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
+                  {formatCOP(total)}
+                </span>
+              </div>
             </div>
 
             <div className="pt-4 space-y-3">
@@ -157,26 +159,26 @@ export function CarritoClient() {
                 Seguir comprando
               </Link>
             </div>
+          </div>
 
-            {/* Shipping info block */}
-            <div className="border-t border-border pt-4 mt-2">
+          <div className="rounded-xl border border-border bg-card/30 p-6 shadow-sm h-full">
               <h3 className="font-mono text-sm font-bold text-foreground flex items-center gap-2 mb-3">
                 <Icon icon="lucide:truck" className="h-4 w-4 text-primary" />
                 Tiempos de envío
               </h3>
               <div className="text-xs text-muted-foreground space-y-2">
-                <p><strong className="text-foreground">Bogotá:</strong> Al día hábil siguiente.</p>
-                <p><strong className="text-foreground">Nacional:</strong> De 2 a 3 días hábiles en ciudades principales y secundarias; o hasta 5 días hábiles en poblaciones lejanas.</p>
-                <p className="pt-2 border-t border-border/50">
-                  El cierre de despachos es a las 4 p. m. (L-V) y 12 m. (Sábados). 
-                  Los pedidos confirmados después de esa hora, domingos o festivos, se entregan a la transportadora al día hábil siguiente.
-                </p>
+                {shipping.map((row) => (
+                  <p key={row.city}><strong className="text-foreground">{row.city}:</strong> aproximadamente {row.time}.</p>
+                ))}
+                <div className="pt-2 border-t border-border/50 space-y-1">
+                  <p>{shippingRules.cutoff}</p>
+                  <p>{shippingRules.delivery}</p>
+                </div>
               </div>
             </div>
 
           </div>
         </div>
       </div>
-    </div>
   )
 }

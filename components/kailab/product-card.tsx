@@ -18,7 +18,13 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
   // Manejo de variantes (si aplica)
   const hasVariants = product.variants && product.variants.length > 0
   const showSelector = hasVariants && product.variants!.length > 1
-  const initialVariant = hasVariants ? product.variants![0] : null
+  const initialVariant = hasVariants 
+    ? [...product.variants!].sort((a, b) => {
+        const numA = parseFloat(a.name.replace(/[^\d.]/g, '')) || 0;
+        const numB = parseFloat(b.name.replace(/[^\d.]/g, '')) || 0;
+        return numA - numB;
+      })[0] 
+    : null
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(initialVariant)
   
   // Datos activos
@@ -92,6 +98,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
                 alt={product.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 33vw"
+                quality={85}
                 className="object-contain transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-2 group-hover:scale-[1.05]"
                 style={{ filter: "drop-shadow(0px 30px 20px rgba(0,0,0,0.15))" }}
               />
@@ -114,7 +121,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
           <div className="min-w-0">
             <motion.p 
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
-              className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/80"
+              className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground"
             >
               {product.category}
             </motion.p>
@@ -166,7 +173,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
             className="flex items-end justify-between"
           >
             <div className="flex flex-col">
-              <span className="text-[10px] uppercase font-bold text-muted-foreground/80 mb-0.5">
+              <span className="text-[10px] uppercase font-bold text-muted-foreground mb-0.5">
                 Precio
               </span>
               <span className="font-mono text-lg sm:text-xl font-bold tabular-nums text-foreground tracking-tight drop-shadow-sm">

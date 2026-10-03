@@ -193,6 +193,15 @@ export function CartDrawer({ open, onClose, items, onQty, onRemove }: CartDrawer
               <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
             </Link>
 
+            {/* View full cart */}
+            <Link
+              href="/carrito"
+              onClick={onClose}
+              className="group relative inline-flex w-full items-center justify-center gap-2 rounded-sm border border-slate-300 bg-white py-2.5 text-sm font-bold text-slate-700 transition-all duration-300 hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98]"
+            >
+              Ver carrito
+            </Link>
+
             {/* Continue shopping */}
             <button
               onClick={onClose}

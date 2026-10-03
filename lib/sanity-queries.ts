@@ -149,12 +149,33 @@ export interface SanityProduct {
 }
 
 function mapSanityProductToProduct(p: SanityProduct): Product {
+  const isRetatrutide = p.slug?.current === 'retatrutide'
+  const mappedSlug = isRetatrutide ? 'retatrutida' : (p.slug?.current || '')
+  
+  let mappedTitle = p.title || ''
+  if (isRetatrutide && mappedTitle.toLowerCase().includes('retatrutide')) {
+    mappedTitle = 'Retatrutida'
+  }
+
+  const getVariantImage = (variantName: string) => {
+    if (isRetatrutide) {
+      if (variantName.includes('5')) return '/kailab-images/RT5_Retatrutide_5mg_RENDER_WEB_UX_PREVIEW.png'
+      if (variantName.includes('10')) return '/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png'
+    }
+    return p.image ? urlFor(p.image).url() : ''
+  }
+
+  const getMainImage = () => {
+    if (isRetatrutide) return '/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png'
+    return p.image ? urlFor(p.image).url() : undefined
+  }
+
   return {
     id: p.sku || p._id,
-    slug: p.slug?.current || '',
+    slug: mappedSlug,
     categorySlug: p.category?.slug?.current || '',
     category: p.category?.title || '',
-    title: p.title || '',
+    title: mappedTitle,
     subtitle: p.subtitle,
     description: p.description,
     features: p.features || [],
@@ -170,14 +191,14 @@ function mapSanityProductToProduct(p: SanityProduct): Product {
       priceCOP: v.priceCOP,
       stock: v.inStock ? 10 : 0,
       coaStatus: 'available',
-      image: p.image ? urlFor(p.image).url() : '',
+      image: getVariantImage(v.name),
       slug: v.name.toLowerCase().replace(/\s+/g, '-')
     })) || [],
     priceCOP: p.priceCOP,
     presentation: p.presentation,
     concentration: p.concentration,
     stock: p.inStock ? 10 : 0,
-    image: p.image ? urlFor(p.image).url() : undefined,
+    image: getMainImage(),
     images: p.images?.map((img: any) => urlFor(img).url()) || []
   }
 }
@@ -216,6 +237,7 @@ export async function getProducts(): Promise<Product[]> {
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
+    const querySlug = slug === 'retatrutida' ? 'retatrutide' : slug
     const query = `*[_type == "product" && slug.current == $slug][0] {
       _id,
       title,
@@ -238,7 +260,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       infoAccordions,
       variants
     }`
-    const product = await sanityClient.fetch(query, { slug })
+    const product = await sanityClient.fetch(query, { slug: querySlug })
     return product ? mapSanityProductToProduct(product) : null
   } catch (error) {
     console.error(`Error fetching product ${slug} from Sanity:`, error)

@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     title: 'KAILAB | Péptidos para investigación en Colombia',
     description: 'Explora péptidos de investigación, consulta sus presentaciones y los certificados de análisis disponibles. Envío gratis a toda Colombia.',
   },
-  icons: {
-    icon: '/KAILAB_Favicon_512.svg',
-    apple: '/apple-icon.png',
+  robots: {
+    index: process.env.VERCEL_ENV === 'production',
+    follow: process.env.VERCEL_ENV === 'production',
   },
 }
 

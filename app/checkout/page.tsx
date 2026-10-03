@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { useCart } from '@/components/kailab/cart-context'
-import { formatCOP, type CheckoutFormData } from '@/components/kailab/data'
+import { formatCOP, shipping, shippingRules, type CheckoutFormData } from '@/components/kailab/data'
 
 const INITIAL_FORM: CheckoutFormData = {
   email: '',
@@ -155,45 +155,42 @@ export default function CheckoutPage() {
       if (!res.ok) throw new Error('Error generando firma')
       const { signature } = await res.json()
 
-      const existingForm = document.getElementById('wompi-hidden-form')
-      if (existingForm) existingForm.remove()
-
-      const wForm = document.createElement('form')
-      wForm.id = 'wompi-hidden-form'
-      wForm.style.display = 'none'
-      wForm.setAttribute('data-wompi-public-key', publicKey)
-      wForm.setAttribute('data-currency', currency)
-      wForm.setAttribute('data-amount-in-cents', String(amountInCents))
-      wForm.setAttribute('data-reference', reference)
-      wForm.setAttribute('data-signature:integrity', signature)
-      wForm.setAttribute('data-redirect-url', redirectUrl)
-      wForm.setAttribute('data-customer-data:email', form.email)
-      wForm.setAttribute('data-customer-data:full-name', `${form.firstName} ${form.lastName}`.trim())
-      if (form.phone) wForm.setAttribute('data-customer-data:phone-number', form.phone)
-
-      const submitBtn = document.createElement('input')
-      submitBtn.type = 'submit'
-      wForm.appendChild(submitBtn)
-      document.body.appendChild(wForm)
-
       const loadScript = () =>
         new Promise<void>((resolve, reject) => {
-          if (document.querySelector('script[src*="checkout.wompi.co/widget.js"]')) {
-            setTimeout(resolve, 300)
+          if ((window as any).WidgetCheckout) {
+            resolve()
             return
           }
           const script = document.createElement('script')
           script.src = 'https://checkout.wompi.co/widget.js'
           script.async = true
-          script.onload = () => setTimeout(resolve, 300)
+          script.onload = () => resolve()
           script.onerror = reject
           document.body.appendChild(script)
         })
 
       await loadScript()
 
-      const wompiBtn = wForm.querySelector<HTMLElement>('input[type=submit], button')
-      wompiBtn?.click()
+      const checkout = new (window as any).WidgetCheckout({
+        currency,
+        amountInCents,
+        reference,
+        publicKey,
+        signature: { integrity: signature },
+        redirectUrl,
+        customerData: {
+          email: form.email,
+          fullName: `${form.firstName} ${form.lastName}`.trim(),
+          phoneNumber: form.phone || undefined,
+          phoneNumberPrefix: form.phone ? '+57' : undefined,
+          legalIdType: 'CC',
+          legalId: '0'
+        }
+      })
+
+      checkout.open((result: any) => {
+        // La redirección sucede automáticamente con redirectUrl
+      })
     } catch (err) {
       console.error('[Wompi Checkout]', err)
       setPaymentError('No pudimos abrir el pago. Tus datos siguen aquí. Inténtalo de nuevo.')
@@ -354,7 +351,7 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  <div className="flex flex-col sm:flex-row-reverse gap-2.5 pt-1">
+                  <div className="hidden lg:flex flex-col sm:flex-row-reverse gap-2.5 pt-1">
                     <button
                       type="submit"
                       className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 rounded-lg bg-[#17294F] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-[#101d38] active:scale-[0.99]"
@@ -438,15 +435,34 @@ export default function CheckoutPage() {
                     Tiempos de envío
                   </h3>
                   <div className="text-[11px] text-slate-300 space-y-1.5 leading-relaxed">
-                    <p><strong className="text-white">Bogotá:</strong> Al día hábil siguiente.</p>
-                    <p><strong className="text-white">Nacional:</strong> De 2 a 3 días hábiles en ciudades principales y secundarias; o hasta 5 días hábiles en poblaciones lejanas.</p>
-                    <p className="pt-1.5 border-t border-slate-700/60 text-[10px] text-slate-400">
-                      El cierre de despachos es a las 4 p. m. (L-V) y 12 m. (Sábados). 
-                      Pedidos confirmados después de esa hora se entregan al día hábil siguiente.
-                    </p>
+                    {shipping.map((row) => (
+                      <p key={row.city}><strong className="text-white">{row.city}:</strong> aproximadamente {row.time}.</p>
+                    ))}
+                    <div className="pt-1.5 border-t border-slate-700/60 text-[10px] text-slate-400 space-y-1">
+                      <p>{shippingRules.cutoff}</p>
+                      <p>{shippingRules.delivery}</p>
+                    </div>
                   </div>
                 </div>
               </aside>
+            </div>
+            
+            {/* Mobile Submit Button (renders after the grid so it's below the summary on mobile) */}
+            <div className="flex lg:hidden flex-col sm:flex-row-reverse gap-2.5 mt-5">
+              <button
+                type="submit"
+                form="checkout-form"
+                className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 rounded-lg bg-[#17294F] px-5 py-3.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-[#101d38] active:scale-[0.99]"
+              >
+                <span>Continuar al pago</span>
+                <Icon icon="lucide:arrow-right" className="h-3.5 w-3.5" />
+              </button>
+              <Link
+                href="/carrito"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+              >
+                Editar carrito
+              </Link>
             </div>
           </div>
         ) : (
@@ -513,7 +529,11 @@ export default function CheckoutPage() {
       </main>
 
       {/* Footer Compacto */}
-      <footer className="border-t border-slate-200 bg-white py-3 text-center font-mono text-[11px] text-slate-500">
+      <footer className="border-t border-slate-200 bg-white py-4 text-center font-mono text-[11px] text-slate-500">
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-2">
+          <Link href="/privacidad-de-datos" className="hover:text-slate-800 underline underline-offset-2 transition-colors">Privacidad de Datos</Link>
+          <Link href="/terminos-legales" className="hover:text-slate-800 underline underline-offset-2 transition-colors">Términos Legales</Link>
+        </div>
         <p>© {new Date().getFullYear()} KAILAB · Uso Exclusivo para Investigación (RUO)</p>
       </footer>
     </div>

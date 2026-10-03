@@ -569,7 +569,7 @@ export const products: Product[] = [
   },
   {
     id: 'PROD-RETATRUTIDE',
-    slug: 'retatrutide',
+    slug: 'retatrutida',
     isPublic: true,
     categorySlug: 'metabolico',
     category: 'Metabólico',
@@ -665,8 +665,13 @@ export type ShippingRow = {
 export const shipping: ShippingRow[] = [
   { city: 'Ciudades principales', time: '1–2 días hábiles', coverage: 'Directa' },
   { city: 'Ciudades intermedias', time: '2–3 días hábiles', coverage: 'Directa' },
-  { city: 'Municipios o trayectos especiales', time: '3–5 días hábiles', coverage: 'Cobertura extendida' },
+  { city: 'Municipios y zonas de cobertura extendida', time: '3–5 días hábiles', coverage: 'Cobertura extendida' },
 ]
+
+export const shippingRules = {
+  cutoff: "Corte de despacho: 4 p. m. (L-V) y 12 m. (Sábados). Después de esa hora, o en domingos y festivos, el pedido se despacha el siguiente día hábil.",
+  delivery: "Estos tiempos se cuentan desde el despacho, cuando entregamos el pedido a la transportadora. Son rangos aproximados, no fechas de llegada garantizadas."
+}
 
 export const payments = ['Wompi', 'Nequi', 'Bancolombia', 'Contra entrega', 'Criptomonedas']
 

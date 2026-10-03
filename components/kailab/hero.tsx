@@ -89,6 +89,8 @@ export function Hero({ onAdd, onSearch, heroData }: HeroProps) {
                 alt="Péptidos para investigación"
                 fill
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px"
+                quality={85}
                 className="object-contain drop-shadow-2xl"
               />
             </motion.div>

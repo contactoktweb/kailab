@@ -205,7 +205,7 @@ export function CalidadClient() {
                               setSelectedCertId(cert.id)
                               document.getElementById('certificados-lotes')?.scrollIntoView({ behavior: 'smooth' })
                             }}
-                            className={`flex-1 rounded-xl px-3 py-2 text-xs font-bold transition-all text-center ${
+                            className={`flex-1 rounded-none px-3 py-2 text-xs font-bold transition-all text-center ${
                               isSelected
                                 ? 'bg-[#1959D7] text-white shadow-sm hover:bg-[#1959D7]/90'
                                 : 'bg-slate-100 text-slate-800 hover:bg-slate-200'
@@ -216,7 +216,7 @@ export function CalidadClient() {
                           <Link 
                             href={cert.enlaceProducto}
                             onClick={(e) => e.stopPropagation()}
-                            className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-[#1959D7] transition-all hover:bg-slate-50 text-center flex items-center justify-center gap-1"
+                            className="flex-1 rounded-none border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-[#1959D7] transition-all hover:bg-slate-50 text-center flex items-center justify-center gap-1"
                           >
                             Ver producto
                             <Icon icon="lucide:arrow-right" className="h-3 w-3 text-[#1959D7]" />

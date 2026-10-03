@@ -4,6 +4,7 @@ import { getSiteSettings } from '@/lib/sanity-queries'
 import { TopBar } from '@/components/kailab/top-bar'
 import { Navbar } from '@/components/kailab/navbar'
 import { Footer } from '@/components/kailab/footer'
+import { shipping, shippingRules } from '@/components/kailab/data'
 
 export const metadata: Metadata = {
   title: 'Términos Legales | KAILAB',
@@ -132,12 +133,12 @@ export default async function TerminosLegalesPage() {
 
           <h3 className="text-xl font-bold mt-6 mb-3">Tiempos de entrega estimados</h3>
           <ul>
-            <li><strong>Ciudades principales:</strong> 1–2 días hábiles.</li>
-            <li><strong>Ciudades intermedias:</strong> 2–3 días hábiles.</li>
-            <li><strong>Municipios y zonas de cobertura extendida:</strong> 3–5 días hábiles.</li>
+            {shipping.map(row => (
+              <li key={row.city}><strong>{row.city}:</strong> aproximadamente {row.time}.</li>
+            ))}
           </ul>
           <p>
-            Estos tiempos se cuentan desde el día en que realizas el pago, si lo haces antes de las 4 p. m. de lunes a viernes o antes de las 12 del mediodía del sábado. Después de esos horarios, o en domingos y festivos, se cuentan desde el siguiente día hábil.
+            {shippingRules.delivery}
           </p>
           <p>
             Si la confirmación del pago tarda, la entrega también puede tomar más tiempo.

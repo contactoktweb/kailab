@@ -25,7 +25,7 @@ import { useCart } from './cart-context'
 export function Navbar({ siteSettings }: NavbarProps) {
   const { cartCount, openSearch, toggleCart } = useCart()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const logoUrl = siteSettings?.logo ? urlFor(siteSettings.logo).url() : "/KAILAB_Logo_White.png"
+  const logoUrl = "/KAILAB_Logo_White.png"
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/70 backdrop-blur-xl shadow-sm transition-all duration-300">
@@ -42,10 +42,10 @@ export function Navbar({ siteSettings }: NavbarProps) {
             <Image
               src={logoUrl}
               alt={siteSettings?.siteName || "KAILAB"}
-              width={132}
-              height={38}
+              width={200}
+              height={58}
               priority
-              className="h-8 w-auto transition-opacity duration-300 hover:opacity-90"
+              className="h-10 sm:h-12 w-auto transition-opacity duration-300 hover:opacity-90"
             />
           </Link>
 

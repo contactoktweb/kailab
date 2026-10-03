@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = '573001234567'
+const WHATSAPP_NUMBER = '573023041412'
 const WHATSAPP_MESSAGE =
   'Hola KAILAB, quiero asesoría sobre compuestos para investigación (RUO).'
 

@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { SHIPPING_CONFIG } from '@/lib/shipping-config'
+import { shippingRules } from '@/components/kailab/data'
 
 /** Divisor elegante con degradado */
 function Divider({ className = '' }: { className?: string }) {
@@ -168,7 +169,7 @@ export function AyudaClient({ whatsIncludedItems }: AyudaClientProps) {
               <div>
                 <h3 className="text-base font-bold text-slate-900 mb-1.5">¿Desde cuándo se cuentan estos tiempos?</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Desde el despacho, cuando entregamos tu pedido a la transportadora. Son tiempos aproximados según el destino, no fechas de llegada garantizadas. Al despachar te enviaremos la guía para consultar el avance del envío.
+                  {shippingRules.delivery}
                 </p>
                 <Divider className="mt-5" />
               </div>
@@ -178,7 +179,7 @@ export function AyudaClient({ whatsIncludedItems }: AyudaClientProps) {
               <div>
                 <h3 className="text-base font-bold text-slate-900 mb-1.5">¿Cuándo despachan mi pedido?</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Los pedidos con pago confirmado antes de las 4 p. m. de lunes a viernes o antes de las 12 del mediodía del sábado se despachan ese mismo día. Desde esas horas, o en domingos y festivos de Colombia, se despachan el siguiente día hábil. Horarios de Bogotá.
+                  {shippingRules.cutoff}
                 </p>
                 <Divider className="mt-5" />
               </div>

@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { getProductBySlug, getSiteSettings } from '@/lib/sanity-queries'
 import { VariantDetailClient } from '@/components/kailab/variant-detail-client'
 
+import { urlFor } from '@/sanity/lib/image'
+
 export async function generateMetadata({
   params
 }: {
@@ -40,6 +42,24 @@ export async function generateMetadata({
     ? `https://kailab.com.co/tienda/metabolico/retatrutida/` 
     : `https://kailab.com.co/tienda/${resolvedParams.category}/${resolvedParams.product}/`
 
+  const activeVariant = variantSlug ? product.variants?.find(v => v.slug === variantSlug) : undefined
+  const activeImage = activeVariant?.image || product.image
+  
+  let imageUrl = undefined;
+  if (activeImage) {
+    if (activeImage.startsWith('http')) {
+      imageUrl = activeImage;
+    } else if (activeImage.startsWith('/')) {
+      imageUrl = `https://kailab.com.co${activeImage}`;
+    } else {
+      try {
+        imageUrl = urlFor(activeImage).width(1200).height(630).fit('crop').url();
+      } catch (e) {
+        imageUrl = undefined;
+      }
+    }
+  }
+
   return {
     title,
     description,
@@ -53,14 +73,16 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      images: [
-        {
-          url: '/kailab-og-image.png',
-          width: 1200,
-          height: 630,
-          alt: 'KAILAB'
-        }
-      ]
+      ...(imageUrl ? {
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: title
+          }
+        ]
+      } : {})
     }
   }
 }

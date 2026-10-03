@@ -53,8 +53,20 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
 
   const hasVariants = product.variants && product.variants.length > 0
   
+  const sortedVariants = hasVariants 
+    ? [...product.variants!].sort((a, b) => {
+        const numA = parseFloat(a.name.replace(/[^\d.]/g, '')) || 0;
+        const numB = parseFloat(b.name.replace(/[^\d.]/g, '')) || 0;
+        return numA - numB;
+      })
+    : [];
+    
+  const isValidSlug = hasVariants && product.variants!.some(v => v.slug === initialVariantSlug);
+
   // Usamos estado local para la variante para evitar un re-render/salto completo de la página de Next.js al navegar
-  const defaultSlug = hasVariants ? (initialVariantSlug || product.variants![0].slug) : initialVariantSlug
+  const defaultSlug = hasVariants 
+    ? (isValidSlug ? initialVariantSlug : sortedVariants[0].slug) 
+    : initialVariantSlug
   const [localVariantSlug, setLocalVariantSlug] = useState<string | undefined>(defaultSlug)
   const activeVariant = hasVariants ? product.variants!.find(v => v.slug === localVariantSlug) : null
 
@@ -65,7 +77,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
   const isOutOfStock = activeStock === 0
   const isLowStock = activeStock > 0 && activeStock <= 15
 
-  const isRetatrutide = product.slug === 'retatrutide' || product.id === 'PROD-RETATRUTIDE'
+  const isRetatrutide = product.slug === 'retatrutida' || product.slug === 'retatrutide' || product.id === 'PROD-RETATRUTIDE'
   const isRT10 = isRetatrutide && activeVariant?.name.includes('10')
   const isRT5 = isRetatrutide && activeVariant?.name.includes('5')
 
@@ -155,8 +167,13 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
       <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
         {product.category}
       </div>
-      <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+      <h1 className="flex flex-wrap items-center gap-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
         {product.title}
+        {activeVariant && (
+          <span className="inline-flex items-center justify-center rounded-md bg-slate-100 px-2.5 py-1 text-sm sm:text-base font-bold text-slate-700">
+            {activeVariant.name}
+          </span>
+        )}
       </h1>
       {product.subtitle && (
         <p className="text-sm sm:text-base font-medium text-slate-600">
@@ -182,7 +199,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
         <div id="compra" className="grid gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-8 scroll-mt-28 items-stretch">
 
           {/* LEFT: Image + COA */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 h-full">
             <div style={{ perspective: 2000 }}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -212,6 +229,9 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                     src={activeImage}
                     alt={activeVariant ? `${product.title} ${activeVariant.name} de KAILAB` : product.title}
                     fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={85}
                     className="object-contain drop-shadow-2xl mix-blend-multiply transition-opacity duration-300"
                   />
                 </motion.div>
@@ -219,7 +239,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
             </div>
             {/* COA SECTION MOVED HERE */}
             {/* COA SECTION MOVED HERE */}
-            <div id="certificado" className="hidden md:flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm scroll-mt-28">
+            <div id="certificado" className="hidden md:flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm scroll-mt-28 flex-1">
               <h2 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
                 <div className={cn("rounded-full p-2 shrink-0", displayCOA === 'available' ? "bg-green-100" : "bg-slate-100")}>
                   <Icon icon={displayCOA === 'available' ? "lucide:file-check" : "lucide:clock"} className={cn("h-4 w-4", displayCOA === 'available' ? "text-green-600" : "text-slate-500")} />
@@ -296,7 +316,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
           </div>
 
           {/* RIGHT: Commerce details */}
-          <div className="relative flex flex-col rounded-xl bg-white p-4 lg:p-5 shadow-2xl justify-between h-full">
+          <div className="relative flex flex-col rounded-xl bg-white p-4 lg:p-5 shadow-2xl h-full justify-between">
 
             {/* DESKTOP: Breadcrumb + Title */}
             <div className="hidden md:flex flex-col gap-1.5 mb-2">
@@ -351,7 +371,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
               </div>
 
               {/* PRESENTACIÓN (Centro) */}
-              {hasVariants && (
+              {hasVariants && product.variants!.length > 1 && (
                 <div className="flex flex-col gap-1.5 shrink-0">
                   <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest text-left">Elige una presentación</p>
                   <div className="flex flex-row flex-wrap gap-1.5 justify-start">
