@@ -7,7 +7,7 @@ import { urlFor } from '@/sanity/lib/image'
 export function Footer({ siteSettings }: { siteSettings?: SiteSettings | null }) {
   const logoUrl = siteSettings?.logo ? urlFor(siteSettings.logo).url() : "/KAILAB_Logo_White.png"
   const phoneFormatted = siteSettings?.phone ? siteSettings.phone.replace(/\D/g, '') : null
-  const dynamicWhatsapp = phoneFormatted ? `https://wa.me/57${phoneFormatted}` : whatsappHref
+  const dynamicWhatsapp = whatsappHref
 
   return (
     <footer id="soporte" className="bg-background">
