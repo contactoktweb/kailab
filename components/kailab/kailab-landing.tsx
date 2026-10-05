@@ -56,8 +56,8 @@ export function KailabLanding({ homeData, siteSettings, products }: KailabLandin
           sanityProducts={publicProducts}
           onAdd={addToCart} 
           limit={4}
-          title="Nuestros productos"
-          subtitle=""
+          title={homeData?.featuredProducts?.title || "Nuestros productos"}
+          subtitle={homeData?.featuredProducts?.subtitle || ""}
           showViewAllLink={true}
         />
 

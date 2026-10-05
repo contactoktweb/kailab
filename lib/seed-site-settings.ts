@@ -18,14 +18,14 @@ async function seedSettings() {
   
   try {
     // 1. Upload logo
-    const logoPath = path.resolve(process.cwd(), 'public/kailab-logo.png')
+    const logoPath = path.resolve(process.cwd(), 'public/KAILAB_Logo_White.png')
     let logoAsset = null
     
     if (fs.existsSync(logoPath)) {
       console.log('Uploading logo...')
       const logoStream = fs.createReadStream(logoPath)
       logoAsset = await client.assets.upload('image', logoStream, {
-        filename: 'kailab-logo.png',
+        filename: 'KAILAB_Logo_White.png',
       })
       console.log('Logo uploaded:', logoAsset._id)
     } else {
@@ -44,18 +44,19 @@ async function seedSettings() {
           _ref: logoAsset._id
         }
       } : undefined,
-      email: 'contacto@kailab.co',
-      phone: '573001234567',
+      email: 'info@kailab.com.co',
+      phone: '3023041412',
       address: 'Bogotá, Colombia',
       workingHours: 'Lunes a Viernes 8:00 AM - 5:00 PM',
       socialLinks: [
         {
           _key: 'whatsapp',
           platform: 'WhatsApp',
-          url: 'https://wa.me/573001234567?text=Hola%20KAILAB%2C%20quiero%20asesor%C3%ADa%20sobre%20compuestos%20para%20investigaci%C3%B3n%20(RUO).'
+          url: 'https://wa.me/573023041412'
         }
       ],
-      footerNotice: 'Solo para uso en investigación (RUO / Research Use Only). No apto para consumo humano ni animal, ni para uso diagnóstico o terapéutico. Los productos no han sido evaluados por el INVIMA. La venta está dirigida exclusivamente a investigadores y entidades cualificadas.'
+      description: 'Información clara sobre péptidos para investigación.',
+      footerNotice: 'Exclusivamente para investigación. No destinado a uso humano ni veterinario.'
     }
 
     console.log('Creating or updating document in Sanity...')

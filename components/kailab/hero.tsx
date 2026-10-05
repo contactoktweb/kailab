@@ -16,7 +16,7 @@ type HeroProps = {
 
 export function Hero({ onAdd, onSearch, heroData }: HeroProps) {
   // Select the transparent Retatrutide image as originally requested by the client
-  const heroImageUrl = "/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png"
+  const heroImageUrl = heroData?.backgroundImage ? urlFor(heroData.backgroundImage).url() : "/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png"
 
   return (
     <section className="relative flex min-h-[calc(100dvh-110px)] w-full items-center overflow-hidden bg-white border-b border-border">
@@ -38,7 +38,7 @@ export function Hero({ onAdd, onSearch, heroData }: HeroProps) {
               transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-balance text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl xl:text-7xl lg:leading-[1.1]"
             >
-              Péptidos para investigación en <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1959D7] to-blue-400">Colombia</span>
+              {heroData?.titlePart1 || 'Péptidos para investigación en'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1959D7] to-blue-400">{heroData?.titlePart2 || 'Colombia'}</span>
             </motion.h1>
 
             <motion.p 
@@ -47,7 +47,7 @@ export function Hero({ onAdd, onSearch, heroData }: HeroProps) {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="max-w-xl text-balance text-base leading-relaxed text-slate-600 sm:text-lg"
             >
-              Conoce cada producto, elige su presentación y consulta la información práctica y los certificados de análisis disponibles.
+              {heroData?.subtitle || 'Conoce cada producto, elige su presentación y consulta la información práctica y los certificados de análisis disponibles.'}
             </motion.p>
 
             <motion.div 
@@ -57,7 +57,7 @@ export function Hero({ onAdd, onSearch, heroData }: HeroProps) {
               className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center"
             >
               <Link
-                href="/tienda"
+                href={heroData?.ctaLink || "/tienda"}
                 className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-primary px-8 py-4 font-mono text-sm font-bold tracking-widest text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
               >
                 {/* L-Shape Border Left */}
@@ -65,7 +65,7 @@ export function Hero({ onAdd, onSearch, heroData }: HeroProps) {
                 {/* L-Shape Border Top */}
                 <div className="absolute left-0 top-0 h-[2px] w-12 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
                 
-                Ver productos
+                {heroData?.ctaText || 'Ver productos'}
                 <Icon icon="lucide:arrow-right" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
               </Link>
             </motion.div>

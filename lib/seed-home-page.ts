@@ -18,14 +18,14 @@ async function seedHomePage() {
   
   try {
     // 1. Upload hero background image
-    const bgPath = path.resolve(process.cwd(), 'public/kailab-images/hero-image.png')
+    const bgPath = path.resolve(process.cwd(), 'public/kailab-images/RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png')
     let bgAsset = null
     
     if (fs.existsSync(bgPath)) {
       console.log('Uploading hero background image...')
       const bgStream = fs.createReadStream(bgPath)
       bgAsset = await client.assets.upload('image', bgStream, {
-        filename: 'hero-image.png',
+        filename: 'RT10_Retatrutide_10mg_RENDER_WEB_UX_PREVIEW.png',
       })
       console.log('Background uploaded:', bgAsset._id)
     } else {
@@ -37,11 +37,11 @@ async function seedHomePage() {
       _id: 'homePage', // Fixed ID so it acts as a singleton
       _type: 'homePage',
       hero: {
-        titlePart1: 'Péptidos de',
-        titlePart2: 'Investigación',
-        subtitle: 'Compuestos científicos de alta pureza para uso profesional. Resultados analíticos verificables con transparencia radical para laboratorios.',
-        ctaText: 'Explora nuestros productos',
-        ctaLink: '#catalogo',
+        titlePart1: 'Péptidos para investigación en',
+        titlePart2: 'Colombia',
+        subtitle: 'Conoce cada producto, elige su presentación y consulta la información práctica y los certificados de análisis disponibles.',
+        ctaText: 'Ver productos',
+        ctaLink: '/tienda',
         backgroundImage: bgAsset ? {
           _type: 'image',
           asset: {
@@ -51,32 +51,54 @@ async function seedHomePage() {
         } : undefined,
       },
       featuredProducts: {
-        title: 'Productos Destacados',
-        subtitle: 'Nuestra selección destacada de péptidos y compuestos liofilizados de alta pureza.',
-        products: []
+        title: 'Nuestros productos'
       },
       whatsIncluded: {
         tag: 'Dotación de Envíos',
-        title: 'Equipamiento Incluido',
+        title: 'Incluido con tu compra',
         description: 'Cada vial o kit de investigación se despacha con la dotación completa requerida para su reconstitución segura bajo estrictas normas de laboratorio.',
         items: [
-          { _key: 'item1', name: 'Agua bacteriostática', desc: '', icon: 'lucide:droplets' },
-          { _key: 'item2', name: 'Toallitas con alcohol', desc: '', icon: 'lucide:shield-plus' },
-          { _key: 'item3', name: 'Información práctica en línea', desc: '', icon: 'lucide:book-open' },
-          { _key: 'item4', name: 'Envío gratis a toda Colombia, en empaque discreto', desc: '', icon: 'lucide:package-check' }
+          { _key: 'item1', name: 'Agua bacteriostática', icon: 'lucide:droplets' },
+          { _key: 'item2', name: 'Toallitas con alcohol', icon: 'lucide:shield-plus' },
+          { _key: 'item3', name: 'Acceso a la guía en línea', icon: 'lucide:book-open' },
+          { _key: 'item4', name: 'Envío gratis a toda Colombia, en empaque discreto', icon: 'lucide:package-check' }
         ]
       },
       commitment: {
         title1: 'Compromiso con la seriedad',
         desc1: 'En KaiLab trabajamos bajo un enfoque serio y ordenado, priorizando la selección cuidadosa de cada compuesto, una gestión responsable de los pedidos y una comunicación clara en cada etapa del proceso.',
         desc2: 'Nuestro objetivo es ofrecer una experiencia confiable y transparente para quienes entienden el valor de un manejo riguroso en productos de investigación.',
-        title2: 'Envíos rápidos y seguros',
-        subtitle2: 'Entregas eficientes a nivel nacional, con empaque profesional.',
+        title2: 'Preguntas frecuentes',
         faq: [
-          { _key: 'faq1', question: '¿A qué ciudades realizan envíos?', answer: 'Realizamos envíos a nivel nacional, cubriendo las principales ciudades y municipios de Colombia.' },
-          { _key: 'faq2', question: '¿Cuáles son los tiempos de entrega?', answer: 'En las principales ciudades la entrega suele hacerse al siguiente día hábil. En otras ciudades y municipios, entre 2 y 3 días hábiles.' },
-          { _key: 'faq3', question: '¿Los envíos son discretos?', answer: 'Sí. Todos los pedidos se despachan en empaque discreto y profesional, sin referencias visibles al contenido ni a la tienda.' },
-          { _key: 'faq4', question: '¿Cómo puedo hacer seguimiento a mi pedido?', answer: 'Una vez confirmado el envío, recibirás la información de seguimiento para monitorear el estado de tu pedido hasta la entrega.' }
+          { _key: 'faq1', question: '¿Hacen envíos a toda Colombia?', answer: 'Sí. El envío es gratis a toda Colombia.' },
+          { _key: 'faq2', question: '¿Dónde consulto el certificado de un producto?', answer: 'En la página del producto o en Calidad. Revisa la presentación y el lote indicados en el informe. Si no hay un certificado publicado, verás «Certificado pendiente».' },
+          { _key: 'faq3', question: '¿Dónde encuentro la información de cada presentación?', answer: 'En la página del producto. Selecciona una presentación para consultar su precio, disponibilidad y documentación correspondiente.' },
+          { _key: 'faq4', question: '¿Cómo puedo contactar a KAILAB?', answer: 'Escríbenos por WhatsApp al +57 302 304 1412 o a info@kailab.com.co.' }
+        ],
+        bannerPrefix: 'Uso exclusivo para investigación.',
+        bannerText: 'La información del sitio es estrictamente informativa y no constituye en ningún caso asesoría médica.',
+        bannerCtaText: 'Descubre cómo operamos',
+        bannerCtaLink: '/ayuda'
+      },
+      quality: {
+        headerTag: 'Laboratorio Analítico',
+        title: 'Calidad que puedes consultar',
+        description: 'Un certificado de análisis (COA) muestra los resultados de una muestra evaluada por un laboratorio. Consulta los informes disponibles y revisa el producto, la presentación y el lote de cada uno.',
+        reportName: 'REPORTE_HPLC-MS.pdf',
+        status: 'VERIFICADO',
+        statsList: [
+          { _key: 'stat1', label: 'Método de Ensayo', value: 'Cromatografía HPLC' },
+          { _key: 'stat2', label: 'Pureza Analizada', value: '≥ 99.1%' },
+          { _key: 'stat3', label: 'Trazabilidad', value: 'Código QR en vial' },
+          { _key: 'stat4', label: 'Firma Digital', value: '0x3F9A...B8C2' },
+        ]
+      },
+      guides: {
+        headerTag: 'Recursos Técnicos',
+        title: 'Guías prácticas',
+        description: 'Explicaciones paso a paso para entender la información de cada producto.',
+        guidesList: [
+          { _key: 'guide1', title: 'Cómo leer un certificado de análisis', desc: 'Aprende a ubicar el producto, el lote y los resultados en un informe real, y a distinguir cantidad de pureza.' }
         ]
       }
     }

@@ -56,7 +56,7 @@ export const homePageType = defineType({
   fields: [
     defineField({
       name: 'hero',
-      title: 'Sección Principal (Hero)',
+      title: '1. Sección Principal (Hero)',
       type: 'object',
       fields: [
         defineField({ name: 'titlePart1', title: 'Título Principal (Primera parte)', type: 'string', description: 'Ej: Péptidos de' }),
@@ -68,24 +68,8 @@ export const homePageType = defineType({
       ],
     }),
     defineField({
-      name: 'featuredProducts',
-      title: 'Sección Productos Destacados',
-      type: 'object',
-      fields: [
-        defineField({ name: 'title', title: 'Título', type: 'string', description: 'Ej: Productos Destacados' }),
-        defineField({ name: 'subtitle', title: 'Subtítulo', type: 'string' }),
-        defineField({
-          name: 'products',
-          title: 'Productos a Mostrar',
-          type: 'array',
-          of: [{ type: 'reference', to: [{ type: 'product' }] }],
-          description: 'Selecciona los productos que aparecerán destacados en el Home.'
-        })
-      ]
-    }),
-    defineField({
       name: 'whatsIncluded',
-      title: 'Sección Equipamiento Incluido',
+      title: '2. Sección Equipamiento Incluido',
       type: 'object',
       fields: [
         defineField({ name: 'tag', title: 'Etiqueta Pequeña', type: 'string', description: 'Ej: Dotación de Envíos' }),
@@ -101,12 +85,10 @@ export const homePageType = defineType({
               icon: ListIcon,
               fields: [
                 defineField({ name: 'name', title: 'Nombre', type: 'string' }),
-                defineField({ name: 'desc', title: 'Descripción', type: 'text', rows: 2 }),
               ],
               preview: {
                 select: {
                   title: 'name',
-                  subtitle: 'desc',
                 }
               }
             }
@@ -115,18 +97,75 @@ export const homePageType = defineType({
       ]
     }),
     defineField({
+      name: 'quality',
+      title: '3. Sección Calidad y Certificados',
+      type: 'object',
+      fields: [
+        defineField({ name: 'headerTag', title: 'Etiqueta Pequeña', type: 'string', description: 'Ej: Laboratorio Analítico' }),
+        defineField({ name: 'title', title: 'Título', type: 'string', description: 'Ej: Calidad que puedes consultar' }),
+        defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
+        defineField({ name: 'reportName', title: 'Nombre del Reporte (Ejemplo)', type: 'string', description: 'Ej: REPORTE_HPLC-MS.pdf' }),
+        defineField({ name: 'status', title: 'Estado del Reporte', type: 'string', description: 'Ej: VERIFICADO' }),
+        defineField({
+          name: 'statsList',
+          title: 'Lista de Estadísticas o Datos del Reporte',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({ name: 'label', title: 'Etiqueta', type: 'string' }),
+                defineField({ name: 'value', title: 'Valor', type: 'string' }),
+              ]
+            }
+          ]
+        })
+      ]
+    }),
+    defineField({
+      name: 'featuredProducts',
+      title: '4. Sección Productos',
+      type: 'object',
+      fields: [
+        defineField({ name: 'title', title: 'Título', type: 'string', description: 'Ej: Nuestros productos' })
+      ]
+    }),
+    defineField({
+      name: 'guides',
+      title: '5. Sección Guías Prácticas',
+      type: 'object',
+      fields: [
+        defineField({ name: 'headerTag', title: 'Etiqueta Pequeña', type: 'string', description: 'Ej: Recursos Técnicos' }),
+        defineField({ name: 'title', title: 'Título', type: 'string', description: 'Ej: Guías prácticas' }),
+        defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
+        defineField({
+          name: 'guidesList',
+          title: 'Lista de Guías',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({ name: 'title', title: 'Título de la guía', type: 'string' }),
+                defineField({ name: 'desc', title: 'Descripción breve', type: 'text', rows: 2 }),
+              ]
+            }
+          ]
+        })
+      ]
+    }),
+    defineField({
       name: 'commitment',
-      title: 'Sección Compromiso y Envíos',
+      title: '6. Sección Compromiso y Preguntas',
       type: 'object',
       fields: [
         defineField({ name: 'title1', title: 'Título Compromiso', type: 'string', description: 'Ej: Compromiso con la seriedad' }),
         defineField({ name: 'desc1', title: 'Descripción 1', type: 'text', rows: 3 }),
         defineField({ name: 'desc2', title: 'Descripción 2', type: 'text', rows: 3 }),
-        defineField({ name: 'title2', title: 'Título Envíos', type: 'string', description: 'Ej: Envíos rápidos y seguros' }),
-        defineField({ name: 'subtitle2', title: 'Subtítulo Envíos', type: 'string' }),
+        defineField({ name: 'title2', title: 'Título Preguntas (Opcional)', type: 'string', description: 'Ej: Preguntas frecuentes' }),
         defineField({
           name: 'faq',
-          title: 'Preguntas Frecuentes de Envíos',
+          title: 'Preguntas Frecuentes',
           type: 'array',
           of: [
             {
@@ -144,7 +183,11 @@ export const homePageType = defineType({
               }
             }
           ]
-        })
+        }),
+        defineField({ name: 'bannerPrefix', title: 'Prefijo Banner Inferior', type: 'string', description: 'Ej: Uso exclusivo para investigación.' }),
+        defineField({ name: 'bannerText', title: 'Texto Banner Inferior', type: 'text', rows: 2 }),
+        defineField({ name: 'bannerCtaText', title: 'Texto Botón Banner', type: 'string' }),
+        defineField({ name: 'bannerCtaLink', title: 'Enlace Botón Banner', type: 'string' }),
       ]
     })
   ]

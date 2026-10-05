@@ -284,7 +284,10 @@ export function WhatsIncluded({ data }: { data?: HomePageData['whatsIncluded'] }
 
 export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] }) {
   // Using explicit JSX for answers to allow embedded links as requested by the client
-  const faqItems = [
+  const faqItems = data?.faq?.length ? data.faq.map(f => ({
+    q: f.question,
+    a: f.answer
+  })) : [
     { 
       q: '¿Hacen envíos a toda Colombia?', 
       a: <>Sí. El envío es gratis a toda Colombia.</> 
@@ -380,7 +383,7 @@ export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] })
             >
               <div className="text-left">
                 <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl leading-tight">
-                  Preguntas frecuentes
+                  {data?.title2 || 'Preguntas frecuentes'}
                 </h2>
               </div>
             </motion.div>
@@ -411,16 +414,16 @@ export function CommitmentBlock({ data }: { data?: HomePageData['commitment'] })
                    <Icon icon="lucide:info" className="h-5 w-5 text-[#1959D7]" />
                 </div>
                 <p className="text-[13px] xl:text-[14px] leading-relaxed">
-                  <strong className="font-bold text-[#1959D7]">Uso exclusivo para investigación.</strong> La información del sitio es estrictamente informativa y no constituye en ningún caso asesoría médica.
+                  <strong className="font-bold text-[#1959D7]">{data?.bannerPrefix || 'Uso exclusivo para investigación.'}</strong> {data?.bannerText || 'La información del sitio es estrictamente informativa y no constituye en ningún caso asesoría médica.'}
                 </p>
               </div>
               <Link 
-                href="/ayuda" 
+                href={data?.bannerCtaLink || "/ayuda"}
                 className="group relative inline-flex shrink-0 items-center justify-center gap-1.5 overflow-hidden bg-primary px-4 py-2 font-sans text-[11px] font-bold tracking-widest whitespace-nowrap text-primary-foreground backdrop-blur-md transition-all duration-500 hover:bg-primary/90 active:scale-95"
               >
                 <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30 transition-colors duration-500 group-hover:bg-white"></div>
                 <div className="absolute left-0 top-0 h-[2px] w-6 bg-white/30 transition-all duration-500 group-hover:w-full group-hover:bg-white"></div>
-                Descubre cómo operamos
+                {data?.bannerCtaText || 'Descubre cómo operamos'}
                 <Icon icon="lucide:arrow-right" className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </motion.div>
@@ -549,7 +552,7 @@ export function GuidesBlock({ data }: { data?: GuidesPageData | null }) {
           <div className="lg:col-span-4 lg:col-start-9">
             <div className="mb-4 flex items-center justify-start gap-2 text-primary lg:justify-end">
                <Icon icon="lucide:book-open-check" className="h-5 w-5" />
-               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Recursos Técnicos</span>
+               <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">{data?.headerTag || 'Recursos Técnicos'}</span>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight lg:text-right">
               {data?.title || 'Guías prácticas'}

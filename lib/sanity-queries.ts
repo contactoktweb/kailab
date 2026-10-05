@@ -74,7 +74,13 @@ export interface HomePageData {
       question?: string
       answer?: string
     }>
+    bannerPrefix?: string
+    bannerText?: string
+    bannerCtaText?: string
+    bannerCtaLink?: string
   }
+  quality?: any
+  guides?: any
 }
 
 export async function getHomePage(): Promise<HomePageData | null> {
@@ -83,7 +89,9 @@ export async function getHomePage(): Promise<HomePageData | null> {
       hero,
       featuredProducts,
       whatsIncluded,
-      commitment
+      commitment,
+      quality,
+      guides
     }`
     const data = await sanityClient.fetch(query)
     return data || null
