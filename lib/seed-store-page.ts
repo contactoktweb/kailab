@@ -17,8 +17,8 @@ async function seedStorePage() {
   const storePageDoc = {
     _type: 'storePage',
     _id: 'storePage',
-    title: 'Catálogo Completo de Productos',
-    subtitle: 'Explora nuestra selección completa de péptidos y compuestos liofilizados de alta pureza.',
+    title: 'Péptidos para investigación',
+    subtitle: 'Elige una presentación para consultar su precio, disponibilidad e información.',
   }
 
   try {

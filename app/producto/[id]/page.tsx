@@ -1,14 +1,13 @@
 import { notFound } from 'next/navigation'
-import { getProductBySlug, getSiteSettings } from '@/lib/sanity-queries'
+import { products as localProducts } from '@/components/kailab/data'
+import { getSiteSettings } from '@/lib/sanity-queries'
 import { ProductDetailClient } from '@/components/kailab/product-detail-client'
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params
   
-  const [product, siteSettings] = await Promise.all([
-    getProductBySlug(resolvedParams.id),
-    getSiteSettings()
-  ])
+  const siteSettings = await getSiteSettings()
+  const product = localProducts.find(p => p.slug === resolvedParams.id)
 
   if (!product) {
     notFound()

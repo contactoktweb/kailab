@@ -128,6 +128,22 @@ export interface SanityProduct {
   subtitle?: string
   description?: string
   features?: string[]
+  shippingNotice?: string
+  includedItems?: string[]
+  fichaTecnica?: {
+    title?: string
+    items?: Array<{ question: string; answer: string }>
+  }
+  reconstitucionText?: string
+  lecturaCantidadesText?: string
+  dosisCalendarioText?: string
+  dosisTables?: Array<{
+    presentationId: string
+    title: string
+    badge: string
+    instruction: string
+    rows: Array<{ week: string; dose: string; units: string }>
+  }>
   lot?: string
   formula?: string
   purity?: string
@@ -145,25 +161,32 @@ export interface SanityProduct {
   infoAccordions?: Array<{
     _key: string
     title: string
-    contentHtml: string
+    contentHtml?: string
+    contentBlocks?: any[]
   }>
   variants?: Array<{
     _key: string
     name: string
+    slug?: string
     priceCOP: number
     sku: string
     inStock: boolean
+    coaStatus?: 'available' | 'pending'
+    image?: any
   }>
 }
 
 function mapSanityProductToProduct(p: SanityProduct): Product {
-  const isRetatrutide = p.slug?.current === 'retatrutide'
+  const isRetatrutide = p.slug?.current === 'retatrutide' || p.slug?.current === 'retatrutida'
   const mappedSlug = isRetatrutide ? 'retatrutida' : (p.slug?.current || '')
   
   let mappedTitle = p.title || ''
   if (isRetatrutide && mappedTitle.toLowerCase().includes('retatrutide')) {
     mappedTitle = 'Retatrutida'
   }
+
+  const defaultRetatrutideSubtitle = 'Agonista triple de receptores (GLP-1 / GIP / Glucagón)'
+  const defaultRetatrutideDescription = 'Retatrutide (LY3437943) es un péptido sintético de investigación de 39 aminoácidos que actúa como agonista triple de los receptores GLP-1, GIP y glucagón. Es objeto de estudio en la investigación metabólica, principalmente en áreas como la regulación del peso corporal, la grasa hepática (hígado graso) y el control de la glucosa. Se suministra como vial de polvo liofilizado de 10 mg, destinado exclusivamente a investigación científica.'
 
   const getVariantImage = (variantName: string) => {
     if (isRetatrutide) {
@@ -178,16 +201,31 @@ function mapSanityProductToProduct(p: SanityProduct): Product {
     return p.image ? urlFor(p.image).url() : undefined
   }
 
+  const subtitle = isRetatrutide && (!p.subtitle || p.subtitle.includes('Exclusivamente para investigación'))
+    ? defaultRetatrutideSubtitle
+    : (p.subtitle || (isRetatrutide ? defaultRetatrutideSubtitle : undefined))
+
+  const description = isRetatrutide && (!p.description || p.description.includes('Péptido en investigación que actúa sobre tres'))
+    ? defaultRetatrutideDescription
+    : (p.description || (isRetatrutide ? defaultRetatrutideDescription : undefined))
+
   return {
     id: p.sku || p._id,
     slug: mappedSlug,
     categorySlug: p.category?.slug?.current || '',
     category: p.category?.title || '',
     title: mappedTitle,
-    subtitle: p.subtitle,
-    description: p.description,
+    subtitle: subtitle,
+    description: description,
     features: p.features || [],
-    infoAccordions: p.infoAccordions?.map(acc => ({ title: acc.title, contentHtml: acc.contentHtml })) || [],
+    shippingNotice: p.shippingNotice,
+    includedItems: p.includedItems,
+    fichaTecnica: p.fichaTecnica,
+    reconstitucionText: p.reconstitucionText,
+    lecturaCantidadesText: p.lecturaCantidadesText,
+    dosisCalendarioText: p.dosisCalendarioText,
+    dosisTables: p.dosisTables,
+    infoAccordions: p.infoAccordions?.map(acc => ({ title: acc.title, contentHtml: acc.contentHtml, contentBlocks: acc.contentBlocks })) || [],
     lot: p.lot || '',
     purity: p.purity || '',
     formula: p.formula || '',
@@ -198,9 +236,9 @@ function mapSanityProductToProduct(p: SanityProduct): Product {
       sku: v.sku,
       priceCOP: v.priceCOP,
       stock: v.inStock ? 10 : 0,
-      coaStatus: 'available',
-      image: getVariantImage(v.name),
-      slug: v.name.toLowerCase().replace(/\s+/g, '-')
+      coaStatus: v.coaStatus || 'available',
+      image: v.image ? urlFor(v.image).url() : getVariantImage(v.name),
+      slug: v.slug || v.name.toLowerCase().replace(/\s+/g, '')
     })) || [],
     priceCOP: p.priceCOP,
     presentation: p.presentation,
@@ -221,6 +259,13 @@ export async function getProducts(): Promise<Product[]> {
       subtitle,
       description,
       features,
+      shippingNotice,
+      includedItems,
+      fichaTecnica,
+      reconstitucionText,
+      lecturaCantidadesText,
+      dosisCalendarioText,
+      dosisTables,
       lot,
       formula,
       purity,
@@ -232,8 +277,22 @@ export async function getProducts(): Promise<Product[]> {
       category->{title, slug},
       image,
       images,
-      infoAccordions,
-      variants
+      infoAccordions[]{
+        _key,
+        title,
+        contentHtml,
+        contentBlocks
+      },
+      variants[]{
+        _key,
+        name,
+        slug,
+        priceCOP,
+        sku,
+        inStock,
+        coaStatus,
+        image
+      }
     }`
     const products = await sanityClient.fetch(query)
     return (products || []).map(mapSanityProductToProduct)
@@ -245,8 +304,7 @@ export async function getProducts(): Promise<Product[]> {
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
-    const querySlug = slug === 'retatrutida' ? 'retatrutide' : slug
-    const query = `*[_type == "product" && slug.current == $slug][0] {
+    const query = `*[_type == "product" && (slug.current == $slug || (slug.current in ["retatrutide", "retatrutida"] && $slug in ["retatrutide", "retatrutida"]))][0] {
       _id,
       title,
       slug,
@@ -254,6 +312,13 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       subtitle,
       description,
       features,
+      shippingNotice,
+      includedItems,
+      fichaTecnica,
+      reconstitucionText,
+      lecturaCantidadesText,
+      dosisCalendarioText,
+      dosisTables,
       lot,
       formula,
       purity,
@@ -265,10 +330,24 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       category->{title, slug},
       image,
       images,
-      infoAccordions,
-      variants
+      infoAccordions[]{
+        _key,
+        title,
+        contentHtml,
+        contentBlocks
+      },
+      variants[]{
+        _key,
+        name,
+        slug,
+        priceCOP,
+        sku,
+        inStock,
+        coaStatus,
+        image
+      }
     }`
-    const product = await sanityClient.fetch(query, { slug: querySlug })
+    const product = await sanityClient.fetch(query, { slug })
     return product ? mapSanityProductToProduct(product) : null
   } catch (error) {
     console.error(`Error fetching product ${slug} from Sanity:`, error)

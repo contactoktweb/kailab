@@ -24,6 +24,22 @@ export type Product = {
   subtitle?: string
   description?: string
   features?: string[]
+  shippingNotice?: string
+  includedItems?: string[]
+  fichaTecnica?: {
+    title?: string
+    items?: Array<{ question: string; answer: string }>
+  }
+  reconstitucionText?: string
+  lecturaCantidadesText?: string
+  dosisCalendarioText?: string
+  dosisTables?: Array<{
+    presentationId: string
+    title: string
+    badge: string
+    instruction: string
+    rows: Array<{ week: string; dose: string; units: string }>
+  }>
   infoAccordions?: InfoAccordion[]
   lot: string
   purity: string
@@ -574,25 +590,58 @@ export const products: Product[] = [
     categorySlug: 'metabolico',
     category: 'Metabólico',
     title: 'Retatrutida',
-    subtitle: 'Exclusivamente para investigación. No destinado a uso humano ni veterinario.',
-    description: 'Péptido en investigación que actúa sobre tres receptores relacionados con el metabolismo.',
+    subtitle: 'Agonista triple de receptores (GLP-1 / GIP / Glucagón)',
+    description: 'Retatrutide (LY3437943) es un péptido sintético de investigación de 39 aminoácidos que actúa como agonista triple de los receptores GLP-1, GIP y glucagón. Es objeto de estudio en la investigación metabólica, principalmente en áreas como la regulación del peso corporal, la grasa hepática (hígado graso) y el control de la glucosa. Se suministra como vial de polvo liofilizado de 10 mg, destinado exclusivamente a investigación científica.',
     features: ['COA disponibles', 'Empaque sellado', 'Péptido grado investigación', 'Polvo liofilizado'],
-    infoAccordions: [
+    shippingNotice: 'Agua bacteriostática incluida · Envío gratis a toda Colombia',
+    includedItems: [
+      'Agua bacteriostática.',
+      'Toallitas con alcohol.',
+      'Información práctica en línea.',
+      'Envío gratis a toda Colombia, en empaque discreto.'
+    ],
+    fichaTecnica: {
+      title: 'Introducción al péptido',
+      items: [
+        {
+          question: '¿Qué es la retatrutida?',
+          answer: 'La retatrutida es un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943.'
+        },
+        {
+          question: '¿Para qué se investiga?',
+          answer: 'Se estudia por sus efectos sobre el peso corporal y el control de la glucosa en sangre. Los ensayos clínicos evalúan su eficacia y seguridad en personas con obesidad, sobrepeso o diabetes tipo 2.'
+        },
+        {
+          question: '¿Cómo funciona?',
+          answer: 'Los receptores reciben señales que activan respuestas en las células. La retatrutida activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple.'
+        }
+      ]
+    },
+    reconstitucionText: 'Reconstituir significa agregar agua bacteriostática al polvo liofilizado (el polvo seco que viene dentro del vial) para convertirlo en una solución lista para usar. Los péptidos se venden en polvo porque así se mantienen estables por más tiempo.',
+    lecturaCantidadesText: 'mg: cantidad de péptido | mL: volumen de líquido | mg/mL: concentración resultante',
+    dosisCalendarioText: 'Aplicación una vez por semana, siempre el mismo día. El esquema de referencia sigue el aumento gradual usado en el estudio clínico de fase 2 del retatrutide (NEJM, 2023). Subir la dosis poco a poco ayuda a reducir efectos como náuseas o malestar digestivo. Si aparecen molestias, lo recomendable es mantener la dosis actual más tiempo antes de subir.',
+    dosisTables: [
       {
-        title: '¿Qué es?',
-        contentHtml: '<p class="mb-3">Retatrutide (código de desarrollo LY3437943) es un péptido sintético de investigación compuesto por 39 aminoácidos. Pertenece a una clase de compuestos conocidos como agonistas triples, ya que interactúa de forma simultánea con tres receptores metabólicos:</p><ul class="list-none space-y-1 mb-4"><li>– Receptor de GLP-1 (péptido similar al glucagón tipo 1)</li><li>– Receptor de GIP (polipéptido insulinotrópico dependiente de glucosa)</li><li>– Receptor de glucagón</li></ul><p class="mb-3">Esta combinación, descrita en la literatura científica como agonismo “triple G”, distingue a Retatrutide de los agonistas simples y duales. Por su mecanismo triple, se ha convertido en uno de los compuestos de referencia más estudiados dentro de la investigación metabólica actual.</p><p>En KaiLab se suministra como polvo liofilizado destinado exclusivamente a investigación científica. No está aprobado para uso humano ni veterinario.</p>'
+        presentationId: 'RT5',
+        title: 'Retatrutida 5 mg (RT5)',
+        badge: '5 mg / mL',
+        instruction: 'Reconstituir: disolver en 1 mL de agua bacteriostática. Concentración final: 5 mg por mL (20 unidades = 1 mg).',
+        rows: [
+          { week: '1 a 4', dose: '2 mg', units: '40 unidades' },
+          { week: '5 a 8', dose: '4 mg', units: '80 unidades' },
+          { week: '9 a 12', dose: '4 mg', units: '80 unidades' }
+        ]
       },
       {
-        title: 'Aplicaciones en investigación',
-        contentHtml: '<p class="mb-3">Retatrutide es objeto de estudio en la investigación metabólica gracias a su interacción simultánea con tres receptores hormonales. En la literatura se investiga principalmente en:</p><ul class="list-none space-y-1 mb-4"><li>– Regulación del peso corporal y del tejido adiposo (grasa corporal)</li><li>– Grasa hepática (hígado graso) y salud metabólica del hígado</li><li>– Regulación de la glucosa y sensibilidad a la insulina</li><li>– Balance y gasto energético</li><li>– Estudios comparativos frente a agonistas simples y duales</li></ul><p>La información aquí presentada describe áreas de investigación y no constituye una indicación de uso en humanos. Este producto se emplea únicamente en entornos de investigación controlados.</p>'
-      },
-      {
-        title: 'Manejo y almacenamiento',
-        contentHtml: '<p class="mb-3">Estas recomendaciones aplican a todos los péptidos liofilizados de KaiLab.</p><p class="mb-3"><strong>En polvo liofilizado (sin reconstituir):</strong><br>– Conservar a –20 °C para almacenamiento prolongado.<br>– Proteger de la luz y mantener en ambiente seco.<br>– En estas condiciones conserva su estabilidad durante períodos prolongados.</p><p class="mb-3"><strong>Reconstituido (en solución):</strong><br>– Reconstituir habitualmente con agua bacteriostática, en condiciones de laboratorio.<br>– Conservar refrigerado (2 °C a 8 °C).<br>– Evitar ciclos repetidos de congelación y descongelación.<br>– Manipular con técnica aséptica y material de laboratorio apropiado.</p><p>Estas indicaciones corresponden al manejo de materiales de investigación.</p>'
-      },
-      {
-        title: 'Especificaciones técnicas',
-        contentHtml: '<ul class="list-none space-y-1"><li>Compuesto: Retatrutide (LY3437943)</li><li>Número CAS: 2381089-83-2</li><li>Clase molecular: Análogo peptídico, agonista triple de receptores</li><li>Secuencia: Péptido sintético de 39 aminoácidos</li><li>Presentación: Polvo liofilizado en vial</li><li>Cantidad: 10 mg por vial</li><li>Pureza reportada: ≥99% (HPLC)</li><li>Almacenamiento: –20 °C, ambiente seco y protegido de la luz</li><li>Reconstitución: Agua bacteriostática (condiciones de laboratorio)</li><li>Análisis de pureza: HPLC por laboratorio independiente</li></ul>'
+        presentationId: 'RT10',
+        title: 'Retatrutida 10 mg (RT10)',
+        badge: '10 mg / mL',
+        instruction: 'Reconstituir: disolver en 1 mL de agua bacteriostática. Concentración final: 10 mg por mL (10 unidades = 1 mg).',
+        rows: [
+          { week: '1 a 4', dose: '2 mg', units: '20 unidades' },
+          { week: '5 a 8', dose: '4 mg', units: '40 unidades' },
+          { week: '9 a 12', dose: '8 mg', units: '80 unidades' }
+        ]
       }
     ],
     lot: 'LOT-RT-2410',

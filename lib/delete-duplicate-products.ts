@@ -16,29 +16,24 @@ async function main() {
   const products = await client.fetch(query)
   
   console.log('--- Productos Actuales ---')
-  const seen = new Set<string>()
-  const duplicates: string[] = []
+  const toDelete: string[] = []
 
   products.forEach((p: any) => {
-    console.log(`- ${p.title} (${p.sku}) [ID: ${p._id}]`)
-    const key = p.title?.toLowerCase()
-    if (seen.has(key)) {
-      console.log(`  -> DUPLICADO ENCONTRADO: ${p.title}`)
-      duplicates.push(p._id)
-    } else {
-      seen.add(key)
+    console.log(`- ${p.title} (${p.slug?.current}) [ID: ${p._id}]`)
+    if (p.slug?.current !== 'retatrutida' && p.slug?.current !== 'retatrutide') {
+      toDelete.push(p._id)
     }
   })
 
-  if (duplicates.length > 0) {
-    console.log(`\nBorrando ${duplicates.length} duplicados...`)
-    for (const id of duplicates) {
+  if (toDelete.length > 0) {
+    console.log(`\nBorrando ${toDelete.length} productos (no son Retatrutida)...`)
+    for (const id of toDelete) {
       await client.delete(id)
       console.log(`Borrando documento ID: ${id}`)
     }
-    console.log('Duplicados eliminados exitosamente.')
+    console.log('Productos eliminados exitosamente.')
   } else {
-    console.log('\nNo se encontraron duplicados.')
+    console.log('\nNo hay productos adicionales para borrar.')
   }
 }
 

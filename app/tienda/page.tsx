@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { TiendaClient } from '@/components/kailab/tienda-client'
-import { getSiteSettings, getStorePage } from '@/lib/sanity-queries'
+import { getSiteSettings, getStorePage, getProducts } from '@/lib/sanity-queries'
 import { products as localProducts } from '@/components/kailab/data'
 
 export const metadata: Metadata = {
@@ -14,6 +14,6 @@ export default async function TiendaPage() {
     getStorePage()
   ])
 
-  // Usamos localProducts temporalmente para reflejar los cambios de desarrollo en Retatrutida
+  // Usamos localProducts temporalmente para reflejar los cambios de desarrollo
   return <TiendaClient siteSettings={siteSettings} products={localProducts as any} storePageData={storePageData} />
 }

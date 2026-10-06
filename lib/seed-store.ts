@@ -76,32 +76,23 @@ async function seedStore() {
 
   // 2. Upload or Update Products
   for (const product of products) {
-    console.log(`Processing product: ${product.title}`)
+    console.log(`Processing product: ${product.title} (slug: ${product.slug})`)
     
-    // Check if product already exists
-    const existingProduct = await client.fetch(`*[_type == "product" && slug.current == $slug][0]`, { slug: product.slug })
+    // Check if product already exists (by slug or sku or retatrutide aliases)
+    const existingProduct = await client.fetch(
+      `*[_type == "product" && (slug.current == $slug || sku == $sku || (slug.current in ["retatrutide", "retatrutida"] && $slug in ["retatrutide", "retatrutida"]))][0]`,
+      { slug: product.slug, sku: product.id }
+    )
     
-    // Inject missing presentation and concentration for specific products with variants
     let presentation = product.presentation
     let concentration = product.concentration
 
     if (product.slug === 'agua-bacteriostatica-3ml') {
-      presentation = 'Vial líquido'
-      concentration = '3 ml'
-    } else if (product.slug === 'retatrutide') {
-      presentation = 'Vial liofilizado'
-      concentration = 'Varias (5 mg / 10 mg)'
-    }
-
-    if (existingProduct) {
-      if (product.slug === 'agua-bacteriostatica-3ml' || product.slug === 'retatrutide') {
-        console.log(`Updating presentation and concentration for: ${product.title}`)
-        await client.patch(existingProduct._id).set({ presentation, concentration }).commit()
-        console.log(`✅ Updated ${product.title}`)
-      } else {
-        console.log(`Product already exists: ${product.title}, skipping.`)
-      }
-      continue
+      presentation = presentation || 'Vial líquido'
+      concentration = concentration || '3 ml'
+    } else if (product.slug === 'retatrutida' || product.slug === 'retatrutide') {
+      presentation = presentation || 'Vial liofilizado'
+      concentration = concentration || 'Varias (5 mg / 10 mg)'
     }
 
     // Upload Main Image
@@ -132,11 +123,18 @@ async function seedStore() {
       sku: product.id,
       subtitle: product.subtitle,
       description: product.description,
-      features: product.features,
+      features: product.features || [],
+      shippingNotice: product.shippingNotice || 'Agua bacteriostática incluida · Envío gratis a toda Colombia',
+      includedItems: product.includedItems || [
+        'Agua bacteriostática.',
+        'Toallitas con alcohol.',
+        'Información práctica en línea.',
+        'Envío gratis a toda Colombia, en empaque discreto.'
+      ],
       lot: product.lot,
       formula: product.formula,
       purity: product.purity,
-      badges: product.badges,
+      badges: product.badges || [],
       presentation: presentation,
       concentration: concentration,
       priceCOP: product.priceCOP || 0,
@@ -144,23 +142,52 @@ async function seedStore() {
       category: categoryId ? { _type: 'reference', _ref: categoryId } : undefined,
       image: mainImageAsset,
       images: secondaryImageAssets,
-      infoAccordions: product.infoAccordions?.map((acc, index) => ({
-        _key: `accordion-${index}`,
-        _type: 'object',
-        title: acc.title,
-        contentHtml: acc.contentHtml
+      fichaTecnica: product.fichaTecnica ? {
+        title: product.fichaTecnica.title || 'Introducción al péptido',
+        items: product.fichaTecnica.items?.map((item, index) => ({
+          _key: `ft-item-${index}`,
+          question: item.question,
+          answer: item.answer,
+        })) || []
+      } : undefined,
+      reconstitucionText: product.reconstitucionText || 'Reconstituir significa agregar agua bacteriostática al polvo liofilizado (el polvo seco que viene dentro del vial) para convertirlo en una solución lista para usar. Los péptidos se venden en polvo porque así se mantienen estables por más tiempo.',
+      lecturaCantidadesText: product.lecturaCantidadesText || 'mg: cantidad de péptido | mL: volumen de líquido | mg/mL: concentración resultante',
+      dosisCalendarioText: product.dosisCalendarioText || 'Aplicación una vez por semana, siempre el mismo día. El esquema de referencia sigue el aumento gradual usado en el estudio clínico de fase 2 del retatrutide (NEJM, 2023). Subir la dosis poco a poco ayuda a reducir efectos como náuseas o malestar digestivo. Si aparecen molestias, lo recomendable es mantener la dosis actual más tiempo antes de subir.',
+      dosisTables: product.dosisTables?.map((table, tIdx) => ({
+        _key: `dt-table-${tIdx}`,
+        presentationId: table.presentationId,
+        title: table.title,
+        badge: table.badge,
+        instruction: table.instruction,
+        rows: table.rows?.map((row, rIdx) => ({
+          _key: `dt-row-${rIdx}`,
+          week: row.week,
+          dose: row.dose,
+          units: row.units
+        })) || []
       })),
-      variants: product.variants?.map(v => ({
-        _key: v.id,
-        name: v.name,
-        priceCOP: v.priceCOP,
-        sku: v.sku,
-        inStock: v.stock > 0
+      variants: await Promise.all((product.variants || []).map(async v => {
+        const variantImageAsset = await uploadImage(v.image || '')
+        return {
+          _key: v.id,
+          name: v.name,
+          slug: v.slug,
+          priceCOP: v.priceCOP,
+          sku: v.sku,
+          inStock: v.stock > 0,
+          coaStatus: v.coaStatus,
+          image: variantImageAsset
+        }
       }))
     }
 
-    const created = await client.create(productDoc)
-    console.log(`✅ Created Product: ${created.title} (${created._id})`)
+    if (existingProduct) {
+      await client.patch(existingProduct._id).set(productDoc).commit()
+      console.log(`✅ Updated Product: ${product.title} (${existingProduct._id})`)
+    } else {
+      const created = await client.create(productDoc)
+      console.log(`✅ Created Product: ${created.title} (${created._id})`)
+    }
   }
 
   console.log('--- Migration Complete ---')

@@ -1,9 +1,32 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getProductBySlug, getSiteSettings } from '@/lib/sanity-queries'
+import { products as localProducts } from '@/components/kailab/data'
 import { VariantDetailClient } from '@/components/kailab/variant-detail-client'
+import type { Product } from '@/components/kailab/data'
 
 import { urlFor } from '@/sanity/lib/image'
+
+/**
+ * Obtiene el producto desde Sanity como fuente primaria.
+ * Si Sanity no retorna datos (error, documento no existente), cae al fallback local (data.ts).
+ */
+async function resolveProduct(productSlug: string): Promise<Product | undefined> {
+  // Normalizar: la URL puede llegar como 'retatrutida' pero Sanity lo almacena como 'retatrutide'
+  const slugToQuery = productSlug === 'retatrutida' ? 'retatrutide' : productSlug
+
+  try {
+    const sanityProduct = await getProductBySlug(slugToQuery)
+    if (sanityProduct) return sanityProduct
+  } catch (e) {
+    console.error('[resolveProduct] Error fetching from Sanity, falling back to local data:', e)
+  }
+
+  // Fallback: datos locales hardcodeados
+  return localProducts.find(
+    p => p.slug === productSlug || (productSlug === 'retatrutida' && p.slug === 'retatrutide')
+  )
+}
 
 export async function generateMetadata({
   params
@@ -11,8 +34,12 @@ export async function generateMetadata({
   params: Promise<{ category: string, product: string, variant?: string[] }>
 }): Promise<Metadata> {
   const resolvedParams = await params
-  const product = await getProductBySlug(resolvedParams.product)
   const variantSlug = resolvedParams.variant?.[0]
+
+  // Para metadata usamos fallback local para mayor velocidad (no bloquear SSG)
+  const product = localProducts.find(
+    p => p.slug === resolvedParams.product || (resolvedParams.product === 'retatrutida' && p.slug === 'retatrutide')
+  )
   
   if (!product) {
     return {}
@@ -94,9 +121,10 @@ export default async function CanonicalProductPage({
 }) {
   const resolvedParams = await params
   
-  const [product, siteSettings] = await Promise.all([
-    getProductBySlug(resolvedParams.product),
-    getSiteSettings()
+  // Sanity es la fuente primaria; si falla, cae a datos locales
+  const [siteSettings, product] = await Promise.all([
+    getSiteSettings(),
+    resolveProduct(resolvedParams.product),
   ])
 
   if (!product) {

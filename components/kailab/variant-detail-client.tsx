@@ -473,7 +473,7 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                 
                 <div className="mt-1 flex items-center justify-center gap-2 border-t border-slate-100 pt-1.5">
                   <p className="text-center text-[10px] font-semibold text-slate-600">
-                    Agua bacteriostática incluida <span className="mx-1 text-slate-300">·</span> Envío gratis a toda Colombia
+                    {product.shippingNotice || "Agua bacteriostática incluida · Envío gratis a toda Colombia"}
                   </p>
                 </div>
               </div>
@@ -486,10 +486,20 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                 Incluido con tu compra
               </h2>
               <ul className="list-disc pl-4 space-y-0.5 text-[10px] text-slate-700">
-                <li>Agua bacteriostática.</li>
-                <li>Toallitas con alcohol.</li>
-                <li><a href="#informacion-practica" className="text-[#1959D7] font-semibold hover:underline">Información práctica en línea.</a></li>
-                <li>Envío gratis a toda Colombia, en empaque discreto.</li>
+                {(product.includedItems && product.includedItems.length > 0 ? product.includedItems : [
+                  'Agua bacteriostática.',
+                  'Toallitas con alcohol.',
+                  'Información práctica en línea.',
+                  'Envío gratis a toda Colombia, en empaque discreto.'
+                ]).map((item, idx) => (
+                  <li key={idx}>
+                    {item.includes('Información práctica') ? (
+                      <a href="#informacion-practica" className="text-[#1959D7] font-semibold hover:underline">{item}</a>
+                    ) : (
+                      item
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -605,34 +615,44 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                       <Icon icon="lucide:flask-conical" className="h-5 w-5" />
                       <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Ficha Técnica</span>
                     </div>
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">Introducción al péptido</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">
+                      {product.fichaTecnica?.title || "Introducción al péptido"}
+                    </h2>
                   </motion.div>
                   
                   <motion.dl initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="space-y-2">
-                    <div className="grid sm:grid-cols-3 gap-3 py-5 border-b border-slate-100">
-                      <dt className="text-lg font-bold text-slate-900">¿Qué es la retatrutida?</dt>
-                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
-                        La retatrutida es un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943.
-                      </dd>
-                    </div>
-                    <div className="grid sm:grid-cols-3 gap-3 py-5 border-b border-slate-100">
-                      <dt className="text-lg font-bold text-slate-900">¿Para qué se investiga?</dt>
-                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
-                        Se estudia por sus efectos sobre el peso corporal y el control de la glucosa en sangre. Los ensayos clínicos evalúan su eficacia y seguridad en personas con obesidad, sobrepeso o diabetes tipo 2.
-                      </dd>
-                    </div>
-                    <div className="grid sm:grid-cols-3 gap-3 py-5 border-b border-slate-100">
-                      <dt className="text-lg font-bold text-slate-900">¿Cómo funciona?</dt>
-                      <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
-                        Los receptores reciben señales que activan respuestas en las células. La retatrutida activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple.
-                      </dd>
-                    </div>
+                    {(product.fichaTecnica?.items && product.fichaTecnica.items.length > 0
+                      ? product.fichaTecnica.items.filter(item => 
+                          !['reconstitución', 'lectura de cantidades', 'dosis y calendario'].includes(item.question.toLowerCase().trim())
+                        )
+                      : [
+                          {
+                            question: "¿Qué es la retatrutida?",
+                            answer: "La retatrutida es un péptido en investigación: una molécula formada por una cadena de aminoácidos. En publicaciones científicas también aparece como retatrutide o LY3437943."
+                          },
+                          {
+                            question: "¿Para qué se investiga?",
+                            answer: "Se estudia por sus efectos sobre el peso corporal y el control de la glucosa en sangre. Los ensayos clínicos evalúan su eficacia y seguridad en personas con obesidad, sobrepeso o diabetes tipo 2."
+                          },
+                          {
+                            question: "¿Cómo funciona?",
+                            answer: "Los receptores reciben señales que activan respuestas en las células. La retatrutida activa los receptores de GIP, GLP-1 y glucagón; por eso se describe como un agonista triple."
+                          }
+                        ]
+                    ).map((item, idx) => (
+                      <div key={idx} className="grid sm:grid-cols-3 gap-3 py-5 border-b border-slate-100">
+                        <dt className="text-lg font-bold text-slate-900">{item.question}</dt>
+                        <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed">
+                          {item.answer}
+                        </dd>
+                      </div>
+                    ))}
                     {/* RECONSTITUCIÓN */}
                     <div className="grid sm:grid-cols-3 gap-3 py-5 border-b border-slate-100" id="reconstitucion">
                       <dt className="text-lg font-bold text-slate-900">Reconstitución</dt>
                       <dd className="sm:col-span-2 text-sm text-slate-600 leading-relaxed space-y-4">
                         <p>
-                          Reconstituir significa agregar agua bacteriostática al polvo liofilizado (el polvo seco que viene dentro del vial) para convertirlo en una solución lista para usar. Los péptidos se venden en polvo porque así se mantienen estables por más tiempo.
+                          {product.reconstitucionText || "Reconstituir significa agregar agua bacteriostática al polvo liofilizado (el polvo seco que viene dentro del vial) para convertirlo en una solución lista para usar. Los péptidos se venden en polvo porque así se mantienen estables por más tiempo."}
                         </p>
                       </dd>
                     </div>
@@ -654,90 +674,136 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                       <div className="max-w-none">
                         <h2 className="text-lg font-bold text-slate-900 mb-3">Dosis y calendario</h2>
                         <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                          Aplicación una vez por semana, siempre el mismo día. El esquema de referencia sigue el aumento gradual usado en el estudio clínico de fase 2 del retatrutide (NEJM, 2023). Subir la dosis poco a poco ayuda a reducir efectos como náuseas o malestar digestivo. Si aparecen molestias, lo recomendable es mantener la dosis actual más tiempo antes de subir.
+                          {product.dosisCalendarioText || "Aplicación una vez por semana, siempre el mismo día. El esquema de referencia sigue el aumento gradual usado en el estudio clínico de fase 2 del retatrutide (NEJM, 2023). Subir la dosis poco a poco ayuda a reducir efectos como náuseas o malestar digestivo. Si aparecen molestias, lo recomendable es mantener la dosis actual más tiempo antes de subir."}
                         </p>
 
-                        {/* TABLA RT5 */}
-                        <div className={cn("rounded-2xl border border-slate-200/80 bg-white overflow-hidden shadow-sm transition-all", (!isRT10) ? "block" : "hidden")}>
-                          <div className="bg-slate-50/80 border-b border-slate-200/80 p-4 sm:p-5">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center justify-between">
-                              <span>Retatrutida 5 mg (RT5)</span>
-                              <span className="text-[11px] font-mono font-semibold text-[#1959D7] bg-[#1959D7]/10 px-2.5 py-1 rounded-full">5 mg / mL</span>
-                            </h3>
-                            <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                              Reconstituir: disolver en 1 mL de agua bacteriostática. Concentración final: 5 mg por mL (20 unidades = 1 mg).
-                            </p>
-                          </div>
-                          <div className="overflow-x-auto">
-                            <table className="w-full text-left text-xs sm:text-sm text-slate-900">
-                              <thead className="bg-slate-100/70 font-bold border-b border-slate-200/80 text-slate-700 uppercase tracking-wider text-[11px]">
-                                <tr>
-                                  <th className="px-5 py-3.5 w-1/3">Semana</th>
-                                  <th className="px-5 py-3.5 w-1/3">Dosis (mg)</th>
-                                  <th className="px-5 py-3.5 w-1/3">Unidades en la jeringa</th>
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-slate-100">
-                                <tr className="hover:bg-slate-50/80 transition-colors">
-                                  <td className="px-5 py-3.5 font-semibold text-slate-900">1 a 4</td>
-                                  <td className="px-5 py-3.5 font-medium text-slate-700">2 mg</td>
-                                  <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">40 unidades</td>
-                                </tr>
-                                <tr className="hover:bg-slate-50/80 transition-colors">
-                                  <td className="px-5 py-3.5 font-semibold text-slate-900">5 a 8</td>
-                                  <td className="px-5 py-3.5 font-medium text-slate-700">4 mg</td>
-                                  <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">80 unidades</td>
-                                </tr>
-                                <tr className="hover:bg-slate-50/80 transition-colors">
-                                  <td className="px-5 py-3.5 font-semibold text-slate-900">9 a 12</td>
-                                  <td className="px-5 py-3.5 font-medium text-slate-700">4 mg</td>
-                                  <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">80 unidades</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                        {/* TABLAS DE DOSIS Y CALENDARIO */}
+                        {product.dosisTables && product.dosisTables.length > 0 ? (
+                          product.dosisTables.map((table, tIdx) => {
+                            const isTableActive = isRT10 
+                              ? (table.presentationId === 'RT10' || table.title.includes('10'))
+                              : (table.presentationId === 'RT5' || table.title.includes('5'))
+                            return (
+                              <div key={tIdx} className={cn("rounded-2xl border border-slate-200/80 bg-white overflow-hidden shadow-sm transition-all", isTableActive ? "block" : "hidden")}>
+                                <div className="bg-slate-50/80 border-b border-slate-200/80 p-4 sm:p-5">
+                                  <h3 className="text-base font-bold text-slate-900 flex items-center justify-between">
+                                    <span>{table.title}</span>
+                                    <span className={cn("text-[11px] font-mono font-semibold px-2.5 py-1 rounded-full", table.presentationId === 'RT10' || table.title.includes('10') ? "text-emerald-700 bg-emerald-50" : "text-[#1959D7] bg-[#1959D7]/10")}>
+                                      {table.badge}
+                                    </span>
+                                  </h3>
+                                  <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                    {table.instruction}
+                                  </p>
+                                </div>
+                                <div className="overflow-x-auto">
+                                  <table className="w-full text-left text-xs sm:text-sm text-slate-900">
+                                    <thead className="bg-slate-100/70 font-bold border-b border-slate-200/80 text-slate-700 uppercase tracking-wider text-[11px]">
+                                      <tr>
+                                        <th className="px-5 py-3.5 w-1/3">Semana</th>
+                                        <th className="px-5 py-3.5 w-1/3">Dosis (mg)</th>
+                                        <th className="px-5 py-3.5 w-1/3">Unidades en la jeringa</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100">
+                                      {table.rows?.map((row, rIdx) => (
+                                        <tr key={rIdx} className="hover:bg-slate-50/80 transition-colors">
+                                          <td className="px-5 py-3.5 font-semibold text-slate-900">{row.week}</td>
+                                          <td className="px-5 py-3.5 font-medium text-slate-700">{row.dose}</td>
+                                          <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">{row.units}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            )
+                          })
+                        ) : (
+                          <>
+                            {/* TABLA RT5 */}
+                            <div className={cn("rounded-2xl border border-slate-200/80 bg-white overflow-hidden shadow-sm transition-all", (!isRT10) ? "block" : "hidden")}>
+                              <div className="bg-slate-50/80 border-b border-slate-200/80 p-4 sm:p-5">
+                                <h3 className="text-base font-bold text-slate-900 flex items-center justify-between">
+                                  <span>Retatrutida 5 mg (RT5)</span>
+                                  <span className="text-[11px] font-mono font-semibold text-[#1959D7] bg-[#1959D7]/10 px-2.5 py-1 rounded-full">5 mg / mL</span>
+                                </h3>
+                                <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                  Reconstituir: disolver en 1 mL de agua bacteriostática. Concentración final: 5 mg por mL (20 unidades = 1 mg).
+                                </p>
+                              </div>
+                              <div className="overflow-x-auto">
+                                <table className="w-full text-left text-xs sm:text-sm text-slate-900">
+                                  <thead className="bg-slate-100/70 font-bold border-b border-slate-200/80 text-slate-700 uppercase tracking-wider text-[11px]">
+                                    <tr>
+                                      <th className="px-5 py-3.5 w-1/3">Semana</th>
+                                      <th className="px-5 py-3.5 w-1/3">Dosis (mg)</th>
+                                      <th className="px-5 py-3.5 w-1/3">Unidades en la jeringa</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody className="divide-y divide-slate-100">
+                                    <tr className="hover:bg-slate-50/80 transition-colors">
+                                      <td className="px-5 py-3.5 font-semibold text-slate-900">1 a 4</td>
+                                      <td className="px-5 py-3.5 font-medium text-slate-700">2 mg</td>
+                                      <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">40 unidades</td>
+                                    </tr>
+                                    <tr className="hover:bg-slate-50/80 transition-colors">
+                                      <td className="px-5 py-3.5 font-semibold text-slate-900">5 a 8</td>
+                                      <td className="px-5 py-3.5 font-medium text-slate-700">4 mg</td>
+                                      <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">80 unidades</td>
+                                    </tr>
+                                    <tr className="hover:bg-slate-50/80 transition-colors">
+                                      <td className="px-5 py-3.5 font-semibold text-slate-900">9 a 12</td>
+                                      <td className="px-5 py-3.5 font-medium text-slate-700">4 mg</td>
+                                      <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">80 unidades</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
 
-                        {/* TABLA RT10 */}
-                        <div className={cn("rounded-2xl border border-slate-200/80 bg-white overflow-hidden shadow-sm transition-all", (isRT10) ? "block" : "hidden")}>
-                          <div className="bg-slate-50/80 border-b border-slate-200/80 p-4 sm:p-5">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center justify-between">
-                              <span>Retatrutida 10 mg (RT10)</span>
-                              <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">10 mg / mL</span>
-                            </h3>
-                            <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                              Reconstituir: disolver en 1 mL de agua bacteriostática. Concentración final: 10 mg por mL (10 unidades = 1 mg).
-                            </p>
-                          </div>
-                          <div className="overflow-x-auto">
-                            <table className="w-full text-left text-xs sm:text-sm text-slate-900">
-                              <thead className="bg-slate-100/70 font-bold border-b border-slate-200/80 text-slate-700 uppercase tracking-wider text-[11px]">
-                                <tr>
-                                  <th className="px-5 py-3.5 w-1/3">Semana</th>
-                                  <th className="px-5 py-3.5 w-1/3">Dosis (mg)</th>
-                                  <th className="px-5 py-3.5 w-1/3">Unidades en la jeringa</th>
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-slate-100">
-                                <tr className="hover:bg-slate-50/80 transition-colors">
-                                  <td className="px-5 py-3.5 font-semibold text-slate-900">1 a 4</td>
-                                  <td className="px-5 py-3.5 font-medium text-slate-700">2 mg</td>
-                                  <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">20 unidades</td>
-                                </tr>
-                                <tr className="hover:bg-slate-50/80 transition-colors">
-                                  <td className="px-5 py-3.5 font-semibold text-slate-900">5 a 8</td>
-                                  <td className="px-5 py-3.5 font-medium text-slate-700">4 mg</td>
-                                  <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">40 unidades</td>
-                                </tr>
-                                <tr className="hover:bg-slate-50/80 transition-colors">
-                                  <td className="px-5 py-3.5 font-semibold text-slate-900">9 a 12</td>
-                                  <td className="px-5 py-3.5 font-medium text-slate-700">8 mg</td>
-                                  <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">80 unidades</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                            {/* TABLA RT10 */}
+                            <div className={cn("rounded-2xl border border-slate-200/80 bg-white overflow-hidden shadow-sm transition-all", (isRT10) ? "block" : "hidden")}>
+                              <div className="bg-slate-50/80 border-b border-slate-200/80 p-4 sm:p-5">
+                                <h3 className="text-base font-bold text-slate-900 flex items-center justify-between">
+                                  <span>Retatrutida 10 mg (RT10)</span>
+                                  <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">10 mg / mL</span>
+                                </h3>
+                                <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                  Reconstituir: disolver en 1 mL de agua bacteriostática. Concentración final: 10 mg por mL (10 unidades = 1 mg).
+                                </p>
+                              </div>
+                              <div className="overflow-x-auto">
+                                <table className="w-full text-left text-xs sm:text-sm text-slate-900">
+                                  <thead className="bg-slate-100/70 font-bold border-b border-slate-200/80 text-slate-700 uppercase tracking-wider text-[11px]">
+                                    <tr>
+                                      <th className="px-5 py-3.5 w-1/3">Semana</th>
+                                      <th className="px-5 py-3.5 w-1/3">Dosis (mg)</th>
+                                      <th className="px-5 py-3.5 w-1/3">Unidades en la jeringa</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody className="divide-y divide-slate-100">
+                                    <tr className="hover:bg-slate-50/80 transition-colors">
+                                      <td className="px-5 py-3.5 font-semibold text-slate-900">1 a 4</td>
+                                      <td className="px-5 py-3.5 font-medium text-slate-700">2 mg</td>
+                                      <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">20 unidades</td>
+                                    </tr>
+                                    <tr className="hover:bg-slate-50/80 transition-colors">
+                                      <td className="px-5 py-3.5 font-semibold text-slate-900">5 a 8</td>
+                                      <td className="px-5 py-3.5 font-medium text-slate-700">4 mg</td>
+                                      <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">40 unidades</td>
+                                    </tr>
+                                    <tr className="hover:bg-slate-50/80 transition-colors">
+                                      <td className="px-5 py-3.5 font-semibold text-slate-900">9 a 12</td>
+                                      <td className="px-5 py-3.5 font-medium text-slate-700">8 mg</td>
+                                      <td className="px-5 py-3.5 font-mono font-bold text-[#1959D7]">80 unidades</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </motion.dl>

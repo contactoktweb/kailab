@@ -91,8 +91,8 @@ export function TiendaClient({ siteSettings, products, storePageData }: TiendaCl
         <ProductGrid 
           sanityProducts={filteredProducts}
           onAdd={addToCart} 
-          title="Péptidos para investigación"
-          subtitle="Elige una presentación para consultar su precio, disponibilidad e información."
+          title={storePageData?.title || "Péptidos para investigación"}
+          subtitle={storePageData?.subtitle || "Elige una presentación para consultar su precio, disponibilidad e información."}
           isTiendaPage={true}
         />
       </main>

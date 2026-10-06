@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { KailabLanding } from '@/components/kailab/kailab-landing'
-import { getHomePage, getSiteSettings } from '@/lib/sanity-queries'
+import { getHomePage, getSiteSettings, getProducts } from '@/lib/sanity-queries'
 import { products as localProducts } from '@/components/kailab/data'
 
 export const metadata: Metadata = {
@@ -27,6 +27,6 @@ export default async function Page() {
     getSiteSettings()
   ])
 
-  // Usamos localProducts temporalmente para desarrollo (solo Retatrutida es público)
+  // Usamos localProducts temporalmente para desarrollo
   return <KailabLanding homeData={homeData} siteSettings={siteSettings} products={localProducts as any} />
 }

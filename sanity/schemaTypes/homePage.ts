@@ -19,6 +19,11 @@ const HomeIcon = () =>
     React.createElement('polyline', { points: '9 22 9 12 15 12 15 22' })
   )
 
+const BookIcon = () => React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: '1em', height: '1em', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z' }), React.createElement('path', { d: 'M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z' }))
+const ChartIcon = () => React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: '1em', height: '1em', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('line', { x1: '18', y1: '20', x2: '18', y2: '10' }), React.createElement('line', { x1: '12', y1: '20', x2: '12', y2: '4' }), React.createElement('line', { x1: '6', y1: '20', x2: '6', y2: '14' }))
+const PackageIcon = () => React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: '1em', height: '1em', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }), React.createElement('polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }), React.createElement('line', { x1: '12', y1: '22.08', x2: '12', y2: '12' }))
+const MessageCircleQuestionIcon = () => React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: '1em', height: '1em', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M7.9 20A9 9 0 1 0 4 16.1L2 22Z' }), React.createElement('path', { d: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' }), React.createElement('path', { d: 'M12 17h.01' }))
+
 const ListIcon = () =>
   React.createElement(
     'svg',
@@ -82,7 +87,7 @@ export const homePageType = defineType({
           of: [
             {
               type: 'object',
-              icon: ListIcon,
+              icon: PackageIcon,
               fields: [
                 defineField({ name: 'name', title: 'Nombre', type: 'string' }),
               ],
@@ -113,6 +118,7 @@ export const homePageType = defineType({
           of: [
             {
               type: 'object',
+              icon: ChartIcon,
               fields: [
                 defineField({ name: 'label', title: 'Etiqueta', type: 'string' }),
                 defineField({ name: 'value', title: 'Valor', type: 'string' }),
@@ -145,6 +151,7 @@ export const homePageType = defineType({
           of: [
             {
               type: 'object',
+              icon: BookIcon,
               fields: [
                 defineField({ name: 'title', title: 'Título de la guía', type: 'string' }),
                 defineField({ name: 'desc', title: 'Descripción breve', type: 'text', rows: 2 }),
@@ -170,7 +177,7 @@ export const homePageType = defineType({
           of: [
             {
               type: 'object',
-              icon: ListIcon,
+              icon: MessageCircleQuestionIcon,
               fields: [
                 defineField({ name: 'question', title: 'Pregunta', type: 'string' }),
                 defineField({ name: 'answer', title: 'Respuesta', type: 'text', rows: 3 }),
