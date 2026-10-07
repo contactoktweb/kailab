@@ -43,12 +43,13 @@ const BookOpenIcon = () =>
     viewBox: '0 0 24 24',
     fill: 'none',
     stroke: '#10B981',
-    strokeWidth: '2',
+    strokeWidth: '1.5',
     strokeLinecap: 'round',
     strokeLinejoin: 'round'
   },
-    React.createElement('path', { d: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z' }),
-    React.createElement('path', { d: 'M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z' })
+    React.createElement('path', { d: 'M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20' }),
+    React.createElement('path', { d: 'M8 7h8' }),
+    React.createElement('path', { d: 'M8 11h8' })
   )
 
 const MicroscopeIcon = () =>
@@ -59,7 +60,7 @@ const MicroscopeIcon = () =>
     viewBox: '0 0 24 24',
     fill: 'none',
     stroke: '#3B82F6',
-    strokeWidth: '2',
+    strokeWidth: '1.5',
     strokeLinecap: 'round',
     strokeLinejoin: 'round'
   },
@@ -68,7 +69,9 @@ const MicroscopeIcon = () =>
     React.createElement('path', { d: 'M14 22a7 7 0 1 0-14 0' }),
     React.createElement('path', { d: 'M9 14h2' }),
     React.createElement('path', { d: 'M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z' }),
-    React.createElement('path', { d: 'M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3' })
+    React.createElement('path', { d: 'M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3' }),
+    React.createElement('circle', { cx: '17', cy: '6', r: '2', fill: '#3B82F6', opacity: '0.4', stroke: 'none' }),
+    React.createElement('circle', { cx: '21', cy: '8', r: '1', fill: '#3B82F6', opacity: '0.4', stroke: 'none' })
   )
 
 const LightbulbIcon = () =>
@@ -113,13 +116,13 @@ const ExternalLinkIcon = () =>
     viewBox: '0 0 24 24',
     fill: 'none',
     stroke: '#0EA5E9',
-    strokeWidth: '2',
+    strokeWidth: '1.5',
     strokeLinecap: 'round',
     strokeLinejoin: 'round'
   },
-    React.createElement('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }),
-    React.createElement('polyline', { points: '15 3 21 3 21 9' }),
-    React.createElement('line', { x1: '10', y1: '14', x2: '21', y2: '3' })
+    React.createElement('path', { d: 'M15 3h6v6' }),
+    React.createElement('path', { d: 'M10 14L21 3' }),
+    React.createElement('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' })
   )
 
 const TableIcon = () =>
