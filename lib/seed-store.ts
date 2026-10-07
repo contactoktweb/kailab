@@ -166,6 +166,50 @@ async function seedStore() {
           units: row.units
         })) || []
       })),
+      experienciaUso: product.experienciaUso ? {
+        badge: product.experienciaUso.badge || 'Experiencia de uso',
+        title: product.experienciaUso.title || 'Consejos Prácticos',
+        tips: product.experienciaUso.tips?.map((tip, idx) => ({
+          _key: `tip-${idx}`,
+          title: tip.title,
+          desc: tip.desc
+        })) || []
+      } : undefined,
+      preguntasFrecuentes: product.preguntasFrecuentes ? {
+        badge: product.preguntasFrecuentes.badge || 'Resolución de dudas',
+        title: product.preguntasFrecuentes.title || 'Preguntas Frecuentes',
+        items: product.preguntasFrecuentes.items?.map((item, idx) => ({
+          _key: `faq-${idx}`,
+          q: item.q?.replace(/<[^>]*>/g, ''),
+          a: item.a?.replace(/<[^>]*>/g, '')
+        })) || []
+      } : undefined,
+      evidenciaClinica: product.evidenciaClinica ? {
+        badge: product.evidenciaClinica.badge || 'Evidencia Clínica',
+        title: product.evidenciaClinica.title || '¿Qué dicen los estudios?',
+        description: product.evidenciaClinica.description,
+        studies: product.evidenciaClinica.studies?.map((st, sIdx) => ({
+          _key: `study-${sIdx}`,
+          tag: st.tag,
+          title: st.title,
+          description1: st.description1,
+          description2: st.description2,
+          links: st.links?.map((lk, lIdx) => ({
+            _key: `st-lk-${lIdx}`,
+            text: lk.text,
+            url: lk.url
+          })) || []
+        })) || [],
+        disclaimerTitle: product.evidenciaClinica.disclaimerTitle || 'Cómo interpretar estos datos',
+        disclaimerPoints: product.evidenciaClinica.disclaimerPoints || [],
+        sourcesTitle: product.evidenciaClinica.sourcesTitle || 'Fuentes científicas',
+        sourcesSubtitle: product.evidenciaClinica.sourcesSubtitle || 'Consulta las publicaciones sobre la investigación de la retatrutida.',
+        sources: product.evidenciaClinica.sources?.map((sc, scIdx) => ({
+          _key: `sc-${scIdx}`,
+          text: sc.text,
+          url: sc.url
+        })) || []
+      } : undefined,
       variants: await Promise.all((product.variants || []).map(async v => {
         const variantImageAsset = await uploadImage(v.image || '')
         return {

@@ -40,6 +40,33 @@ export type Product = {
     instruction: string
     rows: Array<{ week: string; dose: string; units: string }>
   }>
+  experienciaUso?: {
+    badge?: string
+    title?: string
+    tips?: Array<{ title: string; desc: string }>
+  }
+  preguntasFrecuentes?: {
+    badge?: string
+    title?: string
+    items?: Array<{ q: string; a: string }>
+  }
+  evidenciaClinica?: {
+    badge?: string
+    title?: string
+    description?: string
+    studies?: Array<{
+      tag?: string
+      title?: string
+      description1?: string
+      description2?: string
+      links?: Array<{ text: string; url: string }>
+    }>
+    disclaimerTitle?: string
+    disclaimerPoints?: string[]
+    sourcesTitle?: string
+    sourcesSubtitle?: string
+    sources?: Array<{ text: string; url: string }>
+  }
   infoAccordions?: InfoAccordion[]
   lot: string
   purity: string
@@ -644,6 +671,90 @@ export const products: Product[] = [
         ]
       }
     ],
+    experienciaUso: {
+      badge: 'Experiencia de uso',
+      title: 'Consejos Prácticos',
+      tips: [
+        { title: 'Qué molestias se han reportado', desc: 'Entre los efectos adversos frecuentes en los ensayos se encuentran: Náuseas, Diarrea, Estreñimiento, Vómitos. La intensidad y la duración varían entre personas. No existe un plazo único en el que estas molestias deban desaparecer.' },
+        { title: 'Los aumentos no son una meta', desc: 'TRIUMPH-1 incluyó grupos con dosis objetivo de 4, 9 y 12 mg. Llegar a 12 mg no fue el objetivo para todos los participantes. El calendario no establece una dosis adecuada para todas las personas.' },
+        { title: 'Más no siempre es mejor', desc: 'En los estudios, las dosis mayores produjeron más pérdida de peso en promedio, pero algunos efectos adversos también fueron más frecuentes. Una mayor cantidad no garantiza un mejor resultado individual.' },
+        { title: 'Lleva un registro sencillo', desc: 'Anota las fechas, los cambios de apetito y las molestias que notes. Un registro breve ayuda a observar cómo cambian con el tiempo.' },
+        { title: 'El progreso se observa con el tiempo', desc: 'Que el peso no cambie durante unos días no demuestra, por sí solo, que una dosis sea insuficiente.' },
+        { title: 'Si aparece estreñimiento', desc: 'Aumenta la fibra de forma gradual, acompáñala con agua y mantén actividad física regular.' },
+        { title: 'Comidas más pequeñas', desc: 'Come despacio y sirve porciones pequeñas. Detente cuando te sientas satisfecho.' },
+        { title: 'Hidratación', desc: 'Toma agua a lo largo del día. Si tienes náuseas, prueba con sorbos pequeños y frecuentes.' },
+        { title: 'Si aparece náusea', desc: 'Prueba comidas sencillas y poco grasosas. Evita acostarte justo después de comer.' }
+      ]
+    },
+    preguntasFrecuentes: {
+      badge: 'Resolución de dudas',
+      title: 'Preguntas Frecuentes',
+      items: [
+        {
+          q: '¿En qué se diferencia de la tirzepatida?',
+          a: 'La tirzepatida activa los receptores GIP y GLP-1. La retatrutida también activa el receptor de glucagón; por eso se describe como un agonista triple. Son moléculas diferentes, y esa diferencia no demuestra por sí sola que una sea mejor para todas las personas.'
+        },
+        {
+          q: '¿Qué se sabe de su efecto sobre el hambre?',
+          a: 'En un análisis de un ensayo clínico de Lilly, los participantes que recibieron retatrutida reportaron menos hambre y menor tendencia a comer en exceso, especialmente en los grupos con dosis más altas. Esto no significa que el apetito desaparezca por completo. (Consultar fuente)'
+        },
+        {
+          q: '¿Qué resultados de pérdida de peso se han observado?',
+          a: 'En TRIUMPH-1, adultos con obesidad o sobrepeso, sin diabetes, perdieron en promedio entre 17,6 % y 25,0 % de su peso a las 80 semanas, según la dosis, frente a 3,9 % con placebo. Estos resultados corresponden al medicamento de investigación de Lilly, no a los viales de KAILAB. (Consultar fuente)'
+        },
+        {
+          q: '¿Dónde puedo revisar los análisis antes de comprar?',
+          a: 'En Certificado de análisis (COA) puedes abrir el informe disponible para la presentación y el lote correspondientes. Si aún no hay un informe publicado, la página lo indica como «Certificado pendiente».'
+        },
+        {
+          q: '¿Qué viene incluido y cuánto cuesta el envío?',
+          a: 'Incluimos agua bacteriostática, toallitas con alcohol e Información práctica en línea. El envío es gratis a toda Colombia y el empaque es discreto.'
+        }
+      ]
+    },
+    evidenciaClinica: {
+      badge: 'Evidencia Clínica',
+      title: '¿Qué dicen los estudios?',
+      description: 'Los ensayos clínicos han observado reducciones de peso y de glucosa en sangre. Los resultados varían según la dosis, la población y la duración del estudio.',
+      studies: [
+        {
+          tag: 'Estudio de Peso Corporal · TRIUMPH-1 · 2026',
+          title: 'TRIUMPH-1 (2.339 adultos · 80 semanas)',
+          description1: 'Se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo en adultos con obesidad o sobrepeso, sin diabetes.',
+          description2: 'La reducción promedio de peso fue de 17,6 % a 25,0 %, según la dosis, frente a 3,9 % con placebo. Este análisis considera las interrupciones del tratamiento.',
+          links: [
+            { text: 'Ver resultados de TRIUMPH-1 (Comunicado de Lilly · mayo de 2026)', url: 'https://investor.lilly.com' }
+          ]
+        },
+        {
+          tag: 'TRANSCEND-T2D-1 · 2026 · 537 adultos · 40 semanas',
+          title: 'Glucosa en sangre',
+          description1: 'En adultos con diabetes tipo 2, se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo.',
+          description2: 'La HbA1c, un indicador del nivel promedio de glucosa en sangre, disminuyó entre 1,7 y 1,9 puntos porcentuales, frente a 0,8 con placebo. Este análisis considera las interrupciones del tratamiento.',
+          links: [
+            { text: 'Ver resultados de TRANSCEND-T2D-1 (Comunicado de Lilly · marzo de 2026)', url: 'https://investor.lilly.com' },
+            { text: 'Ver publicación en The Lancet · junio de 2026', url: 'https://www.thelancet.com' }
+          ]
+        }
+      ],
+      disclaimerTitle: 'Cómo interpretar estos datos',
+      disclaimerPoints: [
+        'Son promedios de grupos; no predicen el resultado de una persona.',
+        'También se reportaron náuseas, diarrea, vómitos y otros eventos adversos.',
+        'Los ensayos evaluaron el medicamento de investigación de Lilly, no los viales de KAILAB.'
+      ],
+      sourcesTitle: 'Fuentes científicas',
+      sourcesSubtitle: 'Consulta las publicaciones sobre la investigación de la retatrutida.',
+      sources: [
+        { text: 'Retatrutida y obesidad — ensayo de fase 2 (NEJM, 2023)', url: 'https://www.nejm.org' },
+        { text: 'Retatrutida y comportamiento alimentario (Diabetes, Obesity and Metabolism, 2025)', url: 'https://dom-pubs.onlinelibrary.wiley.com' },
+        { text: 'TRIUMPH-1: resultados de peso corporal (Lilly, 2026)', url: 'https://investor.lilly.com' },
+        { text: 'TRANSCEND-T2D-1: resultados en diabetes tipo 2 (Lilly, 2026)', url: 'https://investor.lilly.com' },
+        { text: 'TRANSCEND-T2D-1: publicación científica (The Lancet, 2026)', url: 'https://www.thelancet.com' },
+        { text: 'Retatrutida: mecanismo e investigación (Lilly)', url: 'https://www.lilly.com' },
+        { text: 'Tirzepatida: información del medicamento (Lilly)', url: 'https://www.lilly.com' }
+      ]
+    },
     lot: 'LOT-RT-2410',
     purity: '≥ 99.0%',
     formula: 'C221H342N46O68',

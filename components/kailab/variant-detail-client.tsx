@@ -816,60 +816,62 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                   <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-8">
                     <div className="mb-4 flex items-center gap-2 text-blue-400">
                       <Icon icon="lucide:lightbulb" className="h-5 w-5" />
-                      <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-blue-400/80">Experiencia de uso</span>
+                      <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-blue-400/80">
+                        {product.experienciaUso?.badge || 'Experiencia de uso'}
+                      </span>
                     </div>
-                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl leading-tight">Consejos Prácticos</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl leading-tight">
+                      {product.experienciaUso?.title || 'Consejos Prácticos'}
+                    </h2>
                   </motion.div>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_0.85fr] gap-4">
-                    {[
-                      [
-                        // Grandes (Izquierda)
-                        { 
-                          title: "Qué molestias se han reportado", 
-                          desc: "Entre los efectos adversos frecuentes en los ensayos se encuentran: Náuseas, Diarrea, Estreñimiento, Vómitos. La intensidad y la duración varían entre personas. No existe un plazo único en el que estas molestias deban desaparecer." 
-                        },
-                        { title: "Los aumentos no son una meta", desc: "TRIUMPH-1 incluyó grupos con dosis objetivo de 4, 9 y 12 mg. Llegar a 12 mg no fue el objetivo para todos los participantes. El calendario no establece una dosis adecuada para todas las personas." },
-                        { title: "Más no siempre es mejor", desc: "En los estudios, las dosis mayores produjeron más pérdida de peso en promedio, pero algunos efectos adversos también fueron más frecuentes. Una mayor cantidad no garantiza un mejor resultado individual." }
-                      ],
-                      [
-                        // Medianas (Centro)
-                        { title: "Lleva un registro sencillo", desc: "Anota las fechas, los cambios de apetito y las molestias que notes. Un registro breve ayuda a observar cómo cambian con el tiempo." },
-                        { title: "El progreso se observa con el tiempo", desc: "Que el peso no cambie durante unos días no demuestra, por sí solo, que una dosis sea insuficiente." },
-                        { title: "Si aparece estreñimiento", desc: "Aumenta la fibra de forma gradual, acompáñala con agua y mantén actividad física regular." }
-                      ],
-                      [
-                        // Pequeñas (Derecha)
-                        { title: "Comidas más pequeñas", desc: "Come despacio y sirve porciones pequeñas. Detente cuando te sientas satisfecho." },
-                        { title: "Hidratación", desc: "Toma agua a lo largo del día. Si tienes náuseas, prueba con sorbos pequeños y frecuentes." },
-                        { title: "Si aparece náusea", desc: "Prueba comidas sencillas y poco grasosas. Evita acostarte justo después de comer." }
-                      ]
-                    ].map((column, colIndex) => (
-                      <div key={colIndex} className="flex flex-col gap-4">
-                        {column.map((tip, i) => {
-                          const globalIndex = colIndex * 3 + i;
-                          return (
-                            <motion.div 
-                              initial={{ opacity: 0, y: 20 }} 
-                              whileInView={{ opacity: 1, y: 0 }} 
-                              viewport={{ once: true }} 
-                              transition={{ duration: 0.5, delay: globalIndex * 0.05, ease: "easeOut" }}
-                              key={i} 
-                              className="group relative flex flex-col justify-start overflow-hidden bg-white/5 p-5 sm:p-6 transition-all duration-500 hover:-translate-y-1 border border-[#1959D7]/20 hover:border-white/10 shadow-sm h-full rounded-2xl"
-                            >
-                              <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7] transition-colors duration-500 group-hover:bg-white/30"></div>
-                              <div className="absolute left-0 top-0 h-[3px] w-full bg-[#1959D7]/50 transition-all duration-500 group-hover:w-16 group-hover:bg-white/30"></div>
-                              
-                              <div className="relative z-10 flex items-start gap-4">
-                                 <div>
-                                   <h3 className="text-base font-bold text-white mb-1.5 transition-colors">{tip.title}</h3>
-                                   <p className="text-xs text-slate-400 leading-relaxed">{tip.desc}</p>
-                                 </div>
-                              </div>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    ))}
+                    {(() => {
+                      const allTips = product.experienciaUso?.tips && product.experienciaUso.tips.length > 0
+                        ? product.experienciaUso.tips
+                        : [
+                            { title: "Qué molestias se han reportado", desc: "Entre los efectos adversos frecuentes en los ensayos se encuentran: Náuseas, Diarrea, Estreñimiento, Vómitos. La intensidad y la duración varían entre personas. No existe un plazo único en el que estas molestias deban desaparecer." },
+                            { title: "Los aumentos no son una meta", desc: "TRIUMPH-1 incluyó grupos con dosis objetivo de 4, 9 y 12 mg. Llegar a 12 mg no fue el objetivo para todos los participantes. El calendario no establece una dosis adecuada para todas las personas." },
+                            { title: "Más no siempre es mejor", desc: "En los estudios, las dosis mayores produjeron más pérdida de peso en promedio, pero algunos efectos adversos también fueron más frecuentes. Una mayor cantidad no garantiza un mejor resultado individual." },
+                            { title: "Lleva un registro sencillo", desc: "Anota las fechas, los cambios de apetito y las molestias que notes. Un registro breve ayuda a observar cómo cambian con el tiempo." },
+                            { title: "El progreso se observa con el tiempo", desc: "Que el peso no cambie durante unos días no demuestra, por sí solo, que una dosis sea insuficiente." },
+                            { title: "Si aparece estreñimiento", desc: "Aumenta la fibra de forma gradual, acompáñala con agua y mantén actividad física regular." },
+                            { title: "Comidas más pequeñas", desc: "Come despacio y sirve porciones pequeñas. Detente cuando te sientas satisfecho." },
+                            { title: "Hidratación", desc: "Toma agua a lo largo del día. Si tienes náuseas, prueba con sorbos pequeños y frecuentes." },
+                            { title: "Si aparece náusea", desc: "Prueba comidas sencillas y poco grasosas. Evita acostarte justo después de comer." }
+                          ];
+                      const col1 = allTips.slice(0, 3);
+                      const col2 = allTips.slice(3, 6);
+                      const col3 = allTips.slice(6);
+                      const columns = [col1, col2, col3].filter(c => c.length > 0);
+
+                      return columns.map((column, colIndex) => (
+                        <div key={colIndex} className="flex flex-col gap-4">
+                          {column.map((tip, i) => {
+                            const globalIndex = colIndex * 3 + i;
+                            return (
+                              <motion.div 
+                                initial={{ opacity: 0, y: 20 }} 
+                                whileInView={{ opacity: 1, y: 0 }} 
+                                viewport={{ once: true }} 
+                                transition={{ duration: 0.5, delay: globalIndex * 0.05, ease: "easeOut" }}
+                                key={i} 
+                                className="group relative flex flex-col justify-start overflow-hidden bg-white/5 p-5 sm:p-6 transition-all duration-500 hover:-translate-y-1 border border-[#1959D7]/20 hover:border-white/10 shadow-sm h-full rounded-2xl"
+                              >
+                                <div className="absolute left-0 top-0 h-full w-[3px] bg-[#1959D7] transition-colors duration-500 group-hover:bg-white/30"></div>
+                                <div className="absolute left-0 top-0 h-[3px] w-full bg-[#1959D7]/50 transition-all duration-500 group-hover:w-16 group-hover:bg-white/30"></div>
+                                
+                                <div className="relative z-10 flex items-start gap-4">
+                                   <div>
+                                     <h3 className="text-base font-bold text-white mb-1.5 transition-colors">{tip.title}</h3>
+                                     <p className="text-xs text-slate-400 leading-relaxed">{tip.desc}</p>
+                                   </div>
+                                </div>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      ));
+                    })()}
                   </div>
                 </div>
               </section>
@@ -880,58 +882,145 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                    <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-12">
                      <div className="mb-4 flex items-center gap-2 text-primary">
                        <Icon icon="lucide:help-circle" className="h-5 w-5" />
-                       <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Resolución de dudas</span>
+                       <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+                         {product.preguntasFrecuentes?.badge || 'Resolución de dudas'}
+                       </span>
                      </div>
-                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">Preguntas Frecuentes</h2>
+                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">
+                       {product.preguntasFrecuentes?.title || 'Preguntas Frecuentes'}
+                     </h2>
                    </motion.div>
                    
                    <div className="grid md:grid-cols-2 gap-x-8 border-t border-slate-200">
-                      {[
-                        { 
-                          q: "¿En qué se diferencia de la tirzepatida?", 
-                          a: <span>La tirzepatida activa los receptores GIP y GLP-1. La retatrutida también activa el receptor de glucagón; por eso se describe como un agonista triple. Son moléculas diferentes, y esa diferencia no demuestra por sí sola que una sea mejor para todas las personas.</span> 
-                        },
-                        { 
-                          q: "¿Qué se sabe de su efecto sobre el hambre?", 
-                          a: <span>En un análisis de un ensayo clínico de Lilly, los participantes que recibieron retatrutida reportaron menos hambre y menor tendencia a comer en exceso, especialmente en los grupos con dosis más altas. Esto no significa que el apetito desaparezca por completo. (<a href="https://dom-pubs.onlinelibrary.wiley.com" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">Consultar fuente</a>)</span> 
-                        },
-                        { 
-                          q: "¿Qué resultados de pérdida de peso se han observado?", 
-                          a: <span>En <a href="https://investor.lilly.com" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">TRIUMPH-1</a>, adultos con obesidad o sobrepeso, sin diabetes, perdieron en promedio entre 17,6 % y 25,0 % de su peso a las 80 semanas, según la dosis, frente a 3,9 % con placebo. Estos resultados corresponden al medicamento de investigación de Lilly, no a los viales de KAILAB. (<a href="https://investor.lilly.com" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">Consultar fuente</a>)</span> 
-                        },
-                        { 
-                          q: "¿Dónde puedo revisar los análisis antes de comprar?", 
-                          a: <span>En <a href="#certificado" className="text-primary font-semibold hover:underline">Certificado de análisis (COA)</a> puedes abrir el informe disponible para la presentación y el lote correspondientes. Si aún no hay un informe publicado, la página lo indica como «Certificado pendiente».</span> 
-                        },
-                        { 
-                          q: "¿Qué viene incluido y cuánto cuesta el envío?", 
-                          a: <span>Incluimos agua bacteriostática, toallitas con alcohol e <a href="#informacion-practica" className="text-primary font-semibold hover:underline">Información práctica en línea</a>. El envío es gratis a toda Colombia y el empaque es discreto.</span> 
-                        }
-                      ].map((faq, i) => (
-                        <motion.details 
-                          initial={{ opacity: 0, y: 15 }} 
-                          whileInView={{ opacity: 1, y: 0 }} 
-                          viewport={{ once: true }} 
-                          transition={{ duration: 0.4, delay: i * 0.08 }}
-                          key={i} 
-                          className="group border-b border-slate-200 bg-white open:bg-slate-50 transition-colors duration-300 relative overflow-hidden"
-                        >
-                          <div className="absolute left-0 top-0 h-full w-[3px] bg-primary opacity-0 transition-opacity duration-300 group-open:opacity-100"></div>
-                          
-                          <summary className="cursor-pointer p-6 sm:px-8 font-bold text-slate-900 flex items-center justify-between [&::-webkit-details-marker]:hidden hover:text-primary transition-colors">
-                             <div className="flex items-center gap-4">
-                               <span className="font-mono text-xs text-slate-400 group-open:text-primary transition-colors">0{i+1}</span>
-                               <span className="text-base">{faq.q}</span>
-                             </div>
-                             <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-slate-200 group-open:border-primary/30 group-open:bg-primary/10 transition-colors rounded-lg">
-                               <Icon icon="lucide:plus" className="h-4 w-4 text-slate-400 transition-transform duration-500 group-open:rotate-45 group-hover:text-primary group-open:text-primary" />
-                             </div>
-                          </summary>
-                          <div className="px-6 sm:px-8 pb-8 pt-0 ml-8 text-sm text-slate-600 leading-relaxed max-w-3xl">
-                             {faq.a}
-                          </div>
-                        </motion.details>
-                      ))}
+                      {(product.preguntasFrecuentes?.items && product.preguntasFrecuentes.items.length > 0
+                        ? product.preguntasFrecuentes.items
+                        : [
+                            { 
+                              q: "¿En qué se diferencia de la tirzepatida?", 
+                              a: "La tirzepatida activa los receptores GIP y GLP-1. La retatrutida también activa el receptor de glucagón; por eso se describe como un agonista triple. Son moléculas diferentes, y esa diferencia no demuestra por sí sola que una sea mejor para todas las personas." 
+                            },
+                            { 
+                              q: "¿Qué se sabe de su efecto sobre el hambre?", 
+                              a: "En un análisis de un ensayo clínico de Lilly, los participantes que recibieron retatrutida reportaron menos hambre y menor tendencia a comer en exceso, especialmente en los grupos con dosis más altas. Esto no significa que el apetito desaparezca por completo. (Consultar fuente)" 
+                            },
+                            { 
+                              q: "¿Qué resultados de pérdida de peso se han observado?", 
+                              a: "En TRIUMPH-1, adultos con obesidad o sobrepeso, sin diabetes, perdieron en promedio entre 17,6 % y 25,0 % de su peso a las 80 semanas, según la dosis, frente a 3,9 % con placebo. Estos resultados corresponden al medicamento de investigación de Lilly, no a los viales de KAILAB. (Consultar fuente)" 
+                            },
+                            { 
+                              q: "¿Dónde puedo revisar los análisis antes de comprar?", 
+                              a: "En Certificado de análisis (COA) puedes abrir el informe disponible para la presentación y el lote correspondientes. Si aún no hay un informe publicado, la página lo indica como «Certificado pendiente»." 
+                            },
+                            { 
+                              q: "¿Qué viene incluido y cuánto cuesta el envío?", 
+                              a: "Incluimos agua bacteriostática, toallitas con alcohol e Información práctica en línea. El envío es gratis a toda Colombia y el empaque es discreto." 
+                            }
+                          ]
+                      ).map((faq: any, i: number) => {
+                        const rawText = typeof faq.a === 'string' ? faq.a : '';
+                        const text = rawText.replace(/<[^>]*>/g, '');
+
+                        const renderContent = () => {
+                          if (typeof faq.a !== 'string') return faq.a;
+
+                          if (i === 1 || text.includes('dom-pubs.onlinelibrary.wiley.com')) {
+                            const parts = text.split('(Consultar fuente)');
+                            if (parts.length > 1) {
+                              return (
+                                <>
+                                  {parts[0]}
+                                  (
+                                  <a href="https://dom-pubs.onlinelibrary.wiley.com" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">
+                                    Consultar fuente
+                                  </a>
+                                  )
+                                  {parts.slice(1).join('(Consultar fuente)')}
+                                </>
+                              );
+                            }
+                          }
+
+                          if (i === 2 || text.includes('investor.lilly.com')) {
+                            const triumphParts = text.split('TRIUMPH-1');
+                            const beforeTriumph = triumphParts[0];
+                            const afterTriumph = triumphParts.slice(1).join('TRIUMPH-1');
+                            const fuenteParts = afterTriumph.split('(Consultar fuente)');
+                            return (
+                              <>
+                                {beforeTriumph}
+                                <a href="https://investor.lilly.com" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">
+                                  TRIUMPH-1
+                                </a>
+                                {fuenteParts[0]}
+                                {fuenteParts.length > 1 && (
+                                  <>
+                                    (
+                                    <a href="https://investor.lilly.com" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">
+                                      Consultar fuente
+                                    </a>
+                                    )
+                                    {fuenteParts.slice(1).join('(Consultar fuente)')}
+                                  </>
+                                )}
+                              </>
+                            );
+                          }
+
+                          if (text.includes('Certificado de análisis (COA)')) {
+                            const parts = text.split('Certificado de análisis (COA)');
+                            return (
+                              <>
+                                {parts[0]}
+                                <a href="#certificado" className="text-primary font-semibold hover:underline">
+                                  Certificado de análisis (COA)
+                                </a>
+                                {parts.slice(1).join('Certificado de análisis (COA)')}
+                              </>
+                            );
+                          }
+
+                          if (text.includes('Información práctica en línea')) {
+                            const parts = text.split('Información práctica en línea');
+                            return (
+                              <>
+                                {parts[0]}
+                                <a href="#informacion-practica" className="text-primary font-semibold hover:underline">
+                                  Información práctica en línea
+                                </a>
+                                {parts.slice(1).join('Información práctica en línea')}
+                              </>
+                            );
+                          }
+
+                          return text;
+                        };
+
+                        return (
+                          <motion.details 
+                            initial={{ opacity: 0, y: 15 }} 
+                            whileInView={{ opacity: 1, y: 0 }} 
+                            viewport={{ once: true }} 
+                            transition={{ duration: 0.4, delay: i * 0.08 }}
+                            key={i} 
+                            className="group border-b border-slate-200 bg-white open:bg-slate-50 transition-colors duration-300 relative overflow-hidden"
+                          >
+                            <div className="absolute left-0 top-0 h-full w-[3px] bg-primary opacity-0 transition-opacity duration-300 group-open:opacity-100"></div>
+                            
+                            <summary className="cursor-pointer p-6 sm:px-8 font-bold text-slate-900 flex items-center justify-between [&::-webkit-details-marker]:hidden hover:text-primary transition-colors">
+                               <div className="flex items-center gap-4">
+                                 <span className="font-mono text-xs text-slate-400 group-open:text-primary transition-colors">0{i+1}</span>
+                                 <span className="text-base">{faq.q}</span>
+                               </div>
+                               <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-slate-200 group-open:border-primary/30 group-open:bg-primary/10 transition-colors rounded-lg">
+                                 <Icon icon="lucide:plus" className="h-4 w-4 text-slate-400 transition-transform duration-500 group-open:rotate-45 group-hover:text-primary group-open:text-primary" />
+                               </div>
+                            </summary>
+                            <div className="px-6 sm:px-8 pb-8 pt-0 ml-8 text-sm text-slate-600 leading-relaxed max-w-3xl">
+                               {renderContent()}
+                            </div>
+                          </motion.details>
+                        );
+                      })}
                    </div>
 
                    {/* BOTÓN VOLVER A LA COMPRA */}
@@ -958,78 +1047,98 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                    <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-6 border-b border-slate-200 pb-4">
                      <div className="mb-4 flex items-center gap-2 text-primary">
                        <Icon icon="lucide:microscope" className="h-5 w-5" />
-                       <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">Evidencia Clínica</span>
+                       <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary/80">
+                         {product.evidenciaClinica?.badge || 'Evidencia Clínica'}
+                       </span>
                      </div>
-                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">¿Qué dicen los estudios?</h2>
+                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl leading-tight">
+                       {product.evidenciaClinica?.title || '¿Qué dicen los estudios?'}
+                     </h2>
                      <p className="mt-3 text-sm text-slate-600 leading-relaxed max-w-3xl">
-                       Los ensayos clínicos han observado reducciones de peso y de glucosa en sangre. Los resultados varían según la dosis, la población y la duración del estudio.
+                       {product.evidenciaClinica?.description || 'Los ensayos clínicos han observado reducciones de peso y de glucosa en sangre. Los resultados varían según la dosis, la población y la duración del estudio.'}
                      </p>
                    </motion.div>
                    
                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-8">
-                      {/* Estudio 1: TRIUMPH-1 */}
-                      <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative border-l-4 border-primary pl-6 pt-2 pb-8">
-                         <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-2">Estudio de Peso Corporal · TRIUMPH-1 · 2026</span>
-                         <h3 className="text-xl font-bold text-slate-900 mb-2">TRIUMPH-1 (2.339 adultos · 80 semanas)</h3>
-                         <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                           Se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo en adultos con obesidad o sobrepeso, sin diabetes.
-                         </p>
-                         <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                           La reducción promedio de peso fue de 17,6 % a 25,0 %, según la dosis, frente a 3,9 % con placebo. Este análisis considera las interrupciones del tratamiento.
-                         </p>
-                         <a 
-                           href="https://investor.lilly.com" 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#1959D7] hover:underline group"
-                         >
-                           <Icon icon="lucide:external-link" className="h-4 w-4" />
-                           Ver resultados de TRIUMPH-1 (Comunicado de Lilly · mayo de 2026)
-                         </a>
-                      </motion.div>
-                      {/* Estudio 2: Right */}
-                      <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="relative border-l-4 border-emerald-500 pl-6 pt-2 pb-8">
-                         <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-2">TRANSCEND-T2D-1 · 2026 · 537 adultos · 40 semanas</span>
-                         <h3 className="text-xl font-bold text-slate-900 mb-3">Glucosa en sangre</h3>
-                         <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                           En adultos con diabetes tipo 2, se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo.
-                         </p>
-                         <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                           La HbA1c, un indicador del nivel promedio de glucosa en sangre, disminuyó entre 1,7 y 1,9 puntos porcentuales, frente a 0,8 con placebo. Este análisis considera las interrupciones del tratamiento.
-                         </p>
-                         <div className="flex flex-col gap-3">
-                           <a 
-                             href="https://investor.lilly.com" 
-                             target="_blank" 
-                             rel="noopener noreferrer" 
-                             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#1959D7] hover:underline group"
-                           >
-                             <Icon icon="lucide:external-link" className="h-4 w-4 shrink-0" />
-                             Ver resultados de TRANSCEND-T2D-1 (Comunicado de Lilly · marzo de 2026)
-                           </a>
-                           <a 
-                             href="https://www.thelancet.com" 
-                             target="_blank" 
-                             rel="noopener noreferrer" 
-                             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emerald-600 hover:underline group"
-                           >
-                             <Icon icon="lucide:external-link" className="h-4 w-4 shrink-0" />
-                             Ver publicación en The Lancet · junio de 2026
-                           </a>
-                         </div>
-                      </motion.div>
+                      {(product.evidenciaClinica?.studies && product.evidenciaClinica.studies.length > 0
+                        ? product.evidenciaClinica.studies
+                        : [
+                            {
+                              tag: 'Estudio de Peso Corporal · TRIUMPH-1 · 2026',
+                              title: 'TRIUMPH-1 (2.339 adultos · 80 semanas)',
+                              description1: 'Se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo en adultos con obesidad o sobrepeso, sin diabetes.',
+                              description2: 'La reducción promedio de peso fue de 17,6 % a 25,0 %, según la dosis, frente a 3,9 % con placebo. Este análisis considera las interrupciones del tratamiento.',
+                              links: [
+                                { text: 'Ver resultados de TRIUMPH-1 (Comunicado de Lilly · mayo de 2026)', url: 'https://investor.lilly.com' }
+                              ]
+                            },
+                            {
+                              tag: 'TRANSCEND-T2D-1 · 2026 · 537 adultos · 40 semanas',
+                              title: 'Glucosa en sangre',
+                              description1: 'En adultos con diabetes tipo 2, se compararon dosis de 4, 9 y 12 mg una vez por semana con placebo.',
+                              description2: 'La HbA1c, un indicador del nivel promedio de glucosa en sangre, disminuyó entre 1,7 y 1,9 puntos porcentuales, frente a 0,8 con placebo. Este análisis considera las interrupciones del tratamiento.',
+                              links: [
+                                { text: 'Ver resultados de TRANSCEND-T2D-1 (Comunicado de Lilly · marzo de 2026)', url: 'https://investor.lilly.com' },
+                                { text: 'Ver publicación en The Lancet · junio de 2026', url: 'https://www.thelancet.com' }
+                              ]
+                            }
+                          ]
+                      ).map((study: any, idx: number) => {
+                        const isEven = idx % 2 === 0;
+                        const borderColor = isEven ? 'border-primary' : 'border-emerald-500';
+                        const linkColor = (linkUrl: string) => linkUrl.includes('lancet') ? 'text-emerald-600' : 'text-[#1959D7]';
+
+                        return (
+                          <motion.div 
+                            key={idx}
+                            initial={{ opacity: 0, x: isEven ? -30 : 30 }} 
+                            whileInView={{ opacity: 1, x: 0 }} 
+                            viewport={{ once: true }} 
+                            transition={{ duration: 0.6, delay: idx * 0.2 }} 
+                            className={`relative border-l-4 ${borderColor} pl-6 pt-2 pb-8`}
+                          >
+                             {study.tag && <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-2">{study.tag}</span>}
+                             <h3 className="text-xl font-bold text-slate-900 mb-2">{study.title}</h3>
+                             {study.description1 && <p className="text-sm text-slate-600 leading-relaxed mb-3">{study.description1}</p>}
+                             {study.description2 && <p className="text-sm text-slate-600 leading-relaxed mb-6">{study.description2}</p>}
+                             {study.links && study.links.length > 0 && (
+                               <div className="flex flex-col gap-3">
+                                 {study.links.map((link: any, lIdx: number) => (
+                                   <a 
+                                     key={lIdx}
+                                     href={link.url} 
+                                     target="_blank" 
+                                     rel="noopener noreferrer" 
+                                     className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest ${linkColor(link.url || '')} hover:underline group`}
+                                   >
+                                     <Icon icon="lucide:external-link" className="h-4 w-4 shrink-0" />
+                                     {link.text}
+                                   </a>
+                                 ))}
+                               </div>
+                             )}
+                          </motion.div>
+                        );
+                      })}
                    </div>
 
                    {/* Disclaimer */}
                    <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-8 bg-slate-200/50 border-l-2 border-primary/40 p-5 rounded-r-2xl">
                       <h3 className="text-sm text-slate-900 font-bold mb-3 flex items-center gap-2">
                         <Icon icon="lucide:info" className="h-4 w-4 text-primary shrink-0" />
-                        Cómo interpretar estos datos
+                        {product.evidenciaClinica?.disclaimerTitle || 'Cómo interpretar estos datos'}
                       </h3>
                       <ul className="space-y-2 text-xs text-slate-700 leading-relaxed list-disc list-inside">
-                        <li>Son promedios de grupos; no predicen el resultado de una persona.</li>
-                        <li>También se reportaron náuseas, diarrea, vómitos y otros eventos adversos.</li>
-                        <li>Los ensayos evaluaron el medicamento de investigación de Lilly, no los viales de KAILAB.</li>
+                        {(product.evidenciaClinica?.disclaimerPoints && product.evidenciaClinica.disclaimerPoints.length > 0
+                          ? product.evidenciaClinica.disclaimerPoints
+                          : [
+                              'Son promedios de grupos; no predicen el resultado de una persona.',
+                              'También se reportaron náuseas, diarrea, vómitos y otros eventos adversos.',
+                              'Los ensayos evaluaron el medicamento de investigación de Lilly, no los viales de KAILAB.'
+                            ]
+                        ).map((point: string, pIdx: number) => (
+                          <li key={pIdx}>{point}</li>
+                        ))}
                       </ul>
                    </motion.div>
                    
@@ -1037,20 +1146,25 @@ export function VariantDetailClient({ product, initialVariantSlug, siteSettings 
                    <div className="mt-14 mb-0 bg-[#17294F] text-white p-8 sm:p-12 rounded-xl shadow-2xl">
                      <h2 className="text-2xl font-bold tracking-tight text-white mb-2 flex items-center gap-3">
                        <Icon icon="lucide:book-open" className="h-6 w-6 text-emerald-400" />
-                       Fuentes científicas
+                       {product.evidenciaClinica?.sourcesTitle || 'Fuentes científicas'}
                      </h2>
-                     <p className="text-sm text-slate-400 mb-8">Consulta las publicaciones sobre la investigación de la retatrutida.</p>
+                     <p className="text-sm text-slate-400 mb-8">
+                       {product.evidenciaClinica?.sourcesSubtitle || 'Consulta las publicaciones sobre la investigación de la retatrutida.'}
+                     </p>
                      
                      <ul className="grid sm:grid-cols-2 gap-x-12 gap-y-4">
-                       {[
-                         { text: "Retatrutida y obesidad — ensayo de fase 2 (NEJM, 2023)", url: "https://www.nejm.org" },
-                         { text: "Retatrutida y comportamiento alimentario (Diabetes, Obesity and Metabolism, 2025)", url: "https://dom-pubs.onlinelibrary.wiley.com" },
-                         { text: "TRIUMPH-1: resultados de peso corporal (Lilly, 2026)", url: "https://investor.lilly.com" },
-                         { text: "TRANSCEND-T2D-1: resultados en diabetes tipo 2 (Lilly, 2026)", url: "https://investor.lilly.com" },
-                         { text: "TRANSCEND-T2D-1: publicación científica (The Lancet, 2026)", url: "https://www.thelancet.com" },
-                         { text: "Retatrutida: mecanismo e investigación (Lilly)", url: "https://www.lilly.com" },
-                         { text: "Tirzepatida: información del medicamento (Lilly)", url: "https://www.lilly.com" }
-                       ].map((item, i) => (
+                       {(product.evidenciaClinica?.sources && product.evidenciaClinica.sources.length > 0
+                         ? product.evidenciaClinica.sources
+                         : [
+                             { text: "Retatrutida y obesidad — ensayo de fase 2 (NEJM, 2023)", url: "https://www.nejm.org" },
+                             { text: "Retatrutida y comportamiento alimentario (Diabetes, Obesity and Metabolism, 2025)", url: "https://dom-pubs.onlinelibrary.wiley.com" },
+                             { text: "TRIUMPH-1: resultados de peso corporal (Lilly, 2026)", url: "https://investor.lilly.com" },
+                             { text: "TRANSCEND-T2D-1: resultados en diabetes tipo 2 (Lilly, 2026)", url: "https://investor.lilly.com" },
+                             { text: "TRANSCEND-T2D-1: publicación científica (The Lancet, 2026)", url: "https://www.thelancet.com" },
+                             { text: "Retatrutida: mecanismo e investigación (Lilly)", url: "https://www.lilly.com" },
+                             { text: "Tirzepatida: información del medicamento (Lilly)", url: "https://www.lilly.com" }
+                           ]
+                       ).map((item: any, i: number) => (
                           <li key={i} className="flex items-center gap-3 border-b border-white/10 pb-3">
                              <Icon icon="lucide:external-link" className="h-4 w-4 text-emerald-400/70 shrink-0" />
                              <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:text-emerald-400 transition-colors">

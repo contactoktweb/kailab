@@ -144,6 +144,33 @@ export interface SanityProduct {
     instruction: string
     rows: Array<{ week: string; dose: string; units: string }>
   }>
+  experienciaUso?: {
+    badge?: string
+    title?: string
+    tips?: Array<{ title: string; desc: string }>
+  }
+  preguntasFrecuentes?: {
+    badge?: string
+    title?: string
+    items?: Array<{ q: string; a: string }>
+  }
+  evidenciaClinica?: {
+    badge?: string
+    title?: string
+    description?: string
+    studies?: Array<{
+      tag?: string
+      title?: string
+      description1?: string
+      description2?: string
+      links?: Array<{ text: string; url: string }>
+    }>
+    disclaimerTitle?: string
+    disclaimerPoints?: string[]
+    sourcesTitle?: string
+    sourcesSubtitle?: string
+    sources?: Array<{ text: string; url: string }>
+  }
   lot?: string
   formula?: string
   purity?: string
@@ -225,6 +252,9 @@ function mapSanityProductToProduct(p: SanityProduct): Product {
     lecturaCantidadesText: p.lecturaCantidadesText,
     dosisCalendarioText: p.dosisCalendarioText,
     dosisTables: p.dosisTables,
+    experienciaUso: p.experienciaUso,
+    preguntasFrecuentes: p.preguntasFrecuentes,
+    evidenciaClinica: p.evidenciaClinica,
     infoAccordions: p.infoAccordions?.map(acc => ({ title: acc.title, contentHtml: acc.contentHtml, contentBlocks: acc.contentBlocks })) || [],
     lot: p.lot || '',
     purity: p.purity || '',
@@ -266,6 +296,9 @@ export async function getProducts(): Promise<Product[]> {
       lecturaCantidadesText,
       dosisCalendarioText,
       dosisTables,
+      experienciaUso,
+      preguntasFrecuentes,
+      evidenciaClinica,
       lot,
       formula,
       purity,
@@ -319,6 +352,9 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       lecturaCantidadesText,
       dosisCalendarioText,
       dosisTables,
+      experienciaUso,
+      preguntasFrecuentes,
+      evidenciaClinica,
       lot,
       formula,
       purity,

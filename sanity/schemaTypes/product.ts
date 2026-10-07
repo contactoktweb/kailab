@@ -34,6 +34,131 @@ const VariantIcon = () =>
     React.createElement('path', { d: 'M8.5 2h7' }),
     React.createElement('path', { d: 'M6 16h12' })
   )
+
+const BookOpenIcon = () =>
+  React.createElement('svg', {
+    xmlns: 'http://www.w3.org/2000/svg',
+    width: '1em',
+    height: '1em',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: '#10B981',
+    strokeWidth: '2',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round'
+  },
+    React.createElement('path', { d: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z' }),
+    React.createElement('path', { d: 'M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z' })
+  )
+
+const MicroscopeIcon = () =>
+  React.createElement('svg', {
+    xmlns: 'http://www.w3.org/2000/svg',
+    width: '1em',
+    height: '1em',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: '#3B82F6',
+    strokeWidth: '2',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round'
+  },
+    React.createElement('path', { d: 'M6 18h8' }),
+    React.createElement('path', { d: 'M3 22h18' }),
+    React.createElement('path', { d: 'M14 22a7 7 0 1 0-14 0' }),
+    React.createElement('path', { d: 'M9 14h2' }),
+    React.createElement('path', { d: 'M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z' }),
+    React.createElement('path', { d: 'M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3' })
+  )
+
+const LightbulbIcon = () =>
+  React.createElement('svg', {
+    xmlns: 'http://www.w3.org/2000/svg',
+    width: '1em',
+    height: '1em',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: '#F59E0B',
+    strokeWidth: '2',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round'
+  },
+    React.createElement('path', { d: 'M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5' }),
+    React.createElement('path', { d: 'M9 18h6' }),
+    React.createElement('path', { d: 'M10 22h4' })
+  )
+
+const HelpCircleIcon = () =>
+  React.createElement('svg', {
+    xmlns: 'http://www.w3.org/2000/svg',
+    width: '1em',
+    height: '1em',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: '#6366F1',
+    strokeWidth: '2',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round'
+  },
+    React.createElement('circle', { cx: '12', cy: '12', r: '10' }),
+    React.createElement('path', { d: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' }),
+    React.createElement('path', { d: 'M12 17h.01' })
+  )
+
+const ExternalLinkIcon = () =>
+  React.createElement('svg', {
+    xmlns: 'http://www.w3.org/2000/svg',
+    width: '1em',
+    height: '1em',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: '#0EA5E9',
+    strokeWidth: '2',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round'
+  },
+    React.createElement('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }),
+    React.createElement('polyline', { points: '15 3 21 3 21 9' }),
+    React.createElement('line', { x1: '10', y1: '14', x2: '21', y2: '3' })
+  )
+
+const TableIcon = () =>
+  React.createElement('svg', {
+    xmlns: 'http://www.w3.org/2000/svg',
+    width: '1em',
+    height: '1em',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: '#8B5CF6',
+    strokeWidth: '2',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round'
+  },
+    React.createElement('rect', { width: '18', height: '18', x: '3', y: '3', rx: '2' }),
+    React.createElement('path', { d: 'M3 9h18' }),
+    React.createElement('path', { d: 'M3 15h18' }),
+    React.createElement('path', { d: 'M9 3v18' }),
+    React.createElement('path', { d: 'M15 3v18' })
+  )
+
+const CalendarIcon = () =>
+  React.createElement('svg', {
+    xmlns: 'http://www.w3.org/2000/svg',
+    width: '1em',
+    height: '1em',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: '#EC4899',
+    strokeWidth: '2',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round'
+  },
+    React.createElement('rect', { width: '18', height: '18', x: '3', y: '4', rx: '2' }),
+    React.createElement('path', { d: 'M16 2v4' }),
+    React.createElement('path', { d: 'M8 2v4' }),
+    React.createElement('path', { d: 'M3 10h18' })
+  )
+
 export const productType = defineType({
   name: 'product',
   title: 'Producto / Péptido',
@@ -161,6 +286,13 @@ export const productType = defineType({
               initialValue: 'pending'
             }),
           ],
+          preview: {
+            select: {
+              title: 'name',
+              subtitle: 'sku',
+              media: 'image',
+            },
+          },
         },
       ],
     }),
@@ -236,10 +368,17 @@ export const productType = defineType({
             {
               type: 'object',
               title: 'Punto Informativo',
+              icon: AccordionIcon,
               fields: [
                 defineField({ name: 'question', title: 'Pregunta / Título (ej. ¿Qué es la retatrutida?)', type: 'string' }),
                 defineField({ name: 'answer', title: 'Respuesta / Explicación', type: 'text', rows: 3 }),
               ],
+              preview: {
+                select: {
+                  title: 'question',
+                  subtitle: 'answer',
+                },
+              },
             },
           ],
         }),
@@ -278,6 +417,7 @@ export const productType = defineType({
           type: 'object',
           name: 'dosisTable',
           title: 'Tabla de Dosis (ej: 5 mg / 10 mg)',
+          icon: TableIcon,
           fields: [
             defineField({ name: 'presentationId', title: 'ID o Slug de Presentación (ej. RT5, RT10, 5mg, 10mg)', type: 'string' }),
             defineField({ name: 'title', title: 'Título de la Presentación (ej. Retatrutida 5 mg (RT5))', type: 'string' }),
@@ -291,16 +431,238 @@ export const productType = defineType({
                 {
                   type: 'object',
                   title: 'Fila de Dosis',
+                  icon: CalendarIcon,
                   fields: [
                     defineField({ name: 'week', title: 'Semana (ej. 1 a 4)', type: 'string' }),
                     defineField({ name: 'dose', title: 'Dosis (ej. 2 mg)', type: 'string' }),
                     defineField({ name: 'units', title: 'Unidades en la Jeringa (ej. 40 unidades)', type: 'string' }),
                   ],
+                  preview: {
+                    select: {
+                      title: 'week',
+                      subtitle: 'dose',
+                    },
+                    prepare({ title, subtitle }) {
+                      return {
+                        title: title ? `Semana: ${title}` : 'Semana de dosis',
+                        subtitle: subtitle ? `Dosis: ${subtitle}` : '',
+                      }
+                    },
+                  },
                 },
               ],
             }),
           ],
+          preview: {
+            select: {
+              title: 'title',
+              subtitle: 'badge',
+            },
+          },
         },
+      ],
+    }),
+    defineField({
+      name: 'experienciaUso',
+      title: 'Experiencia de Uso (Consejos Prácticos)',
+      type: 'object',
+      fieldset: 'accordions',
+      fields: [
+        defineField({
+          name: 'badge',
+          title: 'Etiqueta / Badge de la Sección',
+          type: 'string',
+          initialValue: 'Experiencia de uso',
+        }),
+        defineField({
+          name: 'title',
+          title: 'Título Principal de la Sección',
+          type: 'string',
+          initialValue: 'Consejos Prácticos',
+        }),
+        defineField({
+          name: 'tips',
+          title: 'Consejos / Tarjetas Informativas',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              title: 'Consejo Práctico',
+              icon: LightbulbIcon,
+              fields: [
+                defineField({ name: 'title', title: 'Título del Consejo', type: 'string' }),
+                defineField({ name: 'desc', title: 'Descripción / Explicación', type: 'text', rows: 3 }),
+              ],
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'desc',
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'preguntasFrecuentes',
+      title: 'Resolución de Dudas (Preguntas Frecuentes)',
+      type: 'object',
+      fieldset: 'accordions',
+      fields: [
+        defineField({
+          name: 'badge',
+          title: 'Etiqueta / Badge de la Sección',
+          type: 'string',
+          initialValue: 'Resolución de dudas',
+        }),
+        defineField({
+          name: 'title',
+          title: 'Título Principal de la Sección',
+          type: 'string',
+          initialValue: 'Preguntas Frecuentes',
+        }),
+        defineField({
+          name: 'items',
+          title: 'Preguntas y Respuestas',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              title: 'Pregunta Frecuente',
+              icon: HelpCircleIcon,
+              fields: [
+                defineField({ name: 'q', title: 'Pregunta', type: 'string' }),
+                defineField({ name: 'a', title: 'Respuesta', type: 'text', rows: 4 }),
+              ],
+              preview: {
+                select: {
+                  title: 'q',
+                  subtitle: 'a',
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'evidenciaClinica',
+      title: 'Evidencia Clínica (Estudios y Fuentes Científicas)',
+      type: 'object',
+      fieldset: 'accordions',
+      fields: [
+        defineField({
+          name: 'badge',
+          title: 'Etiqueta / Badge de la Sección',
+          type: 'string',
+          initialValue: 'Evidencia Clínica',
+        }),
+        defineField({
+          name: 'title',
+          title: 'Título Principal',
+          type: 'string',
+          initialValue: '¿Qué dicen los estudios?',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Descripción / Párrafo Introductorio',
+          type: 'text',
+          rows: 2,
+          initialValue: 'Los ensayos clínicos han observado reducciones de peso y de glucosa en sangre. Los resultados varían según la dosis, la población y la duración del estudio.',
+        }),
+        defineField({
+          name: 'studies',
+          title: 'Estudios Destacados',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              title: 'Estudio Clínico',
+              icon: MicroscopeIcon,
+              fields: [
+                defineField({ name: 'tag', title: 'Etiqueta / Referencia (ej. TRIUMPH-1 · 2026)', type: 'string' }),
+                defineField({ name: 'title', title: 'Título del Estudio', type: 'string' }),
+                defineField({ name: 'description1', title: 'Párrafo Explicativo 1', type: 'text', rows: 2 }),
+                defineField({ name: 'description2', title: 'Párrafo Explicativo 2', type: 'text', rows: 2 }),
+                defineField({
+                  name: 'links',
+                  title: 'Enlaces de Referencia',
+                  type: 'array',
+                  of: [
+                    {
+                      type: 'object',
+                      title: 'Enlace',
+                      icon: ExternalLinkIcon,
+                      fields: [
+                        defineField({ name: 'text', title: 'Texto del Enlace', type: 'string' }),
+                        defineField({ name: 'url', title: 'URL de Destino', type: 'string' }),
+                      ],
+                      preview: {
+                        select: {
+                          title: 'text',
+                          subtitle: 'url',
+                        },
+                      },
+                    },
+                  ],
+                }),
+              ],
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'tag',
+                },
+              },
+            },
+          ],
+        }),
+        defineField({
+          name: 'disclaimerTitle',
+          title: 'Título del Aviso de Interpretación',
+          type: 'string',
+          initialValue: 'Cómo interpretar estos datos',
+        }),
+        defineField({
+          name: 'disclaimerPoints',
+          title: 'Puntos del Aviso de Interpretación',
+          type: 'array',
+          of: [{ type: 'string' }],
+        }),
+        defineField({
+          name: 'sourcesTitle',
+          title: 'Título de Fuentes Científicas',
+          type: 'string',
+          initialValue: 'Fuentes científicas',
+        }),
+        defineField({
+          name: 'sourcesSubtitle',
+          title: 'Subtítulo de Fuentes Científicas',
+          type: 'string',
+          initialValue: 'Consulta las publicaciones sobre la investigación de la retatrutida.',
+        }),
+        defineField({
+          name: 'sources',
+          title: 'Lista de Fuentes Científicas',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              title: 'Fuente Científica',
+              icon: BookOpenIcon,
+              fields: [
+                defineField({ name: 'text', title: 'Título / Descripción de la Fuente', type: 'string' }),
+                defineField({ name: 'url', title: 'URL del Sitio / Publicación', type: 'string' }),
+              ],
+              preview: {
+                select: {
+                  title: 'text',
+                  subtitle: 'url',
+                },
+              },
+            },
+          ],
+        }),
       ],
     }),
     defineField({
@@ -318,3 +680,4 @@ export const productType = defineType({
     },
   },
 })
+
