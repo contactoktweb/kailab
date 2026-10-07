@@ -1,7 +1,7 @@
 import { defineField, defineType } from 'sanity'
 import React from 'react'
 
-const HelpCircleIcon = () =>
+const ListIcon = () =>
   React.createElement('svg', {
     xmlns: 'http://www.w3.org/2000/svg',
     width: '1em',
@@ -13,124 +13,147 @@ const HelpCircleIcon = () =>
     strokeLinecap: 'round',
     strokeLinejoin: 'round'
   },
-    React.createElement('circle', { cx: '12', cy: '12', r: '10' }),
-    React.createElement('path', { d: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' }),
-    React.createElement('line', { x1: '12', y1: '17', x2: '12.01', y2: '17' })
-  )
-
-const FolderIcon = () =>
-  React.createElement('svg', {
-    xmlns: 'http://www.w3.org/2000/svg',
-    width: '1em',
-    height: '1em',
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: '2',
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round'
-  },
-    React.createElement('path', { d: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' })
-  )
-
-const HelpCircleSmallIcon = () =>
-  React.createElement('svg', {
-    xmlns: 'http://www.w3.org/2000/svg',
-    width: '1em',
-    height: '1em',
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: '2',
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round'
-  },
-    React.createElement('circle', { cx: '12', cy: '12', r: '10' }),
-    React.createElement('path', { d: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' }),
-    React.createElement('line', { x1: '12', y1: '17', x2: '12.01', y2: '17' })
+    React.createElement('line', { x1: '8', y1: '6', x2: '21', y2: '6' }),
+    React.createElement('line', { x1: '8', y1: '12', x2: '21', y2: '12' }),
+    React.createElement('line', { x1: '8', y1: '18', x2: '21', y2: '18' }),
+    React.createElement('line', { x1: '3', y1: '6', x2: '3.01', y2: '6' }),
+    React.createElement('line', { x1: '3', y1: '12', x2: '3.01', y2: '12' }),
+    React.createElement('line', { x1: '3', y1: '18', x2: '3.01', y2: '18' })
   )
 
 export const helpPageType = defineType({
   name: 'helpPage',
-  title: 'Ayuda (FAQ)',
+  title: 'Página de Ayuda',
   type: 'document',
-  icon: HelpCircleIcon,
   fields: [
+    defineField({ name: 'title', title: 'Título Interno', type: 'string' }),
+    
+    // PEDIDOS
     defineField({
-      name: 'headerTag',
-      title: 'Etiqueta de Cabecera (ej. Base de Conocimiento)',
-      type: 'string',
-    }),
-    defineField({
-      name: 'title',
-      title: 'Título Principal',
-      type: 'string',
-    }),
-    defineField({
-      name: 'description',
-      title: 'Descripción',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'faqCategories',
-      title: 'Categorías de Preguntas Frecuentes',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          icon: FolderIcon,
-          fields: [
-            defineField({ name: 'label', title: 'Nombre de Categoría (ej. Envíos)', type: 'string' }),
-            defineField({
-              name: 'items',
-              title: 'Preguntas y Respuestas',
-              type: 'array',
-              of: [
-                {
-                  type: 'object',
-                  icon: HelpCircleSmallIcon,
-                  fields: [
-                    defineField({ name: 'q', title: 'Pregunta', type: 'string' }),
-                    defineField({ name: 'a', title: 'Respuesta', type: 'text', rows: 3 }),
-                  ],
-                  preview: {
-                    select: {
-                      title: 'q',
-                      subtitle: 'a',
-                    }
-                  }
-                }
-              ]
-            }),
-          ],
-          preview: {
-            select: {
-              title: 'label',
-            }
-          }
-        }
+      name: 'ordersSection',
+      title: 'Sección: Pedidos',
+      type: 'object',
+      fields: [
+        defineField({ name: 'tag', title: 'Etiqueta', type: 'string' }),
+        defineField({ name: 'title', title: 'Título Principal', type: 'string' }),
+        defineField({
+          name: 'faqs',
+          title: 'Preguntas',
+          type: 'array',
+          of: [{
+            type: 'object',
+            icon: ListIcon,
+            fields: [
+              defineField({ name: 'q', title: 'Pregunta', type: 'string' }),
+              defineField({ 
+                name: 'a', 
+                title: 'Respuesta (Párrafo)', 
+                type: 'text', 
+                rows: 4,
+                hidden: ({ parent }: any) => parent?.answerList?.length > 0
+              }),
+              defineField({ 
+                name: 'answerList', 
+                title: 'Respuesta (Lista de viñetas opcional)', 
+                type: 'array', 
+                of: [{ type: 'string' }],
+                hidden: ({ parent }: any) => !!parent?.a
+              }),
+            ],
+            preview: { select: { title: 'q', subtitle: 'a' } }
+          }]
+        })
       ]
     }),
+
+    // ENVIOS
     defineField({
-      name: 'trustBadges',
-      title: 'Insignias de Confianza (4 Cajas Inferiores)',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          icon: FolderIcon,
-          fields: [
-            defineField({ name: 'title', title: 'Título (ej. Entrega rápida)', type: 'string' }),
-            defineField({ name: 'desc', title: 'Descripción corta', type: 'string' }),
-          ],
-          preview: {
-            select: {
-              title: 'title',
-              subtitle: 'desc',
-            }
-          }
-        }
+      name: 'shippingSection',
+      title: 'Sección: Envíos',
+      type: 'object',
+      fields: [
+        defineField({ name: 'tag', title: 'Etiqueta', type: 'string' }),
+        defineField({ name: 'title', title: 'Título Principal', type: 'string' }),
+        defineField({
+          name: 'faqs',
+          title: 'Preguntas',
+          type: 'array',
+          of: [{
+            type: 'object',
+            icon: ListIcon,
+            fields: [
+              defineField({ name: 'q', title: 'Pregunta', type: 'string' }),
+              defineField({ name: 'a', title: 'Respuesta', type: 'text', rows: 4 }),
+            ],
+            preview: { select: { title: 'q', subtitle: 'a' } }
+          }]
+        })
+      ]
+    }),
+
+    // PAGOS
+    defineField({
+      name: 'paymentsSection',
+      title: 'Sección: Pagos',
+      type: 'object',
+      fields: [
+        defineField({ name: 'tag', title: 'Etiqueta', type: 'string' }),
+        defineField({ name: 'title', title: 'Título Principal', type: 'string' }),
+        defineField({
+          name: 'faqs',
+          title: 'Preguntas',
+          type: 'array',
+          of: [{
+            type: 'object',
+            icon: ListIcon,
+            fields: [
+              defineField({ name: 'q', title: 'Pregunta', type: 'string' }),
+              defineField({ name: 'a', title: 'Respuesta', type: 'text', rows: 4 }),
+            ],
+            preview: { select: { title: 'q', subtitle: 'a' } }
+          }]
+        })
+      ]
+    }),
+
+    // CERTIFICADOS
+    defineField({
+      name: 'certificatesSection',
+      title: 'Sección: Información y certificados',
+      type: 'object',
+      fields: [
+        defineField({ name: 'tag', title: 'Etiqueta', type: 'string' }),
+        defineField({ name: 'title', title: 'Título Principal', type: 'string' }),
+        defineField({
+          name: 'faqs',
+          title: 'Preguntas',
+          type: 'array',
+          of: [{
+            type: 'object',
+            icon: ListIcon,
+            fields: [
+              defineField({ name: 'q', title: 'Pregunta', type: 'string' }),
+              defineField({ name: 'a', title: 'Respuesta', type: 'text', rows: 4 }),
+            ],
+            preview: { select: { title: 'q', subtitle: 'a' } }
+          }]
+        })
+      ]
+    }),
+
+    // CONTACTO
+    defineField({
+      name: 'contactSection',
+      title: 'Sección: Contacto directo',
+      type: 'object',
+      fields: [
+        defineField({ name: 'tag', title: 'Etiqueta', type: 'string' }),
+        defineField({ name: 'title', title: 'Título Principal', type: 'string' }),
+        defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
+        defineField({ name: 'whatsappBtnLabel', title: 'Botón WhatsApp', type: 'string' }),
+        defineField({ name: 'whatsappUrl', title: 'URL WhatsApp', type: 'string' }),
+        defineField({ name: 'emailBtnLabel', title: 'Botón Email', type: 'string' }),
+        defineField({ name: 'emailAddress', title: 'Email', type: 'string' }),
       ]
     })
   ],
