@@ -3,8 +3,10 @@ import { TopBar } from '@/components/kailab/top-bar'
 import { Navbar } from '@/components/kailab/navbar'
 import { Footer } from '@/components/kailab/footer'
 import { AyudaClient } from '@/components/kailab/ayuda-client'
-import { getSiteSettings, getHomePage } from '@/lib/sanity-queries'
+import { getSiteSettings, getHelpPage } from '@/lib/sanity-queries'
 import { Icon } from '@iconify/react'
+
+export const revalidate = 0
 
 export const metadata: Metadata = {
   title: 'Ayuda, pagos y envíos | KAILAB',
@@ -25,17 +27,10 @@ export const metadata: Metadata = {
 }
 
 export default async function AyudaPage() {
-  const [siteSettings, homeData] = await Promise.all([
+  const [siteSettings, helpData] = await Promise.all([
     getSiteSettings(),
-    getHomePage()
+    getHelpPage()
   ])
-
-  const whatsIncludedItems = homeData?.whatsIncluded?.items || [
-    { _key: '1', name: 'Agua bacteriostática.' },
-    { _key: '2', name: 'Toallitas con alcohol.' },
-    { _key: '3', name: 'Información práctica en línea.' },
-    { _key: '4', name: 'Envío gratis a toda Colombia, en empaque discreto.' }
-  ]
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background">
@@ -64,7 +59,7 @@ export default async function AyudaPage() {
 
         {/* Animated white content area */}
         <div className="h-px bg-gradient-to-r from-transparent via-slate-300/50 to-transparent" />
-        <AyudaClient whatsIncludedItems={whatsIncludedItems} />
+        <AyudaClient helpData={helpData} />
 
       </main>
 

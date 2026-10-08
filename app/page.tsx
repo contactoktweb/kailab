@@ -3,6 +3,8 @@ import { KailabLanding } from '@/components/kailab/kailab-landing'
 import { getHomePage, getSiteSettings, getProducts } from '@/lib/sanity-queries'
 import { products as localProducts } from '@/components/kailab/data'
 
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title: 'KAILAB | Péptidos para investigación en Colombia',
   description: 'Explora péptidos de investigación, consulta sus presentaciones y los certificados de análisis disponibles. Envío gratis a toda Colombia.',

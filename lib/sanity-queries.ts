@@ -20,7 +20,7 @@ export interface SiteSettings {
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
   try {
-    const query = `*[_type == "siteSettings" && _id == "siteSettings"][0]{
+    const query = `*[_type == "siteSettings" && !(_id in path("drafts.**"))][0]{
       siteName,
       email,
       phone,
@@ -31,7 +31,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       description,
       socialLinks
     }`
-    const settings = await sanityClient.fetch(query)
+    const settings = await sanityClient.fetch(query, {}, { cache: 'no-store' })
     return settings || null
   } catch (error) {
     console.error('Error fetching siteSettings from Sanity:', error)
@@ -85,15 +85,22 @@ export interface HomePageData {
 
 export async function getHomePage(): Promise<HomePageData | null> {
   try {
-    const query = `*[_type == "homePage" && _id == "homePage"][0]{
-      hero,
+    const query = `*[_type == "homePage" && (_id == "drafts.homePage" || _id == "homePage")] | order(_id desc)[0]{
+      hero {
+        titlePart1,
+        titlePart2,
+        subtitle,
+        ctaText,
+        ctaLink,
+        backgroundImage
+      },
       featuredProducts,
       whatsIncluded,
       commitment,
       quality,
       guides
     }`
-    const data = await sanityClient.fetch(query)
+    const data = await sanityClient.fetch(query, {}, { cache: 'no-store', next: { revalidate: 0 } })
     return data || null
   } catch (error) {
     console.error('Error fetching homePage from Sanity:', error)
@@ -405,8 +412,8 @@ export interface GuidesPageData {
 
 export async function getGuidesPage(): Promise<GuidesPageData | null> {
   try {
-    const query = `*[_type == "guidesPage" && _id == "guidesPage"][0]`
-    const data = await sanityClient.fetch(query)
+    const query = `*[_type == "guidesPage" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]`
+    const data = await sanityClient.fetch(query, {}, { cache: 'no-store' })
     return data || null
   } catch (error) {
     console.error('Error fetching guidesPage from Sanity:', error)
@@ -429,8 +436,8 @@ export interface QualityPageData {
 
 export async function getQualityPage(): Promise<QualityPageData | null> {
   try {
-    const query = `*[_type == "qualityPage" && _id == "qualityPage"][0]`
-    const data = await sanityClient.fetch(query)
+    const query = `*[_type == "qualityPage" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]`
+    const data = await sanityClient.fetch(query, {}, { cache: 'no-store' })
     return data || null
   } catch (error) {
     console.error('Error fetching qualityPage from Sanity:', error)
@@ -439,29 +446,42 @@ export async function getQualityPage(): Promise<QualityPageData | null> {
 }
 
 export interface HelpPageData {
-  headerTag?: string
   title?: string
-  description?: string
-  faqCategories?: Array<{
-    _key: string
-    label?: string
-    items?: Array<{
-      _key: string
-      q?: string
-      a?: string
-    }>
-  }>
-  trustBadges?: Array<{
-    _key: string
+  ordersSection?: {
+    tag?: string
     title?: string
-    desc?: string
-  }>
+    faqs?: Array<{ _key: string; q?: string; a?: string; answerList?: string[] }>
+  }
+  shippingSection?: {
+    tag?: string
+    title?: string
+    faqs?: Array<{ _key: string; q?: string; a?: string; answerList?: string[] }>
+  }
+  paymentsSection?: {
+    tag?: string
+    title?: string
+    faqs?: Array<{ _key: string; q?: string; a?: string; answerList?: string[] }>
+  }
+  certificatesSection?: {
+    tag?: string
+    title?: string
+    faqs?: Array<{ _key: string; q?: string; a?: string; answerList?: string[] }>
+  }
+  contactSection?: {
+    tag?: string
+    title?: string
+    description?: string
+    whatsappBtnLabel?: string
+    whatsappUrl?: string
+    emailBtnLabel?: string
+    emailAddress?: string
+  }
 }
 
 export async function getHelpPage(): Promise<HelpPageData | null> {
   try {
-    const query = `*[_type == "helpPage" && _id == "helpPage"][0]`
-    const data = await sanityClient.fetch(query)
+    const query = `*[_type == "helpPage" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]`
+    const data = await sanityClient.fetch(query, {}, { cache: 'no-store' })
     return data || null
   } catch (error) {
     console.error('Error fetching helpPage from Sanity:', error)
